@@ -16,8 +16,8 @@ def verify_code():
         
         session['phonenumber'] = number
 
-        api_url = 'http://localhost:3000/verifyCode'
-        verification_data = {'number': '91' + number, 'enteredCode': entered_code}
+        api_url = 'https://13.233.206.35/verifyCode'
+        verification_data = {'number': number, 'enteredCode': entered_code}
 
         headers = {
             'Content-Type': 'application/json',

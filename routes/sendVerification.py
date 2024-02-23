@@ -9,8 +9,8 @@ def send_verification():
         if not number:
             return jsonify({'success': False, 'error': 'Number is a required parameter'}), 400
 
-        api_url = 'http://localhost:3000/sendVerification'
-        api_data = {'number': '91' + number}
+        api_url = 'https://13.233.206.35/sendVerification'
+        api_data = {'number': number}
 
         headers = {
             'Content-Type': 'application/json',
@@ -30,8 +30,8 @@ def send_verification():
             
         except Exception as e:
             print('Error:', e)
-            
-       
+ 
+
 
     except Exception as e:
         print('Error sending verification code:', e)
