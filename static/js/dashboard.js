@@ -3,7 +3,6 @@ function selectLanguage(language){
 }
 
 
-
 $(document).ready(function() {
 $('.bottom-nav a').click(function() {
   $('.bottom-nav a').removeClass('active');

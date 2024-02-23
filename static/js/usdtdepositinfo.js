@@ -13,13 +13,13 @@ document.addEventListener("DOMContentLoaded", function () {
       const arrowDiv = document.getElementById('paybtn');
       console.log('Arrow back button is clicked.');
       arrowDiv.addEventListener('click', function () {
-        redirectTo('/usdtdeposit?redirect=dash');
+        redirectTo('/usdt_deposit?redirect=dash');
       });
     } else if (redirectParam === 'fullprofile') {
       const arrowDiv = document.getElementById('paybtn');
       console.log('Arrow back button is clicked for full profile.');
       arrowDiv.addEventListener('click', function () {
-        redirectTo('/usdtdeposit?redirect=fullprofile');
+        redirectTo('/usdt_deposit?redirect=fullprofile');
       });
     }
   });

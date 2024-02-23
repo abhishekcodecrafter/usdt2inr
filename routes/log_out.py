@@ -1,6 +1,6 @@
-from flask import session , redirect
+from flask import session, redirect
+
 
 def logout():
-    session.pop('phonenumber', None)
+    session.pop('phone_number', None)
     return redirect('/')
-    

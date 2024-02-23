@@ -1,26 +1,44 @@
 
 document.addEventListener("DOMContentLoaded", function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const redirectParam = urlParams.get('redirect');
-  
-    console.log(redirectParam);
-  
-    if (redirectParam === 'dash') {
-      const arrowDiv = document.getElementById('arrowDiv');
-      console.log('Arrow back button is clicked.');
-      arrowDiv.addEventListener('click', function () {
-        redirectTo('/dashboard');
-      });
-    } else if (redirectParam === 'fullprofile') {
-      const arrowDiv = document.getElementById('arrowDiv');
-      console.log('Arrow back button is clicked for full profile.');
-      arrowDiv.addEventListener('click', function () {
-        redirectTo('/fullprofile');
-      });
-    }
+  const arrowDiv = document.getElementById('arrowDiv');
+  console.log('Arrow back button is clicked.');
+  arrowDiv.addEventListener('click', function () {
+    redirectTo('/dashboard');
   });
+});
 
+function submitDeposit() {
+    const walletAddress = $('#wallet-address').text();
+    const txnId = ""
 
+    const data = {
+        "address" : walletAddress,
+        "txnId" : txnId
+    }
+
+    fetch('/submitDeposit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        if (responseData.success) {
+            var successMsg = document.getElementById('successmsg');
+            successMsg.style.display = 'block';
+            setTimeout(function () {
+                successMsg.style.display = 'none';
+            }, 2000);
+        } else {
+            console.error('Error on submit deposit', responseData);
+        }
+    })
+    .catch(error => {
+        console.error('Error on submit deposit', error);
+    });
+}
 
 
 function copyWalletAddress() {
@@ -36,24 +54,18 @@ function copyWalletAddress() {
         tempInput.remove();
 
         var successMsg = document.getElementById('successmsg');
-    successMsg.style.display = 'block';
-    setTimeout(function () {
-        successMsg.style.display = 'none';
-    }, 5000); 
-
+        successMsg.style.display = 'block';
+        setTimeout(function () {
+            successMsg.style.display = 'none';
+        }, 3000);
     } catch (error) {
         console.error('Error copying wallet address:', error);
     }
 }
 
-
-
-
 async function updateQRCode() {
     try {
-        const qrCodePath = `./assets/qr-codes/1.png`; 
-
-        
+        const qrCodePath = `./assets/qr-codes/1.png`;
         $('#qr-code-img').attr('src', qrCodePath);
     } catch (error) {
         console.error('Error updating QR code:', error);
@@ -147,5 +159,5 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 function redirectTo(page) {
-window.location.href = page;
+    window.location.href = page;
 }

@@ -1,13 +1,16 @@
+from random import randint
+
 from passlib.hash import bcrypt
 import logging
 from db.db_connector import DBConnector
 
-def create_user(phonenumber, usdtbalance, active, deposit_address):
+
+def create_user(phone_number, usdt_balance, hold_balance, active):
     query = """
-    INSERT INTO users (phonenumber, usdtbalance, active, deposit_address)
-    VALUES (%s, %s, %s, %s)
+        INSERT INTO users (phone_number, usdt_balance, hold_balance, active)
+        VALUES (%s, %s, %s, %s)
     """
-    values = (phonenumber, usdtbalance, active, deposit_address)
+    values = (phone_number, usdt_balance, hold_balance, active)
 
     connector = DBConnector()
     success = connector.execute_query(query, values)
@@ -16,64 +19,75 @@ def create_user(phonenumber, usdtbalance, active, deposit_address):
     return success
 
 
+def get_current_exchange_rate():
+    query = "SELECT exchange_rate FROM settings LIMIT 1;"
 
-def get_todays_INR_value():
-    query = "SELECT todaysINRvalue FROM settings ORDER BY id DESC LIMIT 1;"
-    
     connector = DBConnector()
     result = connector.fetch_all(query)
     connector.close_connection()
+    if result is None or len(result) < 1:
+        return None
 
-    return result
+    return result[0][0]
+
 
 def get_exchanges_todays_value():
-    query = "SELECT WaZirxPrice, BinancePrice, KuCoinPrice FROM settings ORDER BY id DESC LIMIT 1;"
-    
+    query = "SELECT wazir_x_price, binance_price, ku_coin_price FROM settings LIMIT 1;"
+
     connector = DBConnector()
     result = connector.fetch_all(query)
     connector.close_connection()
+    if result is None or len(result) < 1:
+        return None
 
-    return result
+    return result[0]
+
 
 def get_all_users():
     query = "SELECT * FROM users"
-    
+
     connector = DBConnector()
     result = connector.fetch_all(query)
     connector.close_connection()
 
     return result
 
-def get_a_user(phonenumber):
-    query = f"SELECT * FROM users where phonenumber = {phonenumber}"
-    
+
+def get_user_by_phone_number(phone_number):
+    query = f"SELECT * FROM users where phone_number = {phone_number} limit 1"
+
     connector = DBConnector()
     result = connector.fetch_all(query)
     connector.close_connection()
+    if result is None or len(result) < 1:
+        return None
 
-    return result
+    result = result[0]
+    return {
+        "phone_number": result[0],
+        "usdt_balance": result[1],
+        "hold_balance": result[2],
+        "t_me": result[3],
+        "transaction_password": result[4],
+        "active": result[5],
+        "wallet_address": "TJsBwTcscL5WxUNoFoQxEHou8CJc3ghKqv",
+        "wallet_qr": ""
+    }
+
 
 def get_all_transactions():
     query = "SELECT * FROM transactions"
-    
+
     connector = DBConnector()
     result = connector.fetch_all(query)
     connector.close_connection()
 
     return result
+
 
 def get_users_all_transactions(number):
-    query = f"SELECT * FROM transactions WHERE phonenumber = {number}"
-    
-    connector = DBConnector()
-    result = connector.fetch_all(query)
-    connector.close_connection()
+    query = f"SELECT * FROM transactions WHERE phone_number = {number}"
 
-    return result
-
-def get_a_user_transactions(phonenumber):
-    query = f"SELECT * FROM transactions where phonenumber = {phonenumber}"
-    
     connector = DBConnector()
     result = connector.fetch_all(query)
     connector.close_connection()
@@ -81,21 +95,44 @@ def get_a_user_transactions(phonenumber):
     return result
 
 
-def get_a_transaction(phonenumber,Txnid):
-    query = f"SELECT * FROM transactions where phonenumber = {phonenumber} And Txnid = {Txnid}"
-    
+def get_a_user_transactions(phone_number):
+    query = f"SELECT * FROM transactions where phone_number = {phone_number}"
+
     connector = DBConnector()
     result = connector.fetch_all(query)
     connector.close_connection()
 
     return result
 
-def create_transaction(Txnid, status, amount, type, Userid):
+
+def get_no_completed_transactions(phone_number):
+    query = f"SELECT COUNT(*) FROM transactions where phone_number = {phone_number} and status='COMPLETED'"
+
+    connector = DBConnector()
+    result = connector.fetch_all(query)
+    connector.close_connection()
+    if result is None or len(result) < 1:
+        return 0
+    else:
+        return result[0][0]
+
+
+def get_a_transaction(phone_number, txn_id):
+    query = f"SELECT * FROM transactions where phone_number = {phone_number} And txn_id = {txn_id}"
+
+    connector = DBConnector()
+    result = connector.fetch_all(query)
+    connector.close_connection()
+
+    return result
+
+
+def create_transaction(txn_id, status, amount, type, user_id):
     query = """
-    INSERT INTO transactions (Txnid, status, amount, type, Userid)
+    INSERT INTO transactions (txn_id, status, amount, type, Userid)
     VALUES (%s, %s, %s, %s, %s)
     """
-    values = (Txnid, status, amount, type, Userid)
+    values = (txn_id, status, amount, type, user_id)
 
     connector = DBConnector()
     success = connector.execute_query(query, values)
@@ -106,7 +143,7 @@ def create_transaction(Txnid, status, amount, type, Userid):
 
 def edit_tg_username_model(username, phone):
     query = """
-     UPDATE users SET t_me = %s WHERE phonenumber = %s
+     UPDATE users SET t_me = %s WHERE phone_number = %s
     """
     values = (username, phone)
 
@@ -121,6 +158,7 @@ def encrypt_password(password):
     hashed_password = bcrypt.hash(password)
     return hashed_password
 
+
 def edit_wdt_password_model(password, phone):
     try:
         connector = DBConnector()
@@ -128,7 +166,7 @@ def edit_wdt_password_model(password, phone):
         # Hash the password
         encrypted_password = encrypt_password(password)
 
-        query = "UPDATE users SET wdtpasswd = %s WHERE phonenumber = %s"
+        query = "UPDATE users SET transaction_password = %s WHERE phone_number = %s"
         values = (encrypted_password, phone)
 
         success = connector.execute_query(query, values)
@@ -145,10 +183,10 @@ def authenticate_user_by_pass(phone, password):
         connector = DBConnector()
 
         # Retrieve the hashed password and salt from the database
-        query = "SELECT wdtpasswd, salt FROM users WHERE phonenumber = %s"
+        query = "SELECT transaction_password, salt FROM users WHERE phone_number = %s"
         values = (phone,)
         result = connector.fetch_all(query, values)
-        
+
         if not result or len(result) == 0:
             # User not found
             return False
@@ -170,15 +208,14 @@ def authenticate_user_by_pass(phone, password):
         return False
 
 
-
 def create_INR_wdt_model(phone, amount, accountNo, accountName, ifsc):
     try:
         query = """
-INSERT INTO transactions (phonenumber, amount, accountNo, accountName, ifsc, status, type, sub_type)
-VALUES (%s, %s, %s, %s, %s, 'processing', 'withdrawal', 'INR')
-"""
+            INSERT INTO transactions (txn_id, phone_number, amount, account_no, account_name, ifsc, status, type, sub_type)
+            VALUES (%s, %s, %s, %s, %s, %s, 'PROCESSING', 'WITHDRAW', 'INR')
+        """
 
-        values = (phone, amount, accountNo, accountName, ifsc)
+        values = (get_txn_id(), phone, amount, accountNo, accountName, ifsc)
 
         connector = DBConnector()
         success = connector.execute_query(query, values)
@@ -190,16 +227,34 @@ VALUES (%s, %s, %s, %s, %s, 'processing', 'withdrawal', 'INR')
         logging.error(f"An error occurred while creating INR withdrawal: {str(e)}")
         print(f"An error occurred while creating INR withdrawal: {str(e)}")
         return False
-    
 
-def create_USDT_wdt_model(phone, amount,usdtaddress):
+
+def create_deposit_model(phone, address, txn_id):
     try:
         query = """
-INSERT INTO transactions (phonenumber, amount, uusdt_address, status, type, sub_type)
-VALUES (%s, %s, %s, 'processing', 'withdrawal', 'USDT')
-"""
+            INSERT INTO transactions (txn_id, phone_number, deposit_address, deposit_txn_id, status, type, sub_type)
+            VALUES (%s, %s, %s, %s, 'PROCESSING', 'DEPOSIT', 'USDT')
+        """
+        values = (get_txn_id(), phone, address, txn_id)
 
-        values = (phone, amount, usdtaddress)
+        connector = DBConnector()
+        success = connector.execute_query(query, values)
+        connector.close_connection()
+
+        return success
+    except Exception as e:
+        logging.error(f"An error occurred while creating deposit txn: {str(e)}")
+        return False
+
+
+def create_USDT_wdt_model(phone, amount, withdraw_address):
+    try:
+        query = """
+            INSERT INTO transactions (txn_id, phone_number, amount, withdraw_address, status, type, sub_type)
+            VALUES (%s, %s, %s, %s, 'PROCESSING', 'WITHDRAW', 'USDT')
+        """
+
+        values = (get_txn_id(), phone, amount, withdraw_address)
 
         connector = DBConnector()
         success = connector.execute_query(query, values)
@@ -211,3 +266,7 @@ VALUES (%s, %s, %s, 'processing', 'withdrawal', 'USDT')
         logging.error(f"An error occurred while creating INR withdrawal: {str(e)}")
         print(f"An error occurred while creating INR withdrawal: {str(e)}")
         return False
+
+
+def get_txn_id():
+    return "WME" + str(randint(1000000000, 9999999999))

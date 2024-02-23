@@ -2,7 +2,7 @@ from passlib.hash import bcrypt
 import logging
 from flask import request, jsonify
 from flask_cors import CORS
-from db.models import get_a_user, create_USDT_wdt_model
+from db.models import get_user_by_phone_number, create_USDT_wdt_model
 
 def create_USDT_wdt():
     try:
@@ -36,7 +36,7 @@ def create_USDT_wdt():
 def authenticate_user_by_pass(phone, password):
     try:
         # Retrieve the hashed password and salt from the database
-        user = get_a_user(phone)
+        user = get_user_by_phone_number(phone)
 
         if user and len(user) > 0:
             stored_hashed_password = user[0][6]

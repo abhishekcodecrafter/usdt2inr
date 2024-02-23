@@ -4,39 +4,27 @@ verificationMessage.setAttribute('hidden', 'true');
 const otpbox = document.getElementById('otp');
 const loginsignupbtn = document.getElementById('btn-verification');
 const verifyotpelements = document.getElementById('sendotp');
-
-
-
 otpbox.setAttribute('hidden', 'true');
 loginsignupbtn.setAttribute('hidden', 'true');
-
+var secret = null;
 
 function sendOTP() {
     const phoneNumber = document.getElementById('phoneNumber').value;
-
     if (phoneNumber && phoneNumber.length === 10 && !isNaN(phoneNumber)) {
-        // Generate a random OTP
-        const otp = Math.floor(1000 + Math.random() * 9000);
-
-        // Prepare the data for the API request
-        const data = {
-            number: phoneNumber,
-            code: otp,
-        };
-
-        // Make the API request to send the verification code
         fetch('/sendVerification', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify({
+                number: phoneNumber
+            })
         })
-
         .then(response => response.json())
         .then(responseData => {
             // Check the response and handle accordingly
             if (responseData.success) {
+                secret = responseData['secret']
                 verificationMessage.removeAttribute('hidden');
                 verificationBox.removeAttribute('hidden');
                 verificationMessage.innerText = `OTP sent to ${phoneNumber}`;
@@ -63,22 +51,17 @@ function sendOTP() {
     }
 }
 
-
-
 function authenticateUser() {
     const otpEntered = document.getElementById('otp').value;
-
-    if (otpEntered && !isNaN(otpEntered) && otpEntered.length === 4) {
+    if (otpEntered && !isNaN(otpEntered) && otpEntered.length === 6) {
         // Prepare the data for the API request
         const phoneNumber = document.getElementById('phoneNumber').value;
         const data = {
             number: phoneNumber,
             enteredCode: otpEntered,
+            secret: secret
         };
 
-        console.log(data);
-
-        // Make the API request to verify the entered OTP
         fetch('/verifyCode', {
             method: 'POST',
             headers: {
@@ -86,34 +69,22 @@ function authenticateUser() {
             },
             body: JSON.stringify(data),
         })
-
-
         .then(response => response.json())
         .then(responseData => {
-            console.log('response Data : ',responseData)
             if (responseData.success) {
-
                 verificationMessage.removeAttribute('hidden');
                 verificationBox.removeAttribute('hidden');
-                verificationMessage.innerText = 'Authentication successful! Redirecting to the dashboard...';
 
-
-                // Define the data to be sent
                 const userData = {
-                    phonenumber: phoneNumber,  // Replace with the actual data from your form
-                    usdtbalance: 0,
-                    active: true,
-                    deposit_address: 'abc123',
-                    totaltxns:0,
+                    phone_number: phoneNumber,
                 };
-
                 addUser(userData,
                     function (successResponse) {
-                        // User created successfully, handle the success case
+                        verificationMessage.innerText = 'Success';
                         console.log('User created successfully');
                     },
                     function (errorResponse) {
-                        // Error creating user, handle the error case
+                        verificationMessage.innerText = 'An error occurred while verifying OTP. Please try again.';
                         console.error(`Error: ${errorResponse.message}`);
                     }
                 );
@@ -156,7 +127,6 @@ function addUser(data, successCallback, errorCallback) {
             if (successCallback) {
                 successCallback(responseData);
             }
-
             setTimeout(function () {
                 window.location.href = '/dashboard';
             }, 3000);

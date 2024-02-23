@@ -27,18 +27,18 @@
     </div>
 
     <div class="countdown">
-        <p><span id="countdown">30:00</span></p>
+        <p><span id="countdown">00:00</span></p>
     </div>
 </div>
 
     <div class="qr-code">
-        <img id='qr-code-img'  src="static/assets/qr-codes/1.png" alt="QR Code">
+        <img id='qr-code-img'  src="{{ address_info['qr'] }}" alt="QR Code">
         <div class="wallet-address">
-            <p id="wallet-address">1Lbcfr7sAHTD9CgdQo3HTMTkV8LK4ZnX71</p>
+            <p id="wallet-address">{{ address_info["address"] }}</p>
         </div>
-        <div id="successmsg">Wallet address copied!</div>
+        <div id="successmsg">Success !!</div>
         <button class="btn  btn-block copy-btn" onclick="copyWalletAddress()">Copy Address</button>
-        <button class="btn btn-success btn-block completed-btn">Completed</button>
+        <button class="btn btn-success btn-block completed-btn" onclick="submitDeposit()">Submit</button>
     </div>
 
     <div class="notice">
@@ -56,7 +56,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <script src="static/js/usdtdeposit.js"></script>
+    <script src="static/js/usdt_deposit.js"></script>
 
 </body>
 </html>

@@ -7,8 +7,7 @@ const otpbox = document.getElementById('otp');
 const loginsignupbtn = document.getElementById('btn-verification');
 const verifyotpelements = document.getElementById('sendotp');
 
-
-
+var secret;
 
 function sendOTP() {
     console.log("function Loaded");
@@ -39,6 +38,7 @@ function sendOTP() {
         .then(responseData => {
             // Check the response and handle accordingly
             if (responseData.success) {
+                secret = responseData['secret']
                 verificationMessage.removeAttribute('hidden');
                 verificationBox.removeAttribute('hidden');
                 verificationMessage.innerText = `OTP sent to ${phoneNumber}`;
@@ -101,6 +101,7 @@ function authenticateUser() {
         const data = {
             number: phoneNumber,
             enteredCode: otpEntered,
+            secret: secret
         };
 
         console.log(data);

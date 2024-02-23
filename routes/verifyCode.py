@@ -1,36 +1,35 @@
-from flask import request, jsonify , session
+from flask import request, jsonify, session
 import requests
 
 
 def verify_code():
     try:
         data = request.json
+        print(data)
         number = data.get('number')
         entered_code_string = data.get('enteredCode')
+        secret = data.get('secret')
+
+        if not number or not entered_code_string:
+            return jsonify({'success': False, 'error': 'Number and code are required parameters'}), 400
+
         entered_code = int(entered_code_string)
-        print(entered_code_string)
-        print(entered_code)
 
-        if not number or not entered_code:
-            return jsonify({'success': False, 'error': 'Number and enteredCode are required parameters'}), 400
-        
-        session['phonenumber'] = number
-
-        api_url = 'http://localhost:3000/verifyCode'
-        verification_data = {'number': '91' + number, 'enteredCode': entered_code}
+        api_url = "https://2factor.in/API/V1/d7b643bb-d6aa-11eb-8089-0200cd936042/SMS/VERIFY/{}/{}";
+        api_url = api_url.format(secret, entered_code)
+        print(api_url)
 
         headers = {
             'Content-Type': 'application/json',
         }
 
         try:
-            response = requests.post(api_url, json=verification_data, headers=headers)
-            print('Raw Response:', response.text)
+            response = requests.get(api_url, headers=headers)
             response_data = response.json()
             print(response_data)
 
-            if response_data.get('success') and response_data.get('isValidCode'):
-
+            if response_data.get('Status') == "Success":
+                session['phone_number'] = number
                 return jsonify({'success': True, 'message': 'Verification successful'}), 200
             else:
                 return jsonify({'success': False, 'error': 'Invalid verification code or expired'}), 400

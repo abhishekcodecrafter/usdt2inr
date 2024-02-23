@@ -35,9 +35,9 @@
             };
     
             console.log("Data to be sent:", data);
-    
+
             // Display loading spinner or some indicator here
-    
+
             fetch('/create_INR_wdt_request', {
                 method: 'POST',
                 headers: {
@@ -53,9 +53,9 @@
                     // Reset the form after successful submission
                     document.getElementById("form").reset();
                     // Handle the success response from the server
-                    console.log('INR WDT Details submitted successfully:', responseData);
+                    console.log('success:', responseData);
                     // Additional logic as needed
-                    alert('INR WDT Details submitted successfully.');
+                    alert('Submitted Successfully.');
                 } else {
                     // Display an error message
                     alert(responseData.message);
@@ -67,8 +67,7 @@
                 // Handle the error response from the server
                 console.error('Error submitting INR WDT Details:', error);
                 // Display an error message
-                alert('Error submitting INR WDT Details.');
+                alert('Error occurred. Please try again');
             });
         });
     });
-    
