@@ -1,0 +1,498 @@
+.group-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.vector-collection-icon {
+  position: absolute;
+  top: 0.3px;
+  left: 21.5px;
+  border-radius: 4px;
+  width: 10.1px;
+  height: 12.6px;
+  z-index: 1;
+}
+.group-div {
+  height: 32.9px;
+  width: 43.4px;
+  position: relative;
+}
+.walletme-icon {
+  align-self: stretch;
+  height: 22.7px;
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.parent-frame,
+.wallet-me-frame {
+  display: flex;
+  justify-content: flex-start;
+}
+.wallet-me-frame {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--padding-11xs) var(--padding-12xs) 0 0;
+}
+.parent-frame {
+  width: 232px;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 var(--padding-xl) var(--padding-2xl);
+  box-sizing: border-box;
+  gap: 0 8px;
+  flex-shrink: 0;
+}
+.currency-frame-child {
+  width: 398px;
+  height: 398px;
+  position: relative;
+  border-radius: var(--br-mini);
+  background-color: var(--color-black);
+  display: none;
+  max-width: 100%;
+}
+.frame-child3 {
+  width: 181px;
+  height: 107px;
+  position: relative;
+  border-radius: var(--br-3xs);
+  background-color: var(--color-gray-300);
+  display: none;
+}
+.today-price-text {
+  position: relative;
+  z-index: 2;
+}
+.coin-name-text {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 var(--padding-6xl) 0 var(--padding-4xl);
+}
+.total-no-of {
+  align-self: stretch;
+  position: relative;
+  font-size: var(--font-size-sm);
+  color: var(--color-darkgray);
+  z-index: 2;
+}
+.frame-child4,
+.rectangle-parent2 {
+  border-radius: var(--br-3xs);
+  background-color: var(--color-gray-300);
+}
+.rectangle-parent2 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--padding-lg) var(--padding-22xl) var(--padding-lgi)
+    var(--padding-23xl);
+  box-sizing: border-box;
+  gap: 9px 0;
+  min-width: 136px;
+  z-index: 1;
+}
+.frame-child4 {
+  width: 181px;
+  height: 107px;
+  position: relative;
+  display: none;
+}
+.b {
+  position: relative;
+  z-index: 2;
+}
+.total-value,
+.usdt8 {
+  margin: 0;
+}
+.total-value-usdt-container {
+  align-self: stretch;
+  position: relative;
+  font-size: var(--font-size-sm);
+  color: var(--color-darkgray);
+  z-index: 2;
+}
+.rectangle-parent3,
+.total-stats-frame {
+  display: flex;
+  justify-content: flex-start;
+}
+.rectangle-parent3 {
+  flex: 1;
+  border-radius: var(--br-3xs);
+  background-color: var(--color-gray-300);
+  flex-direction: column;
+  align-items: center;
+  padding: var(--padding-lg) var(--padding-22xl) var(--padding-base)
+    var(--padding-23xl);
+  box-sizing: border-box;
+  gap: 5px 0;
+  min-width: 136px;
+  z-index: 1;
+  font-size: var(--font-size-9xl);
+}
+.total-stats-frame {
+  align-self: stretch;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0 8px;
+}
+.currency-symbol-text-child {
+  width: 370px;
+  height: 95px;
+  position: relative;
+  border-radius: var(--br-3xs);
+  background-color: var(--color-gray-300);
+  display: none;
+  max-width: 100%;
+}
+.inr,
+.today-price {
+  position: relative;
+  z-index: 2;
+}
+.rates-text-frame {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 var(--padding-8xs) 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-darkgray);
+}
+.currency-symbol-text,
+.total-stats-frame-parent {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.currency-symbol-text {
+  border-radius: var(--br-3xs);
+  background-color: var(--color-gray-300);
+  align-items: center;
+  padding: var(--padding-3xl) var(--padding-4xl) var(--padding-2xl)
+    var(--padding-xl);
+  gap: 1px 0;
+  z-index: 1;
+  text-align: left;
+  font-size: var(--font-size-9xl);
+}
+.total-stats-frame-parent {
+  align-items: flex-start;
+  padding: 0 var(--padding-9xs) 0 var(--padding-10xs);
+  gap: 9px 0;
+}
+.frame-child5 {
+  height: 59px;
+  width: 377px;
+  position: relative;
+  border-radius: var(--br-2xs);
+  background-color: var(--color-white);
+  display: none;
+  max-width: 100%;
+}
+.deposit {
+  position: relative;
+  font-size: var(--font-size-lgi);
+  font-weight: 600;
+  font-family: var(--font-inter);
+  color: var(--color-black);
+  text-align: center;
+  z-index: 2;
+}
+.frame-child6,
+.rectangle-parent4 {
+  border-radius: var(--br-2xs);
+  background-color: var(--color-white);
+  max-width: 100%;
+}
+.rectangle-parent4 {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-lgi) var(--padding-4xl) var(--padding-mid)
+    var(--padding-xl);
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  z-index: 1;
+}
+.rectangle-parent4:hover,
+.rectangle-parent5:hover {
+  background-color: var(--color-gainsboro-200);
+}
+.frame-child6 {
+  height: 55px;
+  width: 377px;
+  position: relative;
+  display: none;
+}
+.exchange2 {
+  position: relative;
+  font-size: var(--font-size-lgi);
+  font-weight: 600;
+  font-family: var(--font-inter);
+  color: var(--color-black);
+  text-align: center;
+  z-index: 2;
+}
+.rectangle-parent5 {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-base) var(--padding-xl) var(--padding-base)
+    var(--padding-3xl);
+  background-color: var(--color-white);
+  align-self: stretch;
+  border-radius: var(--br-2xs);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  max-width: 100%;
+  z-index: 1;
+}
+.currency-frame,
+.deposit-exchange-frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  max-width: 100%;
+}
+.deposit-exchange-frame {
+  align-self: stretch;
+  align-items: flex-start;
+  gap: 12px 0;
+}
+.currency-frame {
+  width: 398px;
+  border-radius: var(--br-mini);
+  background-color: var(--color-black);
+  align-items: center;
+  padding: var(--padding-mini) 10px var(--padding-2xs) var(--padding-2xs);
+  box-sizing: border-box;
+  gap: 35px 0;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: var(--font-size-3xl);
+  color: var(--color-white);
+  font-family: var(--font-inter);
+}
+.rd-party-rates {
+  width: 244px;
+  position: relative;
+  font-weight: 500;
+  display: inline-block;
+  box-sizing: border-box;
+  padding-right: var(--padding-xl);
+}
+.price-frame-child {
+  width: 398px;
+  height: 424px;
+  position: relative;
+  border-radius: var(--br-smi);
+  background-color: var(--color-gainsboro-100);
+  display: none;
+  max-width: 100%;
+}
+.inr1,
+.wazirx-price {
+  align-self: stretch;
+  position: relative;
+  font-weight: 600;
+  z-index: 1;
+}
+.inr1 {
+  font-size: var(--font-size-mid);
+  color: var(--color-dimgray-200);
+}
+.frame-deposit-exchange {
+  width: 178px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4px 0;
+}
+.empty-frame-b,
+.empty-frame-c {
+  position: relative;
+  font-weight: 600;
+  z-index: 1;
+}
+.empty-frame-b {
+  white-space: nowrap;
+}
+.empty-frame-c {
+  font-size: var(--font-size-mid);
+  color: var(--color-limegreen);
+  text-align: left;
+}
+.empty-frame2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 3px 0;
+  text-align: right;
+  font-size: var(--font-size-5xl);
+  color: var(--color-dimgray-200);
+}
+.price-frame-a,
+.vector-vector {
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
+}
+.price-frame-a {
+  flex: 1;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--gap-xl);
+}
+.vector-vector {
+  align-self: stretch;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 var(--padding-sm) 0 var(--padding-5xs);
+  box-sizing: border-box;
+}
+.coinbase-price,
+.inr2,
+.vector-vector-icon {
+  align-self: stretch;
+  position: relative;
+  z-index: 1;
+}
+.vector-vector-icon {
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.coinbase-price,
+.inr2 {
+  font-weight: 600;
+}
+.inr2 {
+  font-size: var(--font-size-mid);
+  color: var(--color-dimgray-200);
+}
+.coinbase-price-parent {
+  width: 178px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4px 0;
+}
+.div4,
+.div5 {
+  position: relative;
+  font-weight: 600;
+  z-index: 1;
+}
+.div4 {
+  white-space: nowrap;
+}
+.div5 {
+  font-size: var(--font-size-mid);
+  color: var(--color-limegreen);
+  text-align: left;
+}
+.parent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 3px 0;
+  text-align: right;
+  font-size: var(--font-size-5xl);
+  color: var(--color-dimgray-200);
+}
+.frame-parent3,
+.vector-vector1 {
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
+}
+.frame-parent3 {
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-xl);
+}
+.vector-vector1 {
+  align-self: stretch;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 var(--padding-sm) 0 var(--padding-5xs);
+  box-sizing: border-box;
+}
+.vector-vector-icon1 {
+  align-self: stretch;
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+  z-index: 1;
+}
+.iphone-14-15-pro-max-1,
+.price-frame1,
+.rates-frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+.price-frame1 {
+  align-self: stretch;
+  border-radius: var(--br-smi);
+  background-color: var(--color-gainsboro-100);
+  align-items: center;
+  padding: var(--padding-mid) var(--padding-5xs) 40px 9px;
+  gap: 21px 0;
+  min-height: auto !important;
+  max-width: 100%;
+  color: var(--color-black);
+}
+.iphone-14-15-pro-max-1,
+.rates-frame {
+  gap: 0px 0;
+}
+.rates-frame {
+  align-self: stretch;
+  align-items: flex-start;
+  padding: 0 var(--padding-base) 0;
+  max-width: 100%;
+  flex-shrink: 0;
+  text-align: left;
+  font-size: var(--font-size-base);
+  color: #595959;
+  font-family: var(--font-inter);
+}
+.iphone-14-15-pro-max-1 {
+  width: 100%;
+  position: relative;
+  background-color: var(--color-white);
+  overflow: hidden;
+  align-items: center;
+  padding: 30px 0 0;
+  letter-spacing: normal;
+}
+
