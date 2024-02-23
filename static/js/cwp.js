@@ -16,13 +16,10 @@ function sendOTP() {
 
 
     if (phoneNumber && phoneNumber.length === 10 && !isNaN(phoneNumber)) {
-        // Generate a random OTP
-        const otp = Math.floor(1000 + Math.random() * 9000);
-
+        
         // Prepare the data for the API request
         const data = {
             number: phoneNumber,
-            code: otp,
         };
 
         // Make the API request to send the verification code
@@ -95,7 +92,7 @@ function authenticateUser() {
     const otpEntered = formData.securityOTP;
 
     console.log("Hello Form Data : ",formData)
-    if (otpEntered && !isNaN(otpEntered) && otpEntered.length === 4) {
+    if (otpEntered && !isNaN(otpEntered) && otpEntered.length === 6) {
         // Prepare the data for the API request
         const phoneNumber = document.querySelector('#phoneNumber').textContent.trim();
         const data = {

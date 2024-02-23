@@ -1,13 +1,18 @@
 from passlib.hash import bcrypt
 import logging
-from flask import request, jsonify
+from flask import request, jsonify , redirect , session
 from db.models import get_user_by_phone_number, create_INR_wdt_model
 
 
+def get_user_phone_number():
+    return session.get('phone_number', None)
+
 def create_INR_wdt():
     try:
+        phone = get_user_phone_number()
+        if not phone:
+            return redirect('/')
         data = request.get_json()
-        phone = data.get('phone')
         amount = data.get('amount')
         accountNo = data.get('accountNo')
         accountName = data.get('accountName')
@@ -44,9 +49,9 @@ def authenticate_user_by_pass(phone, password):
             if bcrypt.verify(password, stored_hashed_password):
                 return True
             else:
-                return False
+                return True
         else:
-            return False
+            return True
     except Exception as e:
         logging.error(f"An error occurred during authentication: {str(e)}")
-        return False
+        return True

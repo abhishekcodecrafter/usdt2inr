@@ -7,38 +7,43 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <link rel="stylesheet" href="static/css/inrwrh.css">
+    <link rel="stylesheet" href="static/css/global.css" />
+    <link rel="stylesheet" href="static/css/inrwrh1.css" />
   
 </head>
 <body>
 
-   
-      <div class="wrapper">
-    <div class="container1">
+
+    <section class="i-phone-pro-max-frame">
         <div class="left-arrow" id="scrollArrow" onclick="redirectTo('/dashboard')">
             <img src="static/assets/svg-elements/navigate-back.png" alt="Navigate Back">
           </div>
-    
-        <h4 class="text-center mx-auto">Order</h4>
-    </div>
 
-    <div class="container">
-        <div class="box">
-            <p>Available Balance</p>
-            <div class="box-content">
-                <h2>${{user_details[2] | round(2)}}</h2>
-                <h2>≈ ₹{{(user_details[2] | float * inrvalue | float) | round(2)}}</h2>
-            </div>
+        <div class="i-phone-pro-max-frame-child"></div>
+        <div class="f-r-a-m-e">
+          <h2 class="order">Order</h2>
         </div>
-        <div class="box">
-            <p>Price</p>
-            <div class="box-content">
-                <h2>≈ ₹{{inrvalue}}</h2>
+        <div class="frame-parent4">
+          <div class="rectangle-parent6">
+            <div class="frame-child7"></div>
+            <div class="account-no-frame">
+              <b class="available-balancetext">{{user_details['usdt_balance'] | round(2) }}</b>
             </div>
+            <div class="available-balance-usdt-container">
+              <p class="available-balance">Available Balance</p>
+              <p class="usdt9">(USDT)</p>
+            </div>
+          </div>
+          <div class="amount-frame">
+            <div class="amount-frame-child"></div>
+            <b class="b1">₹{{inrvalue | round(2) }}</b>
+            <div class="price-inr">Price (INR)</div>
+          </div>
         </div>
-    </div>
-      </div>
+      </section>
 
-      <div id="phone" hidden>{{user_phonenumber}}</div>
+
+      <div id="phone" hidden></div>
 
       <div class="containerform form-container">
         <form id="form">
@@ -62,7 +67,7 @@
                 <label for="transactionPassword">Transaction Password:</label>
                 <input type="password" class="form-control" id="transactionPassword" name="transactionPassword" required>
             </div>
-            <button id="sendotp" class="btn btn-success btn-block" id="changePassword">Submit</button>
+            <button id="sendotp" class="btn btn-block" >Submit</button>
         </form>
     </div>
 
