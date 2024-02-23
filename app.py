@@ -40,6 +40,7 @@ from routes.create_USDT_wdt import create_USDT_wdt
 app.route('/')(index)
 app.route('/add_user', methods=['POST'])(add_user)
 app.route('/dashboard')(dashboard)
+app.route('/transactions')(transactions)
 app.route('/profile')(profile)
 app.route('/inrwrh')(inrwrh)
 app.route('/cwp')(cwp)

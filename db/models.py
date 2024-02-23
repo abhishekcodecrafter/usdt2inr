@@ -1,3 +1,4 @@
+import time
 from random import randint
 
 from passlib.hash import bcrypt
@@ -117,6 +118,57 @@ def get_no_completed_transactions(phone_number):
         return result[0][0]
 
 
+def transform_status(status):
+    if status == "COMPLETED":
+        return "Success"
+    if status == "PROCESSING":
+        return "Processing"
+    if status == "FAILED":
+        return "Failed"
+    return status
+
+
+def get_deposits(phone_number):
+    query = f"SELECT * FROM transactions where phone_number = {phone_number} and type='DEPOSIT'"
+    connector = DBConnector()
+    result = connector.fetch_all(query)
+    connector.close_connection()
+    if result is None:
+        return []
+    data = []
+    for row in result:
+        data.append({
+            "id": row[6],
+            "status": transform_status(row[1]),
+            "type": row[2],
+            "amount": row[10],
+            "timestamp": row[11]
+        })
+
+    return data
+
+
+def get_withdrawls(phone_number):
+    query = f"SELECT * FROM transactions where phone_number = {phone_number} and type='WITHDRAW'"
+    connector = DBConnector()
+    result = connector.fetch_all(query)
+    connector.close_connection()
+    if result is None:
+        return []
+
+    data = []
+    for row in result:
+        data.append({
+            "id": row[6],
+            "status": transform_status(row[1]),
+            "type": row[2],
+            "amount": row[10],
+            "timestamp": row[11]
+        })
+
+    return result
+
+
 def get_a_transaction(phone_number, txn_id):
     query = f"SELECT * FROM transactions where phone_number = {phone_number} And txn_id = {txn_id}"
 
@@ -211,11 +263,13 @@ def authenticate_user_by_pass(phone, password):
 def create_INR_wdt_model(phone, amount, accountNo, accountName, ifsc):
     try:
         query = """
-            INSERT INTO transactions (txn_id, phone_number, amount, account_no, account_name, ifsc, status, type, sub_type)
-            VALUES (%s, %s, %s, %s, %s, %s, 'PROCESSING', 'WITHDRAW', 'INR')
+            INSERT INTO transactions (txn_id, phone_number, amount, account_no, account_name, ifsc,
+            created_at, updated_at,
+            status, type, sub_type)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'PROCESSING', 'WITHDRAW', 'INR')
         """
 
-        values = (get_txn_id(), phone, amount, accountNo, accountName, ifsc)
+        values = (get_txn_id(), phone, amount, accountNo, accountName, ifsc, int(time.time()), int(time.time()))
 
         connector = DBConnector()
         success = connector.execute_query(query, values)
@@ -232,10 +286,10 @@ def create_INR_wdt_model(phone, amount, accountNo, accountName, ifsc):
 def create_deposit_model(phone, address, txn_id):
     try:
         query = """
-            INSERT INTO transactions (txn_id, phone_number, deposit_address, deposit_txn_id, status, type, sub_type)
-            VALUES (%s, %s, %s, %s, 'PROCESSING', 'DEPOSIT', 'USDT')
+            INSERT INTO transactions (txn_id, phone_number, deposit_address, deposit_txn_id, created_at, updated_at, status, type, sub_type)
+            VALUES (%s, %s, %s, %s, %s, %s, 'PROCESSING', 'DEPOSIT', 'USDT')
         """
-        values = (get_txn_id(), phone, address, txn_id)
+        values = (get_txn_id(), phone, address, txn_id, int(time.time()), int(time.time()))
 
         connector = DBConnector()
         success = connector.execute_query(query, values)
