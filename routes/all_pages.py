@@ -1,7 +1,8 @@
 from flask import Flask, session, render_template, redirect, request, jsonify
 from db.models import create_user, edit_tg_username_model, get_current_exchange_rate, get_exchanges_todays_value, \
     get_all_users, get_user_by_phone_number, get_users_all_transactions, get_all_transactions, \
-    get_a_transaction, create_transaction, create_deposit_model, get_no_completed_transactions
+    get_a_transaction, create_transaction, create_deposit_model, get_no_completed_transactions, get_deposits, \
+    get_withdrawls
 
 
 def get_user_phone_number():
@@ -36,6 +37,20 @@ def dashboard():
     return render_template('dashboard.html', user_details=data, inrvalue=inr_value,
                            exchanges_value=exchanges_value,
                            no_of_exchanges=total_number_of_exchanges)
+
+
+def transactions():
+    user_phone_number = get_user_phone_number()
+    if not user_phone_number:
+        return redirect('/')
+
+    exchange_rate = get_current_exchange_rate()
+    deposits = get_deposits(user_phone_number)
+    withdrawls = get_withdrawls(user_phone_number)
+    no_of_txns = get_no_completed_transactions()
+
+    return render_template('transactions.html', exchange_rate=exchange_rate, deposits=deposits,
+                           withdrawls=withdrawls, no_of_txns=no_of_txns)
 
 
 def profile():
