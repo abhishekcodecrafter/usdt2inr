@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Order Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="static/css/usdtwidthdrawl.css">
+
+</head>
+<body>
+
+   
+      <div class="wrapper">
+    <div class="container1">
+        <div class="left-arrow" id="scrollArrow" onclick="redirectTo('/fullprofile')">
+            <img src="static/assets/svg-elements/navigate-back.png" alt="Navigate Back">
+          </div>
+    
+        <h4 class="text-center mx-auto">Order</h4>
+    </div>
+
+    <div class="container">
+        <div class="box">
+            <p>Available Balance</p>
+            <div class="box-content">
+                <h2>${{ user_details[2] | round(2) }}<h2>
+                <h2>≈ ₹{{(user_details[2] | float * inrvalue | float) | round(2)}}<h2>
+            </div>
+        </div>
+        <div class="box">
+            <p>Price</p>
+            <div class="box-content">
+                <h2>≈ ₹{{inrvalue | round(2) }} INR<h2></h2>
+            </div>
+        </div>
+    </div>
+      </div>
+
+      <div id="phone" hidden>{{user_phonenumber}}</div>
+
+      <div class="containerform form-container">
+        <form id="form">
+            <div class="form-group">
+                <label for="amount">Amount:</label>
+                <input type="text" class="form-control" id="amount" name="amount" required>
+            </div>
+            <div class="form-group">
+                <label for="accountNo">USDT Address:</label>
+                <input type="text" class="form-control" id="usdtaddress" name="usdtaddress" required>
+            </div>
+            <div class="form-group">
+                <label for="transactionPassword">Transaction Password:</label>
+                <input type="password" class="form-control" id="transactionPassword" name="transactionPassword" required>
+            </div>
+            <button id="sendotp" class="btn btn-success btn-block" id="changePassword">Submit</button>
+        </form>
+    </div>
+
+
+    <div class="containerinst instructions text-center">
+        <h3 style="margin-bottom: 0;"><strong>Instructions:</strong></h3>
+        <ul style="padding-left: 0; list-style: none;">
+            <li>Minimum Withdrawal: 200</li>
+            <li>The Withdrawal time is from Monday to Sunday from 10 am to 10 pm.</li>
+            <li>After you submit the withdrawal application, your funds will arrive in your account within 24 hours. If you have not received the payment within the time limit, please contact customer service for assistance in time.</li>
+        </ul>
+    </div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="static/js/usdtwidthdrawl.js"></script>
+
+</body>
+</html>

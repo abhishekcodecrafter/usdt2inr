@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>USDT Payment</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="static/css/usdtdeposit.css">
+
+</head>
+<body>
+
+    <div class="header">
+
+        <div class="left-arrow" id="arrowDiv">
+            <img src="static/assets/svg-elements/navigate-back.png" alt="Navigate Back">
+          </div>
+      
+        <div>
+        <h3>USDT Payment</h3>
+    </div>
+
+    <div class="wallet-info">
+        <h5>USDT TRC-20 Wallet Address</h5>
+    </div>
+
+    <div class="countdown">
+        <p><span id="countdown">30:00</span></p>
+    </div>
+</div>
+
+    <div class="qr-code">
+        <img id='qr-code-img'  src="static/assets/qr-codes/1.png" alt="QR Code">
+        <div class="wallet-address">
+            <p id="wallet-address">1Lbcfr7sAHTD9CgdQo3HTMTkV8LK4ZnX71</p>
+        </div>
+        <div id="successmsg">Wallet address copied!</div>
+        <button class="btn  btn-block copy-btn" onclick="copyWalletAddress()">Copy Address</button>
+        <button class="btn btn-success btn-block completed-btn">Completed</button>
+    </div>
+
+    <div class="notice">
+        <p>Notice:</p>
+        <ul>
+            <li>Do not save the address for repeated deposits. The deposit address is updated in real time.</li>
+            <li>Please complete each deposit within 30 minutes.</li>
+            <li>If the deposit is not completed within 30 minutes, please go back to the previous page and click Deposit again.</li>
+            <li>If you have any questions, please contact customer service.</li>
+        </ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="static/js/usdtdeposit.js"></script>
+
+</body>
+</html>

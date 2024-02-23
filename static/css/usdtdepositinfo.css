@@ -1,0 +1,60 @@
+body {
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+    padding: 10px;
+}
+
+.info-svg {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.content {
+    margin: 20px 0;
+}
+
+.content h4 {
+    color: black;
+}
+
+.content ul {
+    padding-left: 20px;
+}
+
+.pay-btn {
+    display: block;
+    margin: 20px auto;
+}
+
+.left-arrow {
+    top: 30px;
+    left: 15px;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+}
+
+.left-arrow img {
+    width: 35px;
+    height: 35px;
+    fill: white;
+    filter: brightness(1.5);
+}
+
+@media only screen and (max-width: 480px) {
+    .left-arrow {
+        top: 15px;
+        left: 30px;
+        cursor: pointer;
+        width: 15px;
+        height: 15px;
+    }
+
+    .content h4 {
+        font-size: 1.5rem;
+    }
+}

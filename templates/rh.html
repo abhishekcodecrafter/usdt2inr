@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recharge History</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="static/css/rh.css">
+  
+  
+  
+</head>
+<body>
+
+  <div class="container">
+    <div class="left-arrow" onclick="history.back()">
+      <img src="static/assets/svg-elements/navigate-back.svg" alt="Navigate Back">
+    </div>
+
+    <h2 class="text-center">Recharge History</h2>
+    {% if transactions %}
+  <div id="cards">
+    {% for transaction in transactions %}
+      <div class="card transaction-card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col left-section">
+              {% if transaction[3] == 'done' %}
+                <span class="bold-value" style="color: green;">+USDT {{ transaction[4] }}</span>
+              {% elif transaction[3] == 'failed' %}
+                <span class="bold-value" style="color: red;">!USDT {{ transaction[4] }}</span>
+              {% elif transaction[3] == 'processing' %}
+                <span class="bold-value" style="color: orange;">?USDT {{ transaction[4] }}</span>
+              {% endif %}
+            </div>
+            <div class="col right-section">
+              <span>{{ transaction[8] }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+<div class="center-container" id="hallContainer">
+  <img src="static/assets/svg-elements/nodata.webp" width="30px" height="30px" alt="Centered Image">
+</div>
+{% endif %}
+
+   
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+  <script src="static/js/rh.js"></script>
+
+
+</body>
+</html>

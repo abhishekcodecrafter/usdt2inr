@@ -1,0 +1,191 @@
+body {
+    margin-bottom: 25%;
+}
+
+
+
+  
+    .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f8f9fa; 
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.1); 
+        }
+
+        .bottom-nav a {
+            text-decoration: none;
+            color: #6c757d;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bottom-nav img {
+            width: 40px; 
+            height: 40px; 
+            margin-bottom: 0px; 
+        }
+
+        
+        .bottom-nav a.active {
+            color: #007bff; 
+            
+        }
+
+       
+.bottom-nav a.active svg path {
+    fill: #007bff; 
+}
+
+
+.profile-container {
+  background-color: #01449f;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-picture {
+  border-radius: 50%;
+  overflow: hidden;
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+}
+
+.profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mobile-number {
+  margin-top: 10px;
+  font-size: larger;
+}
+
+.bold-value {
+  font-weight: bold;
+}
+
+.invitation-code {
+  margin-top: 10px;
+  font-size: larger;
+  display: flex;
+  align-items: center;
+}
+
+.copy-icon {
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.transaction-card {
+  margin-bottom: 20px;
+}
+
+.left-section,
+.right-section {
+  display: flex;
+  align-items: center;
+}
+
+
+ 
+ .list-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.list-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.icon {
+    margin-right: 10px;
+}
+
+.name {
+    flex-grow: 1;
+}
+
+.arrow {
+    font-weight: bold;
+    margin-right: 30px;
+}
+
+.list-divider {
+    border: none;
+    border-top: 1px solid #dee2e6;
+    margin: 10px 0;
+}
+
+#limage {
+    width: 20px;
+    height: 20px;
+}
+
+
+.invitation-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.invitation-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.invitation-label,
+.invitation-value {
+    flex-grow: 1;
+}
+
+.invitation-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.invitation-link,
+.invitation-link-value {
+    margin-bottom: 5px;
+}
+
+.copy-icon,
+.copy-button {
+    padding: 8px;
+    background-color: #5cb85c;
+    color: #fff; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.copy-button {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+
+  .modal-dialog{
+    top: 20%;
+  }

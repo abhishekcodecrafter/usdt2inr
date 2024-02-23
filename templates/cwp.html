@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Withdrawals Password Change</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/css/cwp.css">
+</head>
+<body>
+
+  <div id="phoneNumber" hidden>{{user_phonenumber}}</div>
+
+
+  <div class="container">
+    <div class="left-arrow" onclick="history.back()">
+        <img src="static/assets/svg-elements/navigate-back.svg" alt="Navigate Back">
+    </div>
+    <h2 class="text-center">Withdrawals Password</h2>
+    <form id="form">
+      <div class="form-group">
+        <label for="newPassword">New Password</label>
+        <input type="password" class="form-control" id="newPassword" placeholder="Enter Your New Password" name="newPassword" required>
+      </div>
+      <div class="form-group">
+        <label for="reenterPassword">Re-Enter New Password</label>
+        <input type="password" class="form-control" id="reenterPassword" placeholder="Re-Enter Your New Password" name="reenterPassword" required>
+      </div>
+      <div class="form-group">
+        <div id="verificationBox" hidden>
+          <p id="verificationMessage"></p>
+      </div>
+        <label for="securityOTP">Enter OTP</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="securityOTP" placeholder="Enter Otp You Received" name="securityOTP" required>
+          <div class="input-group-append">
+            <button type="button" class="btn btn-primary" onclick="sendOTP()" id="otpButton">Send OTP</button>
+          </div>
+        </div>
+      </div>
+      <button type="submit" id="sendotp" class="btn btn-success btn-block" id="changePassword">Change</button>
+    </form>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+  <script src="static/js/cwp.js"></script>
+
+
+</body>
+</html>
+

@@ -1,0 +1,180 @@
+
+body {
+    background-color: var(--white);
+    margin-bottom: 100px;
+  }
+
+  .header {
+    background-color: var(--white);
+    color: var(--black);
+    padding: 15px;
+    margin: 15px;
+    font-size: larger;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+    height: min-content;
+}
+
+/* Add this style to center the SVG within .header */
+.header svg {
+    margin: 0 auto;
+    display: block;
+}
+
+
+
+
+
+  #first-card img {
+      width: 40px;
+      height: 40px;
+  }
+
+  .card {
+      background-color: #01449f;
+  }
+  
+
+
+  .card1 {
+  border: 1px solid #ccc;
+  background-color:  #000000;
+  color:azure;
+  border-radius: 8px;
+  color: white;
+  margin-left:0px;
+  margin: 20px;
+  padding: 10px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  margin: -10px; /* Add negative margin to counteract the padding on columns */
+}
+
+.col-md-4 {
+  flex: 0 0 45%; /* Adjust flex value to make the columns take half the width */
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin: 10px; /* Add margin to each column */
+  background-color: #1F1F1F;
+}
+
+.col-md-12{
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin: 10px; /* Add margin to each column */
+  background-color: #1F1F1F;
+}
+
+.col-md-4 h1 {
+  width: 100%; /* Match the width of the column */
+  height: 100%; /* Match the height of the column */
+  margin: 0; /* Reset margin for h1 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.col-md-4:last-child {
+  margin-right: 0;
+  justify-content: flex-end;
+}
+
+.card2 {
+ 
+  border: 1px solid #ccc;
+  background-color: transparent;
+  border-radius: 8px;
+  color: black;
+  margin-top: 25px;
+  width: 100%;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-section img {
+  width: 100px; 
+  height: 100px; 
+}
+
+.right-section {
+  text-align: right;
+}
+
+.deposit-button {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: larger;
+  font-weight: bolder;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+#close{
+  font-size: larger;
+  font-weight: bolder;
+}
+
+.wallet-icon {
+  margin-right: 8px; 
+  width: 25px !important;
+  height: 25px !important;
+}
+
+.card-body {
+  margin-top: 10px;
+  padding: 6px 10px;
+}
+
+.bold-value {
+  font-weight: bold;
+ 
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.1); 
+      }
+
+      .bottom-nav a {
+          text-decoration: none;
+          color: #6c757d;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+      }
+
+      .bottom-nav img {
+          width: 40px;
+          height: 40px;
+          margin-bottom: 0px; 
+      }
+
+     
+      .bottom-nav a.active {
+          color: #007bff;
+          
+      }
+
+.bottom-nav a.active svg path {
+  fill: #007bff; 
+}
