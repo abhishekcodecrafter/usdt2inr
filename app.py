@@ -60,6 +60,7 @@ app.route('/edit_tg_username', methods=['PUT'])(edit_tg_username)
 app.route('/change_wdtpassword', methods=['POST'])(change_withdrawals_password)
 app.route('/create_INR_wdt_request', methods=['POST'])(create_INR_wdt)
 app.route('/create_USDT_wdt_request', methods=['POST'])(create_USDT_wdt)
+app.route('/submitDeposit ',methods=['POST'])(submitDeposit)
 
 if __name__ == '__main__':
     if development:

@@ -28,6 +28,8 @@ body {
 .pay-btn {
     display: block;
     margin: 20px auto;
+    background-color: #000000;
+    color: #f8f9fa;
 }
 
 .left-arrow {

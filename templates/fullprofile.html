@@ -18,10 +18,10 @@
       <img src="static/assets/avatars/av21.jpg" onclick="redirectTo('/profile')" alt="User Avatar" onerror="this.onerror=null; this.src='av22.jpg'">
     </div>
     <div class="mobile-number">
-      <span class="copy-icon" onclick="copyMobileNumber()" id="mobileNumber">91{{user_phonenumber}}<img src="static/assets/svg-elements/copy-icon.png" style="width: 20px; height: 20px;" alt="Copy Icon"></span>
+      <span class="copy-icon" onclick="copyMobileNumber()" id="mobileNumber">91{{ }}<img src="static/assets/svg-elements/copy-icon.png" style="width: 20px; height: 20px;" alt="Copy Icon"></span>
     </div>
     <div class="invitation-code">
-      <span>Invitation Code : </span>  <span id='invitationNumber' style="margin-left: 5px;">{{user_details[7]}}</span> <span class="copy-icon" onclick="copyInvitationCode()"><img src="static/assets/svg-elements/copy-icon.png" style="width: 20px; height: 20px;" alt="Copy Icon"></span>
+      <span>Invitation Code : </span>  <span id='invitationNumber' style="margin-left: 5px;">{{ }}</span> <span class="copy-icon" onclick="copyInvitationCode()"><img src="static/assets/svg-elements/copy-icon.png" style="width: 20px; height: 20px;" alt="Copy Icon"></span>
     </div>
 </div>
 
@@ -31,11 +31,11 @@
         <div class="row">
           <div class="col left-section">
             <span>Balance(USDT)</span>
-            <span style="margin-left: 15px;" class="bold-value">{{user_details[2]}}</span>
+            <span style="margin-left: 15px;" class="bold-value">{{ }}</span>
           </div>
           <div class="col right-section">
             <span>INR</span>
-            <span style="margin-left: 15px;" class="bold-value">≈ ₹{{(user_details[2] | float * inrvalue | float) | round(2)}}</span>
+            <span style="margin-left: 15px;" class="bold-value">≈ ₹{{ }}</span>
           </div>
         </div>
       </div>
@@ -89,12 +89,12 @@
     <div class="invitation-container">
         <div class="invitation-card">
             <div class="invitation-label">Invitation Code</div>
-            <div class="invitation-value">{{user_details[7]}}</div>
+            <div class="invitation-value">{{  }}</div>
             <div class="copy-icon" onclick="copyInvitationCode()">&#x1F4CB; Copy</div>
         </div>
         <div class="invitation-links">
             <div class="invitation-link">Invitation Link</div>
-            <div class="invitation-link-value">https://www.usdt2inr.vip/invate?code={{user_details[7]}}</div>
+            <div class="invitation-link-value">https://www.usdt2inr.vip/invate?code={{  }}</div>
             <div class="copy-button" onclick="copyInvitationLink()">Copy Invitation Link</div>
         </div>
     </div>
@@ -129,7 +129,7 @@
   </div>
 </div>
 
-<div id="tusername" hidden>{{user_details[5]}}</div>
+<div id="tusername" hidden>{{  }}</div>
 
    
  <div class="bottom-nav">

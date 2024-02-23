@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function () {
   const arrowDiv = document.getElementById('arrowDiv');
   console.log('Arrow back button is clicked.');
@@ -9,8 +8,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function submitDeposit() {
     const walletAddress = $('#wallet-address').text();
-    const txnId = ""
+    var txnID = document.getElementById('txnID').value;
 
+    console.log(walletAddress)
+    console.log(txnID)
     const data = {
         "address" : walletAddress,
         "txnId" : txnId
@@ -23,6 +24,7 @@ function submitDeposit() {
         },
         body: JSON.stringify(data),
     })
+
     .then(response => response.json())
     .then(responseData => {
         if (responseData.success) {

@@ -3,7 +3,8 @@ body {
 }
 
 .wrapper {
-    background-color: #01449f;
+    background-color: #000000;
+    color: white;
 }
 
 .container {
@@ -17,8 +18,9 @@ body {
 }
 
 .container1 {
-    color: white;
+    background-color: 000000;
     margin-bottom: 5%;
+    color: white;
 }
 
 .box {

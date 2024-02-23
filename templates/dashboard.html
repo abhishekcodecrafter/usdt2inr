@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Wavefont:wght@300&display=swap" />
 
   <link rel="stylesheet" href="static/css/dashboard.css">
   <link rel="stylesheet" href="static/css/root.css">
+  <link rel="stylesheet" href="static/css/dashboard1.css" />
+  <link rel="stylesheet" href="static/css/global.css" />
   
   <title>User Dashboard</title>
 </head>
@@ -21,106 +24,115 @@
 </div>
 
 
-<div id="first-card" class="card1">
-  <div class="row">
-      <div class="col-md-4">
-         <h1><b>{{no_of_exchanges}}</b></h1>
-      </div>
-      <div class="col-md-4">
-          <h1><b>{{user_details['usdt_balance']  | round(2) }}</b></h1>
-      </div>
-  </div>
-  <div class="col-md-12"> <!-- Use col-md-12 to make it span the full width -->
-    <h1><b>{{user_details['usdt_balance']  | round(2) }}</b></h1>
-  </div>
-  </div>
 
-
-  <div id="second-card" class="card2">
-    <div class="card-header">
-        <div class="left-section">
-            Today Price:
-            <span class="bold-value">₹{{inrvalue | round(2) }} INR</span>
+<div class="first-card" id="card">
+<div class="iphone-14-15-pro-max-1">
+<section class="currency-frame">
+  <div class="currency-frame-child"></div>
+  <div class="total-stats-frame-parent">
+    <div class="total-stats-frame">
+      <div class="rectangle-parent2">
+        <div class="frame-child3"></div>
+        <div class="coin-name-text">
+          <b class="today-price-text">{{no_of_exchanges}}</b>
         </div>
-        <div class="right-section">
-          
-          <button class="deposit-button" onclick="redirectTo('/inrwrhdash')">
-            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" style="margin-right:10px;" viewBox="0,0,256,256">
-                <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
-                    <g transform="scale(9.84615,9.84615)">
-                        <path d="M13.8125,0c-5.93359,0 -9.73047,4.29297 -9.8125,10h-3.5c-0.19922,0 -0.40625,0.11328 -0.40625,0.3125c-0.10156,0.19922 -0.10156,0.39844 0,0.5l6,7.6875c0.10156,0.10156 0.20703,0.1875 0.40625,0.1875c0.19922,0 0.30469,-0.08594 0.40625,-0.1875l6,-7.6875c0.10156,-0.10156 0.10156,-0.30078 0,-0.5c-0.10156,-0.19922 -0.30469,-0.3125 -0.40625,-0.3125h-3.5c0.06641,-7.53516 3.92188,-9.21094 4.8125,-9.90625c0.19922,-0.10156 0.19922,-0.09375 0,-0.09375zM19.5,7.34375c-0.14844,0 -0.30469,0.05469 -0.40625,0.15625l-6,7.6875c-0.10156,0.19922 -0.09375,0.39844 -0.09375,0.5c0.10156,0.19922 0.30469,0.3125 0.40625,0.3125h3.59375c-0.06641,7.53516 -3.92187,9.21094 -4.8125,9.90625c-0.19922,0.10156 -0.19922,0.09375 0,0.09375c5.93359,0 9.73047,-4.29297 9.8125,-10h3.40625c0.19922,0 0.40625,-0.11328 0.40625,-0.3125c0.19922,-0.19922 0.19531,-0.39844 0.09375,-0.5l-6,-7.6875c-0.10156,-0.10156 -0.25781,-0.15625 -0.40625,-0.15625z"></path>
-                    </g>
-                </g>
-            </svg>
-            Exchange
-        </button>
-        </div>
-    </div>
-
-
-    <div class="card-header">
-    <div class="left-section">
-      <span class=" bold-value"> WazirX Price: </span>
-        <span >≈ ₹{{exchanges_value[0] | round(2) }} INR</span>
-    </div>
-     <div class="right-section">
-        <div class="price-text">
-            $6,240.00
-        </div>
-        <div class="percentage-text mb-2" style="color: green;">
-            +1.68%
-        </div>
-        <div class="wave-line mt-1">
-          <svg width="100" height="25" style="z-index: 2;">
-            <path d="M10,15 Q30,5 50,15 T90,15" fill="none" stroke="green" stroke-width="2"></path>
-        </svg>         
-        </div>
-    </div>
-    </div>
-
-    <div class="card-header">
-    <div class="left-section">
-      <span class=" bold-value">  Binance Price: </span>
-        <span >≈ ₹{{exchanges_value[1] | round(2) }} INR</span>
-    </div>
-    <div class="right-section">
-      <div class="price-text">
-          $6,240.00
+        <div class="total-no-of">Total No. of Transactions</div>
       </div>
-      <div class="percentage-text" style="color: green;">
-          +1.68%
+      <div class="rectangle-parent3">
+        <div class="frame-child4"></div>
+        <b class="b">${{user_details['usdt_balance'] | round(2) }}</b>
+        <div class="total-value-usdt-container">
+          <p class="total-value">Total Value</p>
+          <p class="usdt8">(USDT)</p>
+        </div>
       </div>
-      <div class="wave-line mt-1">
-        <svg width="100" height="25" style="z-index: 2;">
-          <path d="M10,15 Q30,5 50,15 T90,15" fill="none" stroke="green" stroke-width="2"></path>
-      </svg>        
+    </div>
+    <div class="currency-symbol-text">
+      <div class="currency-symbol-text-child"></div>
+      <b class="inr">₹{{inrvalue | round(2) }} INR</b>
+      <div class="rates-text-frame">
+        <div class="today-price">Today Price</div>
       </div>
+    </div>
   </div>
-    </div>
-
-
-    <div class="card-header">
-    <div class="left-section">
-      <span class=" bold-value">   KuCoin Price: </span>
-        <span >≈ ₹{{exchanges_value[2] | round(2) }}</span>
-    </div>
-    <div class="right-section">
-      <div class="price-text">
-          $6,240.00
-      </div>
-      <div class="percentage-text" style="color: red;">
-          -1.68%
-      </div>
-      <div class="wave-line mt-1">
-        <svg width="100" height="25" style="z-index: 2;">
-          <path d="M10,15 Q30,5 50,15 T90,15" fill="none" stroke="red" stroke-width="2"></path>
-      </svg>         
-      </div>
+  <div class="deposit-exchange-frame">
+    <button class="rectangle-parent4" onclick="handleDepositClick()">
+      <div class="frame-child5"></div>
+      <div class="deposit">Deposit</div>
+    </button>
+    <button class="rectangle-parent5" onclick="handleExchangeClick()">
+      <div class="frame-child6"></div>
+      <div class="exchange2">Exchange</div>
+    </button>
   </div>
-    </div>
-    
+</section>
 </div>
+</div>
+
+
+
+  <!-- <div id="second-card" class="card2"> -->
+    <section class="rates-frame mt-1">
+      <div class="rd-party-rates">3rd Party Rates</div>
+      <div class="price-frame1 mt-2">
+        <div class="price-frame-child"></div>
+        <div class="vector-vector">
+          <div class="price-frame-a">
+            <div class="frame-deposit-exchange mt-2">
+              <div class="wazirx-price">WazirX Price</div>
+              <div class="inr1">~ ₹{{inrvalue | round(2) }} INR</div>
+            </div>
+            <div class="empty-frame2">
+              <div class="empty-frame-b">${{exchanges_value[0] | round(2) }}</div>
+              <div class="empty-frame-c">+1.68%</div>
+            </div>
+          </div>
+        </div>
+        <img
+          class="vector-vector-icon"
+          loading="eager"
+          alt=""
+          src="./static/assets/public/vector-97.svg"
+        />
+
+        <div class="vector-vector1">
+          <div class="frame-parent3">
+            <div class="coinbase-price-parent">
+              <div class="coinbase-price">Coinbase Price</div>
+              <div class="inr2">~ ₹{{inrvalue | round(2) }} INR</div>
+            </div>
+            <div class="parent">
+              <div class="div4">${{exchanges_value[1] | round(2) }}</div>
+              <div class="div5">+1.68%</div>
+            </div>
+          </div>
+        </div>
+        <img
+          class="vector-vector-icon1"
+          loading="eager"
+          alt=""
+          src="./static/assets/public/vector-97.svg"
+        />
+
+        <div class="vector-vector1">
+          <div class="frame-parent3">
+            <div class="coinbase-price-parent">
+              <div class="coinbase-price">KuCoin Price</div>
+              <div class="inr2">~ ₹{{inrvalue | round(2) }} INR</div>
+            </div>
+            <div class="parent">
+              <div class="div4">${{exchanges_value[2] | round(2) }}</div>
+              <div class="div5">+1.68%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+<!-- </div> -->
  
+
+
+
  <div class="bottom-nav">
   <a href="/dashboard" class="active">
     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="33" height="33" viewBox="0,0,256,256">
@@ -142,38 +154,12 @@
   </a>
 </div>
 
-<div class="modal fade" id="languageModal" tabindex="-1" role="dialog" aria-labelledby="languageModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="languageModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span id="close" aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div id="langswitchpopid"  class="modal-body">
-                <div id="langmodelcard" class="card mb-3" onclick="selectLanguage('English')">
-                    <div class="card-body1">
-                        <h6  class="card-title">English</h6>
-                     
-                    </div>
-                </div>
-                <div id="langmodelcard" class="card" onclick="selectLanguage('Hindi')">
-                    <div class="card-body1">
-                        <h6 class="card-title">हिन्दी</h6>
-                       
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
 
 <script src="static/js/dashboard.js"></script>
 

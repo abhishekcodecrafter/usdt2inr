@@ -2,16 +2,43 @@ body {
     background-color: #f8f9fa;
 }
 
+form {
+    max-width: 400px;
+    margin: auto;
+  }
+
+  .txnid input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da; /* Bootstrap default input border color */
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+
+  .txnid input:focus {
+    outline: none;
+    border-color: #808080; /* Bootstrap primary color on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Bootstrap primary color shadow on focus */
+  }
+
+  .txnid::after {
+    font-size: 20px;
+    color: #007bff; /* Bootstrap primary color */
+    position: absolute;
+    top: 33px;
+    right: 15px;
+  }
+
  #successmsg {
-    color: green;
+    color: white;
     display: none;
     position: fixed;
     top: 65%;
     left: 50%;
     transform: translateX(-50%);
-    background-color: white;
+    background-color: rgba(77, 77, 77, 1);
     padding: 10px;
-    border: 1px solid green;
+    border: 1px solid black;
     border-radius: 5px;
     margin-top: 10px;
     z-index: 1000;
@@ -20,7 +47,7 @@ body {
 .header {
     text-align: center;
     color: white;
-    background-color: #080808;
+    background-color: #000000;
     padding: 10px;
     margin-bottom: 20px;
     width: 100%;
@@ -49,12 +76,14 @@ body {
 }
 
 .copy-btn {
-    background-color: aliceblue;
-    color: green;
+    background-color: rgba(77, 77, 77, 1);
+    color: white;
 }
 
 .completed-btn {
     margin-top: 20px;
+    background-color: rgba(26, 26, 26, 1);
+    color: white;
 }
 
 .notice {

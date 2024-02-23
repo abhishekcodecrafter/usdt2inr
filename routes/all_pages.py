@@ -195,7 +195,7 @@ def full_profile():
         return redirect('/')
     user_details = get_user_by_phone_number(user_phone_number)
     if user_details:
-        data = user_details[0]
+        data = user_details
     else:
         print("User not found")
     exchange_rate = get_current_exchange_rate()

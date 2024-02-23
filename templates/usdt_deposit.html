@@ -26,9 +26,6 @@
         <h5>USDT TRC-20 Wallet Address</h5>
     </div>
 
-    <div class="countdown">
-        <p><span id="countdown">00:00</span></p>
-    </div>
 </div>
 
     <div class="qr-code">
@@ -38,7 +35,12 @@
         </div>
         <div id="successmsg">Success !!</div>
         <button class="btn  btn-block copy-btn" onclick="copyWalletAddress()">Copy Address</button>
-        <button class="btn btn-success btn-block completed-btn" onclick="submitDeposit()">Submit</button>
+        <form>
+            <div class="txnid position-relative">
+              <input id="txnID" class="form-control"  name="txnid" placeholder="Enter your transaction ID." required>
+            </div>
+          </form>
+        <button class="btn btn-block completed-btn" onclick="submitDeposit()">Submit</button>
     </div>
 
     <div class="notice">
