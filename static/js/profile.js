@@ -1,30 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const urlParams = new URLSearchParams(window.location.search);
-  const redirectParam = urlParams.get('redirect');
-
-  console.log(redirectParam);
-
-  if (redirectParam === 'dash') {
-    const arrowDiv = document.getElementById('arrowDiv');
-    console.log('Arrow back button is clicked.');
-    arrowDiv.addEventListener('click', function () {
-      redirectTo('/dashboard');
-    });
-  } else if (redirectParam === 'fullprofile') {
-    const arrowDiv = document.getElementById('arrowDiv');
-    console.log('Arrow back button is clicked for full profile.');
-    arrowDiv.addEventListener('click', function () {
-      redirectTo('/fullprofile');
-    });
-  }
-});
-
-// Mock implementation of redirectTo function
 function redirectTo(destination) {
   console.log('Redirecting to:', destination);
-  // Add your actual redirection logic here
 }
-
 
 function redirectTo(page) {
     window.location.href = page;

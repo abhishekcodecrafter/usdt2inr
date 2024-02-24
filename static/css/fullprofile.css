@@ -2,49 +2,45 @@ body {
     margin-bottom: 25%;
 }
 
+.bottom-nav {
+  z-index: 1;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.1); 
+      }
 
+      .bottom-nav a {
+          text-decoration: none;
+          color: #000000;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+      }
 
-  
-    .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #f8f9fa; 
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.1); 
-        }
+      .bottom-nav img {
+          width: 40px;
+          height: 40px;
+          margin-bottom: 0px; 
+      }
 
-        .bottom-nav a {
-            text-decoration: none;
-            color: #6c757d;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+     
+      .bottom-nav a.active {
+          color: #000000;
+          
+      }
 
-        .bottom-nav img {
-            width: 40px; 
-            height: 40px; 
-            margin-bottom: 0px; 
-        }
-
-        
-        .bottom-nav a.active {
-            color: #007bff; 
-            
-        }
-
-       
 .bottom-nav a.active svg path {
-    fill: #007bff; 
+  fill:#000000; 
 }
 
-
 .profile-container {
-  background-color: #01449f;
+  background-color: #000000;
   padding: 20px;
   color: white;
   display: flex;
@@ -69,6 +65,7 @@ body {
 .mobile-number {
   margin-top: 10px;
   font-size: larger;
+  background-color: #050505 !important;
 }
 
 .bold-value {
@@ -106,6 +103,23 @@ body {
     border-radius: 10px;
     overflow: hidden;
 }
+
+
+#successmsg {
+  color: white;
+  display: none;
+  position: fixed;
+  top: 65%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(77, 77, 77, 1);
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-top: 10px;
+  z-index: 1000;
+}
+
 
 .list-card {
     display: flex;
@@ -173,7 +187,6 @@ body {
 .copy-icon,
 .copy-button {
     padding: 8px;
-    background-color: #5cb85c;
     color: #fff; 
     border: none;
     border-radius: 5px;
@@ -188,4 +201,20 @@ body {
 
   .modal-dialog{
     top: 20%;
+  }
+
+
+  .modal-content{
+    background-color: #111111;
+    color: white;
+  }
+
+  #editUsernameModal #newUsername {
+    background-color:#111111;
+    color: antiquewhite;
+  }
+
+  .btn-save {
+    background-color:#fff;
+    color: #111111;
   }

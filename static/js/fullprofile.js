@@ -14,7 +14,14 @@ tempInput.value = mobileNumber.innerText;
 tempInput.select();
 document.execCommand('copy');
 document.body.removeChild(tempInput);
-alert('Mobile Number Copied!');
+var successMsg = document.getElementById('successmsg');
+successMsg.style.display = 'block';
+successMsg.innerText = 'Mobile Number Copied!!'; 
+
+setTimeout(function () {
+    successMsg.style.display = 'none';
+}, 3000);
+
 }
 
 function copyInvitationCode() {

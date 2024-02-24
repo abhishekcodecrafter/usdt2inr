@@ -6,22 +6,28 @@ body {
 
 .help-container {
     padding: 20px;
-    background-color: #fff;
+    background-color: #000000;
     border-radius: 10px;
     margin: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+hr {
+    background-color: antiquewhite;
+}
+
 h3, h4 {
-    color: #01449f;
+    color: white;
+    font-size:large;
 }
 
 h5{
-    color: #5cb85c;
+    color:moccasin;
 }
 
 p {
     margin-bottom: 15px;
+    color:blanchedalmond;
 }
 
 ul {

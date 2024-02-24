@@ -60,7 +60,7 @@ def profile():
 
     user_details = get_user_by_phone_number(user_phone_number)
     if user_details:
-        data = user_details[0]
+        data = user_details
     else:
         print("User not found")
 
@@ -123,13 +123,13 @@ def usdt_widthdrawl():
 
     user_details = get_user_by_phone_number(user_phone_number)
     if user_details:
-        user_details = user_details[0]
+        user_details = user_details
     else:
         print("User not found")
 
     exchange_rate = get_current_exchange_rate()
     if exchange_rate:
-        inr_value = exchange_rate[0][0]
+        inr_value = exchange_rate
 
     transactions = get_users_all_transactions(user_phone_number)
     data = list(transactions)
@@ -206,7 +206,7 @@ def full_profile():
         print("User not found")
     exchange_rate = get_current_exchange_rate()
     if exchange_rate:
-        inr_value = exchange_rate[0][0]
+        inr_value = exchange_rate
 
     return render_template('fullprofile.html', user_details=data, inrvalue=inr_value, user_phonenumber=user_phone_number)
 

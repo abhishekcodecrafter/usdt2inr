@@ -17,11 +17,9 @@
     <div class="profile-picture">
       <img src="static/assets/avatars/av21.jpg" onclick="redirectTo('/profile')" alt="User Avatar" onerror="this.onerror=null; this.src='av22.jpg'">
     </div>
+    <div id="successmsg"></div>
     <div class="mobile-number">
-      <span class="copy-icon" onclick="copyMobileNumber()" id="mobileNumber">91{{ }}<img src="static/assets/svg-elements/copy-icon.png" style="width: 20px; height: 20px;" alt="Copy Icon"></span>
-    </div>
-    <div class="invitation-code">
-      <span>Invitation Code : </span>  <span id='invitationNumber' style="margin-left: 5px;">{{ }}</span> <span class="copy-icon" onclick="copyInvitationCode()"><img src="static/assets/svg-elements/copy-icon.png" style="width: 20px; height: 20px;" alt="Copy Icon"></span>
+      <span class="copy-icon" onclick="copyMobileNumber()" id="mobileNumber">91{{ user_details['phone_number'] }}<img src="static/assets/svg-elements/copy-icon.png" style="width: 20px; height: 20px;" alt="Copy Icon"></span>
     </div>
 </div>
 
@@ -31,11 +29,11 @@
         <div class="row">
           <div class="col left-section">
             <span>Balance(USDT)</span>
-            <span style="margin-left: 15px;" class="bold-value">{{ }}</span>
+            <span style="margin-left: 15px;" class="bold-value">{{user_details['usdt_balance'] | round(2) }}</span>
           </div>
           <div class="col right-section">
             <span>INR</span>
-            <span style="margin-left: 15px;" class="bold-value">≈ ₹{{ }}</span>
+            <span style="margin-left: 15px;" class="bold-value">≈ {{inrvalue | round(2) }}</span>
           </div>
         </div>
       </div>
@@ -66,14 +64,14 @@
             <div class="name">Deposit</div>
             <div class="arrow"><img width="20" height="20" src="https://img.icons8.com/carbon-copy/100/000000/right-squared.png" alt="right-squared"/></div>
         </div>
-        <hr class="list-divider">
-        <div onclick="redirectTo('/usdtwrh')" class="list-card">
+        <!-- <hr class="list-divider">
+        <div onclick="redirectTo('/transactions')" class="list-card">
             <div class="icon">
             <img id="limage" src="static/assets/svg-elements/bill.png" alt="Bill Icon">
             </div>
             <div class="name">Bill</div>
             <div class="arrow"><img width="20" height="20" src="https://img.icons8.com/carbon-copy/100/000000/right-squared.png" alt="right-squared"/></div>
-        </div>
+        </div> -->
         <hr class="list-divider">
         <div onclick="redirectTo('/help')" class="list-card">
             <div class="icon">
@@ -86,24 +84,9 @@
 
 
 
-    <div class="invitation-container">
-        <div class="invitation-card">
-            <div class="invitation-label">Invitation Code</div>
-            <div class="invitation-value">{{  }}</div>
-            <div class="copy-icon" onclick="copyInvitationCode()">&#x1F4CB; Copy</div>
-        </div>
-        <div class="invitation-links">
-            <div class="invitation-link">Invitation Link</div>
-            <div class="invitation-link-value">https://www.usdt2inr.vip/invate?code={{  }}</div>
-            <div class="copy-button" onclick="copyInvitationLink()">Copy Invitation Link</div>
-        </div>
-    </div>
-
-
-
 
     <!-- Edit Username Modal -->
-<div class="modal" id="editUsernameModal" tabindex="-1" role="dialog" aria-labelledby="editUsernameModalLabel" aria-hidden="true">
+<div class="modal custom-modal" id="editUsernameModal" tabindex="-1" role="dialog" aria-labelledby="editUsernameModalLabel" aria-hidden="true">
   <div class="modal-dialog"  role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -116,20 +99,22 @@
         <form>
           <div class="form-group">
             <label for="newUsername">New Username:</label>
-            <!-- Set the initial value if user_details[5] is available -->
-            <input type="text" class="form-control" id="newUsername" value="{% if user_details[5] %}{{ user_details[5] }}{% endif %}">
+            <input type="text" class="form-control" id="newUsername" value="{% if user_details['t_me'] %}{{ user_details['t_me'] }}{% endif %}">
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="updateUsername()">Save changes</button>
+        <button type="button" class="btn btn-save" onclick="updateUsername()">Save changes</button>
       </div>
     </div>
   </div>
 </div>
 
-<div id="tusername" hidden>{{  }}</div>
+
+
+
+<div id="tusername" hidden>{{ user_details['t_me'] }}</div>
 
    
  <div class="bottom-nav">
@@ -139,7 +124,7 @@
         </svg>
         Home
     </a>
-    <a href="/usdtw">
+    <a href="/transactions">
       <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="40" height="40" viewBox="0,0,256,256">
         <g fill="#6c757d" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M10.41797,5l-8.33594,17.94922l22.91797,22.05078l22.91797,-22.05078l-8.33594,-17.94922zM12.95703,10.04297h24l0.04297,5.95703h-9v3.49023c8.125,0.384 11.58203,1.55673 11.58203,3.05273c0,1.495 -5.03103,3.15103 -11.58203,3.45703v11h-6v-11c-6.551,-0.306 -11.58203,-1.96203 -11.58203,-3.45703c0,-1.496 3.45703,-2.79373 11.58203,-3.05273v-3.49023h-9zM22,20.375c-5.389,0.26 -9,0.908 -9,2c0,1.295 5.097,2.25 12,2.25c6.903,0 12,-1.08 12,-2.375c0,-1.092 -3.611,-1.49 -9,-1.75v2.5c-1,0.063 -1.917,0.08203 -3,0.08203c-1.083,0 -2,-0.02003 -3,-0.08203z"></path></g></g>
         </svg>

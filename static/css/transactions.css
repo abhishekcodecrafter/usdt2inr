@@ -1,3 +1,7 @@
+.iphone-14-15-pro-max-3{
+  margin-bottom: 90px !important;
+}
+
 .transaction-box-child {
     width: 430px;
     height: 306px;
@@ -7,6 +11,7 @@
     display: none;
     max-width: 100%;
   }
+
   .transactions1 {
     margin: 0;
     position: relative;
@@ -15,6 +20,7 @@
     font-family: inherit;
     z-index: 1;
   }
+
   .frame-frame-exchange-rate-child {
     align-self: stretch;
     height: 128px;
@@ -23,6 +29,7 @@
     background-color: var(--color-gray-300);
     display: none;
   }
+  
   .exchange-amount-today {
     position: relative;
     font-weight: 500;
@@ -225,16 +232,52 @@
     display: none;
     max-width: 100%;
   }
-  .withdrawals1 {
+
+
+  .withdrawals1,
+.deposits1 {
     height: 32px;
     flex: 1;
     position: relative;
     font-weight: 600;
     display: flex;
     align-items: center;
+    padding: 7px 7px; 
     justify-content: center;
     z-index: 2;
-  }
+    background-color: var(--color-gainsboro-300);
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid #ccc;
+    border-radius: var(--br-31xl);
+    transition: background-color 0.3s ease;
+}
+
+/* Add margin to the left for withdrawals1 and margin to the right for deposits1 */
+.withdrawals1 {
+    margin-left: 5px !important; /* Adjust margin as needed */
+}
+
+.deposits1 {
+    margin-right: 5px !important; /* Adjust margin as needed */
+}
+
+
+.withdrawals1.active {
+    background-color: white;
+}
+
+
+.deposits1.active {
+    background-color: white;
+
+}
+
+.withdrawals1:hover,
+.deposits1:hover {
+    background-color: #f8f8f8;
+}
+
   .frame-deposits-info {
     height: 44px;
     flex: 1;
@@ -269,7 +312,7 @@
     z-index: 2;
   }
   .empty-frame1 {
-    width: 398px;
+    width: 378px;
     border-radius: var(--br-31xl);
     background-color: var(--color-gainsboro-300);
     flex-direction: row;
@@ -278,7 +321,7 @@
       var(--padding-12xs);
     box-sizing: border-box;
     row-gap: 20px;
-    max-width: 100%;
+    max-width: 95%;
     flex-shrink: 0;
   }
   .success-status-frame {
@@ -839,3 +882,45 @@
     }
   }
   
+  .bottom-nav {
+    z-index: 5;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #f8f9fa;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.1); 
+        }
+  
+        .bottom-nav a {
+            text-decoration: none;
+            color: #000000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+  
+        .bottom-nav img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 0px; 
+        }
+  
+       
+        .bottom-nav a.active {
+            color: #000000;
+            
+        }
+  
+  .bottom-nav a.active svg path {
+    fill:#000000; 
+  }
+  
+
+  .status-completed{
+    background-color: #1acf61 !important;
+    color: #f8f8f8 !important;
+  }

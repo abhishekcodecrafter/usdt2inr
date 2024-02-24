@@ -71,7 +71,9 @@ margin-top: 20px !important;
 }
 
 .instructions {
+    margin-left: 25px;
     margin-top: 20px;
+    max-width: 300px;
 }
 
 
@@ -82,7 +84,7 @@ margin-top: 20px !important;
         }
         
         .containerform {
-        max-width: 300px !important;
+        max-width: 320px !important;
         margin: 0px auto;
         margin-top: 20px !important;
         }

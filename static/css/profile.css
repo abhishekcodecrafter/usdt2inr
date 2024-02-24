@@ -35,8 +35,7 @@ body {
   }
 
   .gutters-sm {
-    margin-right: -8px;
-    margin-left: -8px;
+   margin-top: -15px !important;
   }
 
   .gutters-sm>.col,
@@ -51,7 +50,7 @@ body {
   }
 
   #profilediv{
-      background-color: #01449f;
+      background-color: #000000;
       color: #fff;
   }
 
@@ -84,6 +83,16 @@ body {
     height: 24px; 
   }
 
+
+  #logoutbtn {
+    margin-top: 1% !important;
+  }
+
+  #logoutbtn-btn {
+    background-color:#1a202c;
+    color: white;
+}
+
   
   @media (max-width: 767px) {
       .left-arrow {
@@ -105,17 +114,35 @@ body {
       filter: brightness(1.5);
   }
 
-  .btn1{
-      background-color:#01449f;
-      color: #fff;
-      border: 1px solid #ffffff;
-      border-radius: 10px;
-      padding: 8px;
-      font-weight: bolder;
-      cursor: pointer;
-      min-width: 20px;
-      font-size: 16px; 
+  .btn-save {
+    background-color:#fff;
+    color: #111111;
   }
+
+  .btn1,
+.btn1:hover,
+.btn1:visited,
+.btn1:active {
+  text-decoration: none; /* Remove default underline for anchor tags */
+  color: #fff;
+}
+
+.btn1 {
+  background-color: #111111;
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  padding: 8px;
+  font-weight: bolder;
+  cursor: pointer;
+  min-width: 20px;
+  font-size: 16px; 
+  display: inline-block; /* Ensure anchor behaves like a block element */
+}
+
+.btn1:hover {
+  background-color: #1a202c !important; /* Use !important to override default styles */
+}
+
 
 
 
@@ -189,7 +216,7 @@ transform: scale(1.1);
       z-index: 2;
     position: fixed;
     top: 30px;
-    left: 40px;
+    left: 20px;
     cursor: pointer;
     width: 24px; 
     height: 24px;
@@ -217,4 +244,14 @@ transform: scale(1.1);
 
 .modal-dialog{
   top: 20%;
+}
+
+.modal-content{
+  background-color: #111111;
+  color: white;
+}
+
+#editUsernameModal #newUsername {
+  background-color:#111111;
+  color: antiquewhite;
 }
