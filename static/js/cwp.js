@@ -142,7 +142,12 @@ function authenticateUser() {
                     // Handle the success response from the server
                     console.log('Withdrawals password changed successfully:', responseData);
                     // Additional logic as needed
-                    alert('Changed withdrawals password successfully.');
+                    verificationMessage.removeAttribute('hidden');
+                    verificationBox.removeAttribute('hidden');
+                    verificationMessage.innerText = 'Changed withdrawals password successfully.';
+                    setTimeout(function() {
+                        window.location.href = "/profile";
+                    }, 3000);
                 } else {
                     // Display an error message
                     alert(responseData.message);
@@ -151,8 +156,9 @@ function authenticateUser() {
                 .catch(error => {
                     // Handle the error response from the server
                     console.error('Error changing withdrawals password:', error);
-                    // Display an error message
-                    alert('Error changing withdrawals password. Please try again.');
+                    verificationMessage.removeAttribute('hidden');
+                    verificationBox.removeAttribute('hidden');
+                    verificationMessage.innerText = 'Error changing withdrawals password. Please try again.';
                 });
 
 
@@ -175,6 +181,23 @@ function authenticateUser() {
         verificationMessage.innerText = 'Invalid OTP. Please enter the correct OTP.';
     }
 }
+
+
+$(document).ready(function() {
+    $('#reenterPassword').on('input', function() {
+        const newPassword = $('#newPassword').val().trim();
+        const reenterPassword = $(this).val().trim();
+
+        if (newPassword !== reenterPassword) {
+            // Passwords do not match, display an error message
+            $('#passwordMatchError').text('Passwords do not match').css('color', 'red').show();
+        } else {
+            // Passwords match, display a success message in green
+            $('#passwordMatchError').text('Passwords matched').css('color', 'green').show();
+        }
+    });
+});
+
 
 
 

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Withdrawals Password Change</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/css/wp.css">
+</head>
+<body>
+
+  <div id="phoneNumber" hidden>{{user_phonenumber}}</div>
+
+  <div class="container1">
+  <h2 class="text-center">Set Up Withdrawals Password</h2>
+  </div>
+
+  <div class="container">
+    <div id="verificationBox" hidden>
+      <p id="verificationMessage" hidden></p>
+  </div>
+    <form id="form">
+      <div class="form-group">
+        <label for="newPassword">Enter Password</label>
+        <input type="password" class="form-control" id="newPassword" placeholder="Enter Password" name="newPassword" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="reenterPassword">Re-Enter Password</label>
+        <div id="passwordMatchError"></div>
+        <input type="password" class="form-control" id="reenterPassword" placeholder="Re-Enter Password" name="reenterPassword" required>
+      </div>
+      <div class="form-group">
+        <div id="verificationBox" hidden>
+          <p id="verificationMessage"></p>
+      </div>
+      </div>
+      <button type="submit"  class="btn btn-block" id="changePassword">Save & Proceed</button>
+    </form>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+  <script src="static/js/wp.js"></script>
+
+
+</body>
+</html>
+

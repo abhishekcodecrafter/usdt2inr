@@ -1,0 +1,86 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    margin: 0;
+}
+
+#successmsg {
+    color: white;
+    display: none;
+    position: fixed;
+    top: 65%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(77, 77, 77, 1);
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-top: 10px;
+    z-index: 1000;
+}
+
+
+.transaction-details {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 15px;
+    max-width: 600px;
+}
+
+.detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.label {
+    font-weight: bold;
+    font-size: small;
+}
+
+.value {
+    flex-basis: 50%;
+}
+
+#copyIcon {
+    cursor: pointer;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 12px;
+}
+
+
+.container1 {
+    max-width: 600px;
+    background-color: #000000;
+    color: white;
+    margin: 0px 0px 15px 0px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+
+  .left-arrow {
+    z-index: 2;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  cursor: pointer;
+  width: 45px; 
+  height: 45px;
+}
+
+.left-arrow img{
+    width: 40px;
+    height: 40px;
+    fill: white; 
+    filter: brightness(1.5);
+}

@@ -1,12 +1,12 @@
 const verificationBox = document.getElementById('verificationBox');
 const verificationMessage = document.getElementById('verificationMessage');
-verificationMessage.setAttribute('hidden', 'true');
+const successMessage = document.getElementById("successMessage");
 const otpbox = document.getElementById('otp');
 const loginsignupbtn = document.getElementById('btn-verification');
 const verifyotpelements = document.getElementById('sendotp');
-otpbox.setAttribute('hidden', 'true');
-loginsignupbtn.setAttribute('hidden', 'true');
+const resendOtp = document.getElementById('resendOtpText');
 var secret = null;
+
 
 function sendOTP() {
     const phoneNumber = document.getElementById('phoneNumber').value;
@@ -25,13 +25,15 @@ function sendOTP() {
             // Check the response and handle accordingly
             if (responseData.success) {
                 secret = responseData['secret']
+                let wrongNumberLink = "javascript:history.back();";
                 verificationMessage.removeAttribute('hidden');
                 verificationBox.removeAttribute('hidden');
-                verificationMessage.innerText = `OTP sent to ${phoneNumber}`;
+                verificationMessage.innerHTML = `OTP sent to ${phoneNumber} <br> <a href="${wrongNumberLink}" style="color: bisque;">Wrong number?</a>`;
                 console.log("Using Static Folder JS");
                 verifyotpelements.setAttribute('hidden', 'true');
                 otpbox.removeAttribute('hidden');
                 loginsignupbtn.removeAttribute('hidden');
+                resendOtp.removeAttribute('hidden');
             } else {
                 verificationMessage.removeAttribute('hidden');
                 verificationBox.removeAttribute('hidden');
@@ -107,8 +109,6 @@ function authenticateUser() {
     }
 }
 
-
-
 function addUser(data, successCallback, errorCallback) {
     // Make the API request to add a new user
     fetch('/add_user', {
@@ -118,6 +118,7 @@ function addUser(data, successCallback, errorCallback) {
         },
         body: JSON.stringify(data),
     })
+    
     .then(response => response.json())
     .then(responseData => {
         console.log('add user Response Data:', responseData);
@@ -128,12 +129,12 @@ function addUser(data, successCallback, errorCallback) {
                 successCallback(responseData);
             }
             setTimeout(function () {
-                window.location.href = '/dashboard';
+                window.location.href = '/wp';
             }, 3000);
 
         } else {
             // Error creating user, call the error callback
-            if (responseData.message === 'User with the provided phone number already exists') {
+            if (responseData.message === 'User already exists') {
                 setTimeout(function () {
                     window.location.href = '/dashboard';
                 }, 3000);

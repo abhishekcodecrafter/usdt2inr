@@ -788,6 +788,7 @@
   }
   .empty-frame-vector-u-s-d-t,
   .failed-status-frame {
+    cursor: pointer;
     display: flex;
     justify-content: flex-start;
     box-sizing: border-box;

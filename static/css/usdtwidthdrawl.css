@@ -23,6 +23,17 @@ body {
     color: white;
 }
 
+
+#verificationBox {
+    background-color: #333333;
+    color: #ffffff; 
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
 .box {
     flex: 1;
     text-align: center;

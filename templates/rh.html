@@ -19,23 +19,23 @@
     </div>
 
     <h2 class="text-center">Recharge History</h2>
-    {% if transactions %}
+    {% if deposits %}
   <div id="cards">
-    {% for transaction in transactions %}
+    {% for deposit in deposits %}
       <div class="card transaction-card">
         <div class="card-header">
           <div class="row">
             <div class="col left-section">
-              {% if transaction[3] == 'done' %}
-                <span class="bold-value" style="color: green;">+USDT {{ transaction[4] }}</span>
-              {% elif transaction[3] == 'failed' %}
-                <span class="bold-value" style="color: red;">!USDT {{ transaction[4] }}</span>
-              {% elif transaction[3] == 'processing' %}
-                <span class="bold-value" style="color: orange;">?USDT {{ transaction[4] }}</span>
+              {% if deposit['status'] == 'Success' %}
+                <span class="bold-value" style="color: green;">+USDT {{ deposit['amount'] }}</span>
+              {% elif deposit['status'] == 'Failed' %}
+                <span class="bold-value" style="color: red;">!USDT {{ deposit['amount'] }}</span>
+              {% elif deposit['status'] == 'Processing' %}
+                <span class="bold-value" style="color: orange;">?USDT {{ deposit['amount'] }}</span>
               {% endif %}
             </div>
             <div class="col right-section">
-              <span>{{ transaction[8] }}</span>
+              <span>{{ deposits['timestamp'] }}</span>
             </div>
           </div>
         </div>
