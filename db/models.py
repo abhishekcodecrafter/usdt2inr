@@ -166,7 +166,7 @@ def get_withdrawls(phone_number):
             "timestamp": row[11]
         })
 
-    return result
+    return data
 
 
 def get_a_transaction(phone_number, txn_id):

@@ -33,7 +33,7 @@ form {
     color: white;
     display: none;
     position: fixed;
-    top: 65%;
+    top: 30%;
     left: 50%;
     transform: translateX(-50%);
     background-color: rgba(77, 77, 77, 1);
