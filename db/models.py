@@ -142,7 +142,8 @@ def get_deposits(phone_number):
             "status": transform_status(row[1]),
             "type": row[2],
             "amount": row[10],
-            "timestamp": row[11]
+            "timestamp": row[11],
+            "exchange_rate": row[14]
         })
 
     return data
