@@ -5,25 +5,35 @@
 .container {
     max-width: 600px;
     margin: 15px 0px 0px 0px;
-    background-color: #000000;
-    color: white;
+    background-color: white;
+    color: black;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
 
 
+  #verificationBox {
+    background-color: #333333;
+    color: #ffffff; 
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+
+
   input[type="password"],
   input[type="text"] {
-    color: white; 
-    background-color:#111111;
+    background-color:white;
     border-color: #333333; 
   }
 
   input[type="password"]:focus,
-input[type="text"]:focus {
-  color: white; 
-    background-color:#111111;
+input[type="text"]:focus { 
+    background-color:white;
     border-color: #333333; 
 }
 
@@ -63,17 +73,6 @@ input[type="text"]:focus {
     font-size: 16px;
     margin-top: 20%;
   }
-
-
-  #verificationBox {
-    background-color: #333333;
-    color: #ffffff; 
-    border-radius: 10px;
-    padding: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    text-align: center;
-}
 
   button:hover {
     background-color: #012b5a;

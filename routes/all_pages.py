@@ -50,7 +50,22 @@ def transactions():
     no_of_txns = get_no_completed_transactions(user_phone_number)
 
     return render_template('transactions.html', exchange_rate=exchange_rate, deposits=deposits,
-                           withdrawls=withdrawls, no_of_txns=no_of_txns)
+                           withdrawals=withdrawls, no_of_txns=no_of_txns)
+
+
+
+def transaction_details():
+    user_phone_number = get_user_phone_number()
+    if not user_phone_number:
+        return redirect('/')
+
+    exchange_rate = get_current_exchange_rate()
+    deposits = get_deposits(user_phone_number)
+    withdrawls = get_withdrawls(user_phone_number)
+    no_of_txns = get_no_completed_transactions(user_phone_number)
+
+    return render_template('transaction_details.html', exchange_rate=exchange_rate, deposits=deposits,
+                           withdrawals=withdrawls, no_of_txns=no_of_txns)
 
 
 def profile():
@@ -84,6 +99,12 @@ def cwp():
     if not user_phone_number:
         return redirect('/')
     return render_template('cwp.html', user_phonenumber=user_phone_number)
+
+def wp():
+    user_phone_number = get_user_phone_number()
+    if not user_phone_number:
+        return redirect('/')
+    return render_template('wp.html', user_phonenumber=user_phone_number)
 
 
 def help():
@@ -141,14 +162,9 @@ def rh():
     user_phone_number = get_user_phone_number()
     if not user_phone_number:
         return redirect('/')
-    transactions = get_users_all_transactions(user_phone_number)
-    if transactions:
-        data = list(transactions)
-        return render_template('rh.html', transactions=data, user_phonenumber=user_phone_number)
+    deposits = get_deposits(user_phone_number)
+    return render_template('rh.html', deposits=deposits, user_phonenumber=user_phone_number)
 
-    else:
-        print("User not found")
-    return render_template('rh.html', user_phonenumber=user_phone_number)
 
 
 def get_deposit_address(user_phone_number):

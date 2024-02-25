@@ -41,9 +41,11 @@ app.route('/')(index)
 app.route('/add_user', methods=['POST'])(add_user)
 app.route('/dashboard')(dashboard)
 app.route('/transactions')(transactions)
+app.route('/transaction_details')(transaction_details)
 app.route('/profile')(profile)
 app.route('/inr_exchange')(inr_exchange)
 app.route('/cwp')(cwp)
+app.route('/wp')(wp)
 app.route('/help')(help)
 app.route('/usdtw')(usdtw)
 app.route('/usdtwrh')(usdtwrh)
@@ -62,6 +64,7 @@ app.route('/change_wdtpassword', methods=['POST'])(change_withdrawals_password)
 app.route('/create_INR_wdt_request', methods=['POST'])(create_INR_wdt)
 app.route('/create_USDT_wdt_request', methods=['POST'])(create_USDT_wdt)
 app.route('/submitDeposit ',methods=['POST'])(submitDeposit)
+
 
 if __name__ == '__main__':
     if development:

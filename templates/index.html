@@ -7,9 +7,7 @@
     <title>Login/Signup Page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-
     <link rel="stylesheet" href="static/css/index.css">
-   
 </head>
 
 <body>
@@ -19,10 +17,11 @@
             <img src="static/assets/logo.png" alt="Logo" >
         </div>
 
+        <div class="content-container">
         <form id="form" class="mb-5" id="authForm">
             <h2> Login/Signup </h2>
             <div id="verificationBox" hidden>
-                <p id="verificationMessage"></p>
+                <p id="verificationMessage" hidden></p>
             </div>
                 <div id="sendotp" class="row">
                     <div class="input-group mb-3">
@@ -39,11 +38,13 @@
             
             <div  class="row">
                 <div class="col-md-12 mt-2">
-                    <input type="tel" id="otp" placeholder="Enter OTP received" required>
+                    <input type="tel" id="otp" placeholder="Enter OTP received" hidden required>
                 </div>
             </div>
-            <button type="button" id="btn-verification" onclick="authenticateUser()" class="btn btn-success">Login/Signup</button>
+            <button type="button" id="btn-verification" onclick="authenticateUser()" class="btn" hidden>Login/Signup</button>
+            <span id="resendOtpText" onclick="sendOTP()" hidden>Resend OTP</span>
         </form>
+    </div>
     </div>
 
 

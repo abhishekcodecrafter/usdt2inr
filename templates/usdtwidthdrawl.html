@@ -13,7 +13,6 @@
 </head>
 <body>
 
-   
     <section class="i-phone-pro-max-frame">
         <div class="left-arrow" id="scrollArrow" onclick="redirectTo('/fullprofile')">
             <img src="static/assets/svg-elements/navigate-back.png" alt="Navigate Back">
@@ -58,6 +57,9 @@
                 <label for="transactionPassword">Transaction Password:</label>
                 <input type="password" class="form-control" id="transactionPassword" name="transactionPassword" required>
             </div>
+            <div id="verificationBox" hidden>
+              <p id="verificationMessage" hidden></p>
+          </div>
             <button id="sendotp" class="btn btn-success btn-block" id="changePassword">Submit</button>
         </form>
     </div>

@@ -1,4 +1,8 @@
-    document.addEventListener("DOMContentLoaded", function() {
+const verificationBox = document.getElementById('verificationBox');
+const verificationMessage = document.getElementById('verificationMessage');  
+  
+  
+  document.addEventListener("DOMContentLoaded", function() {
         var arrow = document.getElementById("scrollArrow");
         var container = document.querySelector(".container");
     
@@ -54,20 +58,25 @@
                     document.getElementById("form").reset();
                     // Handle the success response from the server
                     console.log('success:', responseData);
-                    // Additional logic as needed
-                    alert('Submitted Successfully.');
+
+                    verificationMessage.innerText = `Order Details Submitted successfully.`;
+                    verificationBox.removeAttribute('hidden');
+                    verificationMessage.removeAttribute('hidden');
+                    setTimeout(function() {
+                        window.location.href = "/dashboard";
+                    }, 3000);
                 } else {
-                    // Display an error message
-                    alert(responseData.message);
+                    verificationMessage.innerText = responseData.message;
+                    verificationBox.removeAttribute('hidden');
+                    verificationMessage.removeAttribute('hidden');
                 }
             })
             .catch(error => {
-                // Remove loading spinner or indicator here
-    
-                // Handle the error response from the server
                 console.error('Error submitting INR WDT Details:', error);
-                // Display an error message
-                alert('Error occurred. Please try again');
+                
+                verificationMessage.innerText = `Error occurred. Please try again`;
+                    verificationBox.removeAttribute('hidden');
+                    verificationMessage.removeAttribute('hidden');
             });
         });
     });

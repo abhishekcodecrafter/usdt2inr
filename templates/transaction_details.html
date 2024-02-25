@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Details</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="/static/css/transaction_details.css">
+</head>
+
+<body>
+
+    <div class="container1">
+        <div class="left-arrow" onclick="history.back()">
+          <img src="/static/assets/svg-elements/navigate-back.png" alt="Navigate Back">
+      </div>
+      <h2 class="text-center">Transaction Details</h2>
+      </div>
+
+      <div id="successmsg">Order ID Copied!!</div>
+
+    <div class="transaction-details">
+        <div class="detail">
+            <span class="label">Order ID:</span>
+            <span class="value" id="orderID">123456789 <img src="/static/assets/svg-elements/copy-icon-black.png" id="copyIcon" onclick="copyToClipboard('orderID')" alt="Copy Icon"></span>
+        </div>
+        <div class="detail">
+            <span class="label">USDT (TRC20):</span>
+            <span class="value">1000</span>
+        </div>
+        <div class="detail">
+            <span class="label">Rupees:</span>
+            <span class="value">75,000</span>
+        </div>
+        <div class="detail">
+            <span class="label">Rate:</span>
+            <span class="value">1 USDT = 75 INR</span>
+        </div>
+        <div class="detail">
+            <span class="label">Account No:</span>
+            <span class="value">1234567890</span>
+        </div>
+        <div class="detail">
+            <span class="label">Account Holder:</span>
+            <span class="value">John Doe</span>
+        </div>
+        <div class="detail">
+            <span class="label">IFSC:</span>
+            <span class="value">ABC123456</span>
+        </div>
+        <div class="detail">
+            <span class="label">Create Time:</span>
+            <span class="value">2024-02-24 15:30:00</span>
+        </div>
+        <div class="detail">
+            <span class="label">Transaction Time:</span>
+            <span class="value">2024-02-24 15:45:00</span>
+        </div>
+        <div class="detail">
+            <span class="label">Transaction Status:</span>
+            <span class="value" style="color: green;" >Completed</span>
+        </div>
+    </div>
+
+    <!-- Add Bootstrap and JavaScript for copy to clipboard functionality -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/static/js/transaction_details.js"></script>
+
+</body>
+
+</html>

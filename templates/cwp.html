@@ -15,17 +15,20 @@
     <div class="left-arrow" onclick="history.back()">
       <img src="static/assets/svg-elements/navigate-back.png" alt="Navigate Back">
   </div>
-  <h2 class="text-center">Withdrawals Password</h2>
+  <h2 class="text-center">Change Withdrawals Password</h2>
   </div>
 
   <div class="container">
+    
     <form id="form">
       <div class="form-group">
-        <label for="newPassword">Enter Password</label>
+        <label for="newPassword">Enter New Password</label>
         <input type="password" class="form-control" id="newPassword" placeholder="Enter Your New Password" name="newPassword" required>
       </div>
+      
       <div class="form-group">
-        <label for="reenterPassword">Re-Enter Password</label>
+        <label for="reenterPassword">Re-Enter New Password</label>
+        <div id="passwordMatchError" ></div>
         <input type="password" class="form-control" id="reenterPassword" placeholder="Re-Enter Your New Password" name="reenterPassword" required>
       </div>
       <div class="form-group">

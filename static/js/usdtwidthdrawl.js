@@ -1,3 +1,7 @@
+const verificationBox = document.getElementById('verificationBox');
+const verificationMessage = document.getElementById('verificationMessage');
+
+
 document.addEventListener("DOMContentLoaded", function() {
     var arrow = document.getElementById("scrollArrow");
   
@@ -62,12 +66,19 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Handle the success response from the server
                 console.log('USDT WDT Details submitted successfully:', responseData);
                 // Additional logic as needed
-                alert('USDT WDT Details submitted successfully.');
-                // Reset the form or redirect to a new page, if needed
+
+                verificationMessage.removeAttribute('hidden');
+                verificationBox.removeAttribute('hidden');
+                verificationMessage.innerText = `USDT WDT Details submitted successfully.`;
+
+                setTimeout(function() {
+                  window.location.href = "/fullprofile";
+              }, 3000);
 
             } else {
-                // Display an error message
-                alert(responseData.message);
+              verificationMessage.removeAttribute('hidden');
+              verificationBox.removeAttribute('hidden');
+              verificationMessage.innerText = responseData.message;
             }
         })
         .catch(error => {
@@ -75,8 +86,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // Handle the error response from the server
             console.error('Error submitting INR WDT Details:', error);
-            // Display an error message
-            alert('Error submitting INR WDT Details.');
+
+            verificationMessage.removeAttribute('hidden');
+            verificationBox.removeAttribute('hidden');
+            verificationMessage.innerText = `Error submitting INR WDT Details.`;
 
             // Prevent form submission on error
         });
