@@ -1,27 +1,33 @@
 from passlib.hash import bcrypt
 import logging
-from flask import request, jsonify
+from flask import request, jsonify, redirect
 from flask_cors import CORS
-from db.models import get_user_by_phone_number, create_USDT_wdt_model
+from db.models import get_user_by_phone_number, create_USDT_wdt_model, get_current_exchange_rate
+from routes.all_pages import get_user_phone_number
+
 
 def create_USDT_wdt():
     try:
         data = request.get_json()
-        phone = data.get('phone')
         amount = data.get('amount')
         uusdt_address = data.get('accountNo')
         password = data.get('transactionPassword')
 
-        print(data)
+        phone = get_user_phone_number();
+        if not phone:
+            return redirect('/')
 
+        user_details = get_user_by_phone_number(phone)
 
+        if amount > user_details['usdt_balance']:
+            return jsonify({'success': False, 'message': 'Insufficient balance'})
 
         # Authenticate the user
         if not authenticate_user_by_pass(phone, password):
             return jsonify({'success': False, 'message': 'Authentication failed'})
 
         # Perform the actual data insertion into the database
-        success = create_USDT_wdt_model(phone,amount,uusdt_address)
+        success = create_USDT_wdt_model(phone,amount,uusdt_address, get_current_exchange_rate())
 
         if success:
             return jsonify({'success': True, 'message': 'Data inserted successfully'})

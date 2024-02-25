@@ -7,11 +7,13 @@ from db.models import get_user_by_phone_number, create_INR_wdt_model
 def get_user_phone_number():
     return session.get('phone_number', None)
 
+
 def create_INR_wdt():
     try:
         phone = get_user_phone_number()
         if not phone:
             return redirect('/')
+
         data = request.get_json()
         amount = data.get('amount')
         accountNo = data.get('accountNo')

@@ -2,7 +2,7 @@ from flask import Flask, session, render_template, redirect, request, jsonify
 from db.models import create_user, edit_tg_username_model, get_current_exchange_rate, get_exchanges_todays_value, \
     get_all_users, get_user_by_phone_number, get_users_all_transactions, get_all_transactions, \
     get_a_transaction, create_transaction, create_deposit_model, get_no_completed_transactions, get_deposits, \
-    get_withdrawls
+    get_withdrawls, get_invite_link
 
 
 def get_user_phone_number():
@@ -76,12 +76,13 @@ def profile():
         return redirect('/')
 
     user_details = get_user_by_phone_number(user_phone_number)
+    invite_link = get_invite_link();
     if user_details:
         data = user_details
     else:
         print("User not found")
 
-    return render_template('profile.html', user_details=data)
+    return render_template('profile.html', user_details=data, invite_link=invite_link)
 
 
 def inr_exchange():
@@ -92,8 +93,10 @@ def inr_exchange():
     user_details = get_user_by_phone_number(user_phone_number)
     
     exchange_rate = get_current_exchange_rate()
-
-    return render_template('inr_exchange.html', user_details=user_details, inrvalue=exchange_rate)
+    transaction_list = get_users_all_transactions(user_phone_number)
+    data = list(transaction_list)
+    return render_template('inr_exchange.html', user_details=user_details, inrvalue=exchange_rate, transactions=data,
+                           user_phonenumber=user_phone_number)
 
 
 def cwp():
@@ -195,6 +198,10 @@ def submitDeposit():
         data = request.json
         address = data.get('address')
         txn_id = data.get('txnId')
+
+        if txn_id is None or txn_id == '':
+            return jsonify({'success': False, 'message': 'Error! Transaction Id required'}), 500
+
         success = create_deposit_model(user_phone_number, address, txn_id)
         if success:
             return jsonify({'success': True, 'message': 'Deposit Request Submitted'}), 200

@@ -2,6 +2,27 @@ function redirectTo(destination) {
   console.log('Redirecting to:', destination);
 }
 
+const verificationBox = document.getElementById('verificationBox');
+const verificationMessage = document.getElementById('verificationMessage');
+
+function copyInviteLink() {
+    console.log("invitelink called")
+    var invite_link = document.getElementById('invite-code');
+    var tempInput = document.createElement('input');
+    document.body.appendChild(tempInput);
+    tempInput.value = invite_link.innerText;
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    verificationMessage.removeAttribute('hidden');
+    verificationBox.removeAttribute('hidden');
+    verificationMessage.innerText = `Invite link copied`;
+    setTimeout(function() {
+        verificationMessage.setAttribute('hidden', true);
+        verificationBox.setAttribute('hidden', true);
+    }, 2000);
+}
+
 function redirectTo(page) {
     window.location.href = page;
 }

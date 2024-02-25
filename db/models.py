@@ -32,6 +32,17 @@ def get_current_exchange_rate():
     return result[0][0]
 
 
+def get_invite_link():
+    query = "SELECT invite_link FROM settings LIMIT 1;"
+    connector = DBConnector()
+    result = connector.fetch_all(query)
+    connector.close_connection()
+    if result is None or len(result) < 1:
+        return None
+
+    return result[0][0]
+
+
 def get_exchanges_todays_value():
     query = "SELECT wazir_x_price, binance_price, ku_coin_price FROM settings LIMIT 1;"
 
@@ -72,7 +83,7 @@ def get_user_by_phone_number(phone_number):
         "transaction_password": result[4],
         "active": result[5],
         "wallet_address": "TJsBwTcscL5WxUNoFoQxEHou8CJc3ghKqv",
-        "wallet_qr": ""
+        "wallet_qr": "https://chart.googleapis.com/chart?chs=300x300&chld=L|2&cht=qr&chl=bc1qraryeyzzzr343p8n4ha4v3dc49hemfdjz3m7m3"
     }
 
 
@@ -142,7 +153,8 @@ def get_deposits(phone_number):
             "status": transform_status(row[1]),
             "type": row[2],
             "amount": row[10],
-            "timestamp": row[11]
+            "timestamp": row[11],
+            "exchange_rate": row[14]
         })
 
     return data
@@ -163,7 +175,8 @@ def get_withdrawls(phone_number):
             "status": transform_status(row[1]),
             "type": row[2],
             "amount": row[10],
-            "timestamp": row[11]
+            "timestamp": row[11],
+            "exchange_rate": row[14]
         })
 
     return data
@@ -301,14 +314,14 @@ def create_deposit_model(phone, address, txn_id):
         return False
 
 
-def create_USDT_wdt_model(phone, amount, withdraw_address):
+def create_USDT_wdt_model(phone, amount, withdraw_address, exchange_rate):
     try:
         query = """
-            INSERT INTO transactions (txn_id, phone_number, amount, withdraw_address, status, type, sub_type)
-            VALUES (%s, %s, %s, %s, 'PROCESSING', 'WITHDRAW', 'USDT')
+            INSERT INTO transactions (txn_id, phone_number, amount, withdraw_address, exchange_rate, status, type, sub_type)
+            VALUES (%s, %s, %s, %s, %s, 'PROCESSING', 'WITHDRAW', 'USDT')
         """
 
-        values = (get_txn_id(), phone, amount, withdraw_address)
+        values = (get_txn_id(), phone, amount, withdraw_address, exchange_rate)
 
         connector = DBConnector()
         success = connector.execute_query(query, values)
