@@ -7,38 +7,42 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <link rel="stylesheet" href="static/css/usdtwidthdrawl.css">
+    <link rel="stylesheet" href="static/css/global.css">
+    <link rel="stylesheet" href="static/css/inrwrh1.css">
 
 </head>
 <body>
 
    
-      <div class="wrapper">
-    <div class="container1">
+    <section class="i-phone-pro-max-frame">
         <div class="left-arrow" id="scrollArrow" onclick="redirectTo('/fullprofile')">
             <img src="static/assets/svg-elements/navigate-back.png" alt="Navigate Back">
           </div>
-    
-        <h4 class="text-center mx-auto">Order</h4>
-    </div>
 
-    <div class="container">
-        <div class="box">
-            <p>Available Balance</p>
-            <div class="box-content">
-                <h2>${{ user_details[2] | round(2) }}</h2>
-                <h2>≈ ₹{{(user_details[2] | float * inrvalue | float) | round(2)}}</h2>
-            </div>
+        <div class="i-phone-pro-max-frame-child"></div>
+        <div class="f-r-a-m-e">
+          <h2 class="order">Order</h2>
         </div>
-        <div class="box">
-            <p>Price</p>
-            <div class="box-content">
-                <h2>≈ ₹{{inrvalue | round(2) }} INR</h2>
+        <div class="frame-parent4">
+          <div class="rectangle-parent6">
+            <div class="frame-child7"></div>
+            <div class="account-no-frame">
+              <b class="available-balancetext">{{user_details['usdt_balance'] | round(2) }}</b>
             </div>
+            <div class="available-balance-usdt-container">
+              <p class="available-balance">Available Balance</p>
+              <p class="usdt9">(USDT)</p>
+            </div>
+          </div>
+          <div class="amount-frame">
+            <div class="amount-frame-child"></div>
+            <b class="b1">₹{{inrvalue | round(2) }}</b>
+            <div class="price-inr">Price (INR)</div>
+          </div>
         </div>
-    </div>
-      </div>
+      </section>
 
-      <div id="phone" hidden>{{user_phonenumber}}</div>
+      <div id="phone" hidden>{{ user_details['phone_number'] }}</div>
 
       <div class="containerform form-container">
         <form id="form">
@@ -58,15 +62,14 @@
         </form>
     </div>
 
-
     <div class="containerinst instructions text-center">
         <h3 style="margin-bottom: 0;"><strong>Instructions:</strong></h3>
-        <ul style="padding-left: 0; list-style: none;">
-            <li>Minimum Withdrawal: 200</li>
-            <li>The Withdrawal time is from Monday to Sunday from 10 am to 10 pm.</li>
-            <li>After you submit the withdrawal application, your funds will arrive in your account within 24 hours. If you have not received the payment within the time limit, please contact customer service for assistance in time.</li>
-        </ul>
+        <ol style="padding-left: 0; list-style: none;">
+            <li>Please make sure you have enough USDT to trade.</li>
+            <li>Available withdrawal time: 10 AM to 10 PM, Monday to Sunday.</li>
+        </ol>
     </div>
+    
 
 
 

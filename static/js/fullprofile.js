@@ -6,15 +6,22 @@ $(document).ready(function() {
   });
 
 
-function copyMobileNumber() {
-    var mobileNumber = document.getElementById('mobileNumber');
-    var tempInput = document.createElement('input');
-    document.body.appendChild(tempInput);
-    tempInput.value = mobileNumber.innerText;
-    tempInput.select();
-    document.execCommand('copy');
-    document.body.removeChild(tempInput);
-    alert('Mobile Number Copied!');
+  function copyMobileNumber() {
+var mobileNumber = document.getElementById('mobileNumber');
+var tempInput = document.createElement('input');
+document.body.appendChild(tempInput);
+tempInput.value = mobileNumber.innerText;
+tempInput.select();
+document.execCommand('copy');
+document.body.removeChild(tempInput);
+var successMsg = document.getElementById('successmsg');
+successMsg.style.display = 'block';
+successMsg.innerText = 'Mobile Number Copied!!'; 
+
+setTimeout(function () {
+    successMsg.style.display = 'none';
+}, 3000);
+
 }
 
 function copyInvitationCode() {

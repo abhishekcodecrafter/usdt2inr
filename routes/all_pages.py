@@ -47,7 +47,7 @@ def transactions():
     exchange_rate = get_current_exchange_rate()
     deposits = get_deposits(user_phone_number)
     withdrawls = get_withdrawls(user_phone_number)
-    no_of_txns = get_no_completed_transactions()
+    no_of_txns = get_no_completed_transactions(user_phone_number)
 
     return render_template('transactions.html', exchange_rate=exchange_rate, deposits=deposits,
                            withdrawls=withdrawls, no_of_txns=no_of_txns)
@@ -60,32 +60,30 @@ def profile():
 
     user_details = get_user_by_phone_number(user_phone_number)
     if user_details:
-        data = user_details[0]
+        data = user_details
     else:
         print("User not found")
 
     return render_template('profile.html', user_details=data)
 
 
-def inrwrh():
+def inr_exchange():
     user_phone_number = get_user_phone_number()
     if not user_phone_number:
         return redirect('/')
 
     user_details = get_user_by_phone_number(user_phone_number)
-    if user_details:
-        user_details = user_details[0]
-    else:
-        print("User not found")
-
+    
     exchange_rate = get_current_exchange_rate()
-    if exchange_rate:
-        inr_value = exchange_rate[0][0]
 
+<<<<<<< HEAD
     transactions = get_users_all_transactions(user_phone_number)
     data = list(transactions)
     return render_template('inr_exchange.html', user_details=user_details, inrvalue=inr_value, transactions=data,
                            user_phonenumber=user_phone_number)
+=======
+    return render_template('inr_exchange.html', user_details=user_details, inrvalue=exchange_rate)
+>>>>>>> 3c34bf18a1e7fb4564ad37f1fd277b08994fee84
 
 
 def cwp():
@@ -132,13 +130,13 @@ def usdt_widthdrawl():
 
     user_details = get_user_by_phone_number(user_phone_number)
     if user_details:
-        user_details = user_details[0]
+        user_details = user_details
     else:
         print("User not found")
 
     exchange_rate = get_current_exchange_rate()
     if exchange_rate:
-        inr_value = exchange_rate[0][0]
+        inr_value = exchange_rate
 
     transactions = get_users_all_transactions(user_phone_number)
     data = list(transactions)
@@ -210,12 +208,12 @@ def full_profile():
         return redirect('/')
     user_details = get_user_by_phone_number(user_phone_number)
     if user_details:
-        data = user_details[0]
+        data = user_details
     else:
         print("User not found")
     exchange_rate = get_current_exchange_rate()
     if exchange_rate:
-        inr_value = exchange_rate[0][0]
+        inr_value = exchange_rate
 
     return render_template('fullprofile.html', user_details=data, inrvalue=inr_value, user_phonenumber=user_phone_number)
 

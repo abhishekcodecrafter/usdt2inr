@@ -5,7 +5,7 @@ class DBConnector:
         self.connection = mysql.connector.connect(
             host='localhost',
             user='root',
-            password='password',
+            password='',
             database='usdt2inr',
             auth_plugin='mysql_native_password'
         )
