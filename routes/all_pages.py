@@ -84,7 +84,7 @@ def inrwrh():
 
     transactions = get_users_all_transactions(user_phone_number)
     data = list(transactions)
-    return render_template('inr_exchangeinr_exchange.html', user_details=user_details, inrvalue=inr_value, transactions=data,
+    return render_template('inr_exchange.html', user_details=user_details, inrvalue=inr_value, transactions=data,
                            user_phonenumber=user_phone_number)
 
 

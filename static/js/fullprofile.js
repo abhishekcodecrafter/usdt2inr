@@ -6,26 +6,26 @@ $(document).ready(function() {
   });
 
 
-  function copyMobileNumber() {
-var mobileNumber = document.getElementById('mobileNumber');
-var tempInput = document.createElement('input');
-document.body.appendChild(tempInput);
-tempInput.value = mobileNumber.innerText;
-tempInput.select();
-document.execCommand('copy');
-document.body.removeChild(tempInput);
-alert('Mobile Number Copied!');
+function copyMobileNumber() {
+    var mobileNumber = document.getElementById('mobileNumber');
+    var tempInput = document.createElement('input');
+    document.body.appendChild(tempInput);
+    tempInput.value = mobileNumber.innerText;
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    alert('Mobile Number Copied!');
 }
 
 function copyInvitationCode() {
-var mobileNumber = document.getElementById('invitationNumber');
-var tempInput = document.createElement('input');
-document.body.appendChild(tempInput);
-tempInput.value = mobileNumber.innerText;
-tempInput.select();
-document.execCommand('copy');
-document.body.removeChild(tempInput);
-alert('Invitation Code Copied!');
+    var mobileNumber = document.getElementById('invitationNumber');
+    var tempInput = document.createElement('input');
+    document.body.appendChild(tempInput);
+    tempInput.value = mobileNumber.innerText;
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    alert('Invitation Code Copied!');
 }
 
 
