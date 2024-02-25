@@ -28,7 +28,7 @@ function sendOTP() {
                 let wrongNumberLink = "javascript:history.back();";
                 verificationMessage.removeAttribute('hidden');
                 verificationBox.removeAttribute('hidden');
-                verificationMessage.innerHTML = `OTP sent to ${phoneNumber} <br> <a href="${wrongNumberLink}" style="color: bisque;">Wrong number?</a>`;
+                verificationMessage.innerHTML = `OTP sent to ${phoneNumber} <br> <a href="${wrongNumberLink}" style="color: bisque; text-decoration: underline;">Wrong number?</a>`;
                 console.log("Using Static Folder JS");
                 verifyotpelements.setAttribute('hidden', 'true');
                 otpbox.removeAttribute('hidden');

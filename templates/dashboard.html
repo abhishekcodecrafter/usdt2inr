@@ -40,7 +40,7 @@
       </div>
       <div class="rectangle-parent3">
         <div class="frame-child4"></div>
-        <b class="b">${{user_details['usdt_balance'] | round(2) }}</b>
+        <b class="b">{{user_details['usdt_balance'] | round(2) }}</b>
         <div class="total-value-usdt-container">
           <p class="total-value">Total Value</p>
           <p class="usdt8">(USDT)</p>
@@ -80,11 +80,11 @@
           <div class="price-frame-a">
             <div class="frame-deposit-exchange mt-2">
               <div class="wazirx-price">WazirX Price</div>
-              <div class="inr1">~ ₹{{inrvalue | round(2) }} INR</div>
+              <div class="inr1"></div>
             </div>
             <div class="empty-frame2">
-              <div class="empty-frame-b">${{exchanges_value[0] | round(2) }}</div>
-              <div class="empty-frame-c">+1.68%</div>
+              <div class="empty-frame-b">{{exchanges_value[0] | round(2) }}</div>
+              <div class="empty-frame-c">-{{ "{:.2f}".format(inrvalue | round(2) - exchanges_value[0] | round(2)) }}%</div>
             </div>
           </div>
         </div>
@@ -99,11 +99,11 @@
           <div class="frame-parent3">
             <div class="coinbase-price-parent">
               <div class="coinbase-price">Coinbase Price</div>
-              <div class="inr2">~ ₹{{inrvalue | round(2) }} INR</div>
+              <div class="inr2"></div>
             </div>
             <div class="parent">
-              <div class="div4">${{exchanges_value[1] | round(2) }}</div>
-              <div class="div5">+1.68%</div>
+              <div class="div4">{{exchanges_value[1] | round(2) }}</div>
+              <div class="div5">-{{ "{:.2f}".format(inrvalue | round(2) - exchanges_value[1] | round(2)) }}%              </div>
             </div>
           </div>
         </div>
@@ -118,11 +118,11 @@
           <div class="frame-parent3">
             <div class="coinbase-price-parent">
               <div class="coinbase-price">KuCoin Price</div>
-              <div class="inr2">~ ₹{{inrvalue | round(2) }} INR</div>
+              <div class="inr2"></div>
             </div>
             <div class="parent">
-              <div class="div4">${{exchanges_value[2] | round(2) }}</div>
-              <div class="div5">+1.68%</div>
+              <div class="div4">{{exchanges_value[2] | round(2) }}</div>
+              <div class="div5">-{{ "{:.2f}".format(inrvalue | round(2) - exchanges_value[2] | round(2)) }}%</div>
             </div>
           </div>
         </div>
