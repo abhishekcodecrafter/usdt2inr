@@ -49,6 +49,8 @@ def transactions():
     withdrawls = get_withdrawls(user_phone_number)
     no_of_txns = get_no_completed_transactions(user_phone_number)
 
+    print(withdrawls)
+
     return render_template('transactions.html', exchange_rate=exchange_rate, deposits=deposits,
                            withdrawals=withdrawls, no_of_txns=no_of_txns)
 
