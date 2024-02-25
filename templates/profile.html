@@ -78,10 +78,14 @@
               </div>
           </div>          
             <hr>
+            <div id="verificationBox" hidden>
+              <p id="verificationMessage" hidden></p>
+            </div>
+            <div id="invite-code" hidden> {{ invite_link }}</div>
             <div class="row">
               <div class="col-sm-12 d-flex justify-content-between align-items-center">
                 <a class="btn btn1"  href="/cwp">Withdrawals Password</a>
-                <a class="btn btn1"  href="/rh">Recharge History</a>
+                <a class="btn btn1" onclick="copyInviteLink()" style="color:white;">Copy Invite Link</a>
                 </div>
               </div>
 

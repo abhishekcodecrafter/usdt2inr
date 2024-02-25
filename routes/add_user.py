@@ -1,12 +1,14 @@
-from flask import request, jsonify
+from flask import request, jsonify, redirect
 from db.models import create_user, get_user_by_phone_number
+from routes.all_pages import get_user_phone_number
 
 
 def add_user():
     try:
         # Get data from JSON request
-        data = request.get_json()
-        phone_number = data.get('phone_number')
+        phone_number = get_user_phone_number();
+        if not phone_number:
+            return redirect('/')
 
         # Check if the user already exists
         existing_user = get_user_by_phone_number(phone_number)

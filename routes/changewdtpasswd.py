@@ -1,16 +1,19 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect
 from flask_cors import CORS
 from db.models import edit_wdt_password_model  # Import your function for changing the withdrawals password
+from routes.create_INR_wdt import get_user_phone_number
 
 
 def change_withdrawals_password():
     try:
         data = request.get_json()
-        phonenumber = data.get('phoneNumber')
         new_password = data.get('newPassword')
         reenter_password = data.get('reenterPassword')
         security_otp = data.get('securityOTP')
 
+        phone = get_user_phone_number();
+        if not phone:
+            return redirect('/')
         # You might want to add additional validation logic here
 
         # Check if new password and reentered password match
@@ -18,7 +21,7 @@ def change_withdrawals_password():
             return jsonify({'success': False, 'message': 'New password and re-entered password do not match'})
 
         # Perform the actual password change in the database
-        success = edit_wdt_password_model(new_password, phonenumber)
+        success = edit_wdt_password_model(new_password, phone)
 
         if success:
             return jsonify({'success': True, 'message': 'Withdrawals password changed successfully'})

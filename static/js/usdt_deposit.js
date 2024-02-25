@@ -10,8 +10,6 @@ function submitDeposit() {
     const walletAddress = $('#wallet-address').text();
     const txnID = document.getElementById('txnID').value;
 
-    console.log(walletAddress)
-    console.log(txnID)
     const data = {
         "address" : walletAddress,
         "txnId" : txnID
@@ -28,7 +26,7 @@ function submitDeposit() {
     .then(response => response.json())
     .then(responseData => {
         if (responseData.success) {
-            var successMsg = document.getElementById('successmsg');
+            var successMsg = document.getElementById('deposit-alert');
             successMsg.style.display = 'block';
             setTimeout(function () {
                 successMsg.style.display = 'none';
@@ -36,6 +34,12 @@ function submitDeposit() {
             }, 3000);
         } else {
             console.error('Error on submit deposit', responseData);
+            var errorMsg = document.getElementById('deposit-alert');
+            errorMsg.innerHTML = responseData.message
+            errorMsg.style.display = 'block';
+            setTimeout(function () {
+                errorMsg.style.display = 'none';
+            }, 3000);
         }
     })
     .catch(error => {

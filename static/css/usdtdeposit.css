@@ -44,6 +44,21 @@ form {
     z-index: 1000;
 }
 
+#deposit-alert {
+    color: white;
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(77, 77, 77, 1);
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-top: 10px;
+    z-index: 1000;
+}
+
 .header {
     text-align: center;
     color: white;
