@@ -86,12 +86,14 @@
               </div>
               <div class="vector-container-inner">
                 <button class="frame-button">
-                  <div class="frame-child1"></div>
                   {% if withdrawal['status'] == 'Processing' %}
+                  <div class="frame-child1"></div>
                   <div class="pending">{{withdrawal['status']}}</div>
                   {% elif withdrawal['status'] == 'Success'  %}
+                  <div class="frame-child1"></div>
                   <div class="success">{{withdrawal['status']}}</div>
                   {% else  %}
+                  <div class="failed-status-frame"></div>
                   <div class="failed">{{withdrawal['status']}}</div>
                   {% endif %}
 
