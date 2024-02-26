@@ -86,6 +86,8 @@ function getFormData() {
     };
 }
 
+
+
 function authenticateUser() {
     const formData = getFormData();
 
@@ -169,6 +171,8 @@ function authenticateUser() {
                 verificationMessage.innerText = 'Invalid OTP. Please enter the correct OTP.';
             }
         })
+
+        
         .catch(error => {
             console.error('Error verifying OTP:', error);
             verificationMessage.removeAttribute('hidden');
@@ -181,7 +185,6 @@ function authenticateUser() {
         verificationMessage.innerText = 'Invalid OTP. Please enter the correct OTP.';
     }
 }
-
 
 $(document).ready(function() {
     $('#reenterPassword').on('input', function() {

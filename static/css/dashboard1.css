@@ -341,7 +341,7 @@
 }
 .empty-frame-c {
   font-size: var(--font-size-mid);
-  color: red;
+  color: orange;
   text-align: left;
 }
 .empty-frame2 {
@@ -412,7 +412,7 @@
 }
 .div5 {
   font-size: var(--font-size-mid);
-  color: red;
+  color: orange;
   text-align: left;
 }
 .parent {
