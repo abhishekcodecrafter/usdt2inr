@@ -19,10 +19,10 @@ def add_user():
             active = True
             success = create_user(phone_number, usdt_balance, hold_balance, active)
             if success:
-                return jsonify({"success": True, "message": "User created successfully"})
+                return jsonify({"success": True, "message": "User created successfully"}), 200
             else:
-                return jsonify({"success": False, "message": "Error creating user"})
+                return jsonify({"success": False, "message": "Error creating user"}), 500
         else:
-            return jsonify({"success": False, "message": "User already exists"})
+            return jsonify({"success": False, "message": "User already exists"}), 200
     except Exception as e:
         return jsonify({"success": False, "message": f"Error: {str(e)}"})
