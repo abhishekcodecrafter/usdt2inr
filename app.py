@@ -35,6 +35,9 @@ from routes.log_out import logout
 from routes.changewdtpasswd import change_withdrawals_password
 from routes.create_INR_wdt import create_INR_wdt
 from routes.create_USDT_wdt import create_USDT_wdt
+from routes.validate_IFSC import validate_IFSC
+from routes.admin import admin_panel , get_users , save_user_data , get_settings_route
+
 
 # Register routes
 app.route('/')(index)
@@ -63,7 +66,21 @@ app.route('/edit_tg_username', methods=['PUT'])(edit_tg_username)
 app.route('/change_wdtpassword', methods=['POST'])(change_withdrawals_password)
 app.route('/create_INR_wdt_request', methods=['POST'])(create_INR_wdt)
 app.route('/create_USDT_wdt_request', methods=['POST'])(create_USDT_wdt)
-app.route('/submitDeposit ',methods=['POST'])(submitDeposit)
+app.route('/submitDeposit ', methods=['POST'])(submitDeposit)
+app.route('/Validate_IFSC', methods=['POST'])(validate_IFSC)
+app.route('/admin')(admin_panel)
+app.route('/get_users')(get_users)
+app.route('/get_transactions')(get_all_transactions)
+app.route('/save_user_data', methods=['POST'])(save_user_data)
+app.route('/get_settings_route')(get_settings_route)
+
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return redirect('/')
+
+
 
 
 if __name__ == '__main__':

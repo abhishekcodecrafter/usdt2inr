@@ -19,6 +19,47 @@ const verificationMessage = document.getElementById('verificationMessage');
                 rect.right <= (window.innerWidth || document.documentElement.clientWidth)
             );
         }
+
+
+        var ifscInput = document.getElementById('ifsc');
+
+        ifscInput.addEventListener('input', function(event) {
+            var inputValue = event.target.value;
+        
+            var serverEndpoint = '/Validate_IFSC';
+        
+            var data = {
+                ifsc: inputValue
+            };
+        
+            fetch(serverEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+
+            .then(response => response.json())
+            .then(response_data => {
+                console.log(response_data);
+                if (response_data.status == 'Success'){
+                    msgbox = document.getElementById("Validation_Msg")
+                    msgbox.innerHTML = `Bank Found Successfully. <span style="color: green;">${response_data.bank_details['BANK']}</span>`;
+                }
+                if (response_data.status == 'Failed'){
+                    msgbox = document.getElementById("Validation_Msg")
+                    msgbox.innerHTML = `Not a Valid IFSC Code: <span style="color: red;">${inputValue}</span>`;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                msgbox = document.getElementById("Validation_Msg")
+                msgbox.innerHTML = `Server Error : ${error}`;
+            });
+        });
+        
+
     });
     
     function redirectTo(page) {
@@ -66,9 +107,27 @@ const verificationMessage = document.getElementById('verificationMessage');
                         window.location.href = "/dashboard";
                     }, 3000);
                 } else {
-                    verificationMessage.innerText = responseData.message;
-                    verificationBox.removeAttribute('hidden');
-                    verificationMessage.removeAttribute('hidden');
+                    var Forgotpassword = "/cwp";
+                    var RechargeNow = "/usdt_deposit_info?redirect=usdtwithdraw";
+                    
+                    if (responseData.message === "Authentication failed") {
+                        verificationMessage.innerHTML = `Wrong Transaction Password. Authentication failed. <br> <a href="${Forgotpassword}" style="color: bisque; text-decoration: underline;">Forgot Password?</a>`;
+                        verificationBox.removeAttribute('hidden');
+                        verificationMessage.removeAttribute('hidden');
+                    }
+                    
+                    if (responseData.message === "Insufficient balance To Trade!") {
+                        verificationMessage.innerHTML = `Insufficient balance To Trade! <br> <a href="${RechargeNow}" style="color: bisque; text-decoration: underline;">Recharge Now</a>`;
+                        verificationBox.removeAttribute('hidden');
+                        verificationMessage.removeAttribute('hidden');
+                    }
+                    
+                    if (responseData.message !== "Authentication failed" && responseData.message !== "Insufficient balance To Trade!") {
+                        verificationMessage.innerText = responseData.message;
+                        verificationBox.removeAttribute('hidden');
+                        verificationMessage.removeAttribute('hidden');
+                    }
+                    
                 }
             })
             .catch(error => {

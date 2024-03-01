@@ -9,9 +9,18 @@
     <link rel="stylesheet" href="static/css/inrwrh.css">
     <link rel="stylesheet" href="static/css/global.css" />
     <link rel="stylesheet" href="static/css/inrwrh1.css" />
+    <link rel="stylesheet" href="static/css/spinner.css">
   
 </head>
 <body>
+
+  <div id="spinner" class="loading-state">
+    <div class="loading"></div>
+    <div class="loading-text">
+      <span class="orange-text">Hmm,</span>
+      <span class="black-text"> Loading....</span>
+    </div>
+  </div>
 
 
     <section id="ipcontainer" class="i-phone-pro-max-frame">
@@ -48,24 +57,25 @@
       <div class="containerform form-container">
         <form id="form">
             <div class="form-group">
-                <label for="amount">Amount:</label>
-                <input type="text" class="form-control" id="amount" name="amount" required>
+                <label for="amount">Amount (USDT):</label>
+                <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter Amount in USDT" required autocomplete="on" autofocus>
             </div>
             <div class="form-group">
                 <label for="accountNo">Account No.:</label>
-                <input type="text" class="form-control" id="accountNo" name="accountNo" required>
+                <input type="number" class="form-control" id="accountNo" name="accountNo" placeholder="Enter Account Number" required autocomplete="on">
             </div>
             <div class="form-group">
                 <label for="accountName">Account Holder Name:</label>
-                <input type="text" class="form-control" id="accountName" name="accountName" required>
+                <input type="name" class="form-control" id="accountName" name="accountName" placeholder="Enter Account Holder Name" required autocomplete="on">
             </div>
             <div class="form-group">
                 <label for="ifsc">IFSC:</label>
-                <input type="text" class="form-control" id="ifsc" name="ifsc" required>
+                <div id="Validation_Msg" class="mb-2"></div>
+                <input type="text" class="form-control" id="ifsc" name="ifsc" placeholder="Enter IFSC Code" required autocomplete="on">
             </div>
             <div class="form-group">
                 <label for="transactionPassword">Transaction Password:</label>
-                <input type="password" class="form-control" id="transactionPassword" name="transactionPassword" required>
+                <input type="password" class="form-control" id="transactionPassword" name="transactionPassword" placeholder="Enter Your Transaction Password" required autocomplete="on">
             </div>
             <div id="verificationBox" hidden>
               <p id="verificationMessage" hidden></p>
@@ -93,6 +103,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script src="static/js/inr_exchange.js"></script>
+<script src="static/js/spinner.js"></script>
 
 
 </body>

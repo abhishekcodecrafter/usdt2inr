@@ -9,9 +9,21 @@
     <link rel="stylesheet" href="static/css/usdtwidthdrawl.css">
     <link rel="stylesheet" href="static/css/global.css">
     <link rel="stylesheet" href="static/css/inrwrh1.css">
+    <link rel="stylesheet" href="static/css/spinner.css">
 
 </head>
 <body>
+
+
+  <div id="spinner" class="loading-state">
+    <div class="loading"></div>
+    <div class="loading-text">
+      <span class="orange-text">Hmm,</span>
+      <span class="black-text"> Loading....</span>
+    </div>
+  </div>
+
+
 
     <section class="i-phone-pro-max-frame">
         <div class="left-arrow" id="scrollArrow" onclick="redirectTo('/fullprofile')">
@@ -46,21 +58,21 @@
       <div class="containerform form-container">
         <form id="form">
             <div class="form-group">
-                <label for="amount">Amount:</label>
-                <input type="text" class="form-control" id="amount" name="amount" required>
+                <label for="amount">Amount (USDT):</label>
+                <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter Amount in USDT" required autocomplete="on" autofocus>
             </div>
             <div class="form-group">
                 <label for="accountNo">USDT Address:</label>
-                <input type="text" class="form-control" id="usdtaddress" name="usdtaddress" required>
+                <input type="text" class="form-control" id="usdtaddress" name="usdtaddress" placeholder="Enter Your USDT Address" required autocomplete="on">
             </div>
             <div class="form-group">
                 <label for="transactionPassword">Transaction Password:</label>
-                <input type="password" class="form-control" id="transactionPassword" name="transactionPassword" required>
+                <input type="password" class="form-control" id="transactionPassword" name="transactionPassword" placeholder="Enter Your Transaction Password" required autocomplete="on">
             </div>
             <div id="verificationBox" hidden>
               <p id="verificationMessage" hidden></p>
           </div>
-            <button id="sendotp" class="btn btn-success btn-block" id="changePassword">Submit</button>
+            <button id="sendotp" class="btn btn-block" id="changePassword">Submit</button>
         </form>
     </div>
 
@@ -80,6 +92,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script src="static/js/usdtwidthdrawl.js"></script>
+<script src="static/js/spinner.js"></script>
 
 </body>
 </html>

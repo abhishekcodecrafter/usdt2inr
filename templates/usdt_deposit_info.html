@@ -7,9 +7,19 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <link rel="stylesheet" href="static/css/usdtdepositinfo.css">
+    <link rel="stylesheet" href="static/css/spinner.css">
   
 </head>
 <body>
+
+    <div id="spinner" class="loading-state">
+        <div class="loading"></div>
+        <div class="loading-text">
+          <span class="orange-text">Hmm,</span>
+          <span class="black-text"> Loading....</span>
+        </div>
+      </div>
+
 
     <div class="left-arrow" id="scrollArrow" onclick="history.back()">
         <img src="static/assets/svg-elements/navigate-back.svg" alt="Navigate Back">
@@ -44,6 +54,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script src="static/js/usdtdepositinfo.js"></script>
+    <script src="static/js/spinner.js"></script>
 
 </body>
 </html>

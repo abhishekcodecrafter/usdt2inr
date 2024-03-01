@@ -17,7 +17,7 @@ function toggleTransactions(activeButton) {
     }
 }
 
-// Click on withdrawals button by default on document load
+
 document.addEventListener("DOMContentLoaded", function() {
     toggleTransactions('withdrawals');
 });

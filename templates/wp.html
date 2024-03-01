@@ -6,8 +6,22 @@
   <title>Withdrawals Password Change</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="static/css/wp.css">
+  <link rel="stylesheet" href="static/css/spinner.css">
+
+
 </head>
 <body>
+
+
+  <div id="spinner" class="loading-state">
+    <div class="loading"></div>
+    <div class="loading-text">
+      <span class="orange-text">Hmm,</span>
+      <span class="black-text"> Loading....</span>
+    </div>
+  </div>
+
+
 
   <div id="phoneNumber" hidden>{{user_phonenumber}}</div>
 
@@ -47,7 +61,7 @@
 
 
   <script src="static/js/wp.js"></script>
-
+  <script src="static/js/spinner.js"></script>
 
 </body>
 </html>

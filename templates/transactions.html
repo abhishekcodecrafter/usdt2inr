@@ -6,6 +6,10 @@
 
     <link rel="stylesheet" href="static/css/global.css" />
     <link rel="stylesheet" href="static/css/transactions.css" />
+    <link rel="stylesheet" href="static/css/spinner.css"/>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
@@ -17,6 +21,16 @@
 
   </head>
   <body>
+
+
+    <div id="spinner" class="loading-state">
+      <div class="loading"></div>
+      <div class="loading-text">
+        <span class="orange-text">Hmm,</span>
+        <span class="black-text"> Loading....</span>
+      </div>
+    </div>
+
     <div class="iphone-14-15-pro-max-3">
       <section class="frame-root">
         <div class="transaction-box">
@@ -48,20 +62,18 @@
       </section>
 
 
-      <div class="empty-frame1">
+      <div id="switch_buttons" class="empty-frame1">
         <div id="widthdrawls" class="frame-withdrawals-info">
             <div class="withdrawals1 active" id="withdrawalsButton" onclick="toggleTransactions('withdrawals')">Withdrawals</div>
         </div>
         <div class="deposits1" id="depositsButton" onclick="toggleTransactions('deposits')">Deposits</div>
     </div>
-
-    {{widthdrawals}}
      
     <section id="withdrawals" style="width: 100%; display: flex; flex-direction: column; gap: 10px">
       {% if withdrawals %}
       {% for withdrawal in withdrawals %}
       <section onclick="window.location.href='/transaction_details'" class="empty-frame-vector-u-s-d-t">
-        <div class="success-status-frame">{{withdrawal['timestamp']}}</div>
+        <div class="success-status-frame">{{ withdrawal['time'] }}</div>
         <div class="failed-status-frame">
           <div class="failed-status-frame-child"></div>
           <div class="price-rs-text">
@@ -73,7 +85,11 @@
                     <div class="id3">ID:</div>
                     <div class="wm12451sx3">{{withdrawal['id']}}</div>
                     <div class="price-text-wrapper">
-                      <div class="price-text">{{withdrawal['amount'] * withdrawal['exchange_rate'] }}</div>
+                      {% if withdrawal['amount'] is not none and withdrawal['exchange_rate'] is not none %}
+                      <div class="price-text">{{ (withdrawal['amount'] * withdrawal['exchange_rate']) | round(2) }}</div>
+                    {% else %}
+                    <div class="price-text">Fetching...</div>
+                    {% endif %}
                     </div>
                   </div>
                   <div class="price-rs-container">
@@ -85,19 +101,22 @@
                 </div>
               </div>
               <div class="vector-container-inner">
-                <button class="frame-button">
                   {% if withdrawal['status'] == 'Processing' %}
+                  <button class="frame-button">
                   <div class="frame-child1"></div>
                   <div class="pending">{{withdrawal['status']}}</div>
+                  </button>
                   {% elif withdrawal['status'] == 'Success'  %}
-                  <div class="frame-child1"></div>
+                  <button class="success-frame">
+                  <div class="success-frame-child"></div>
                   <div class="success">{{withdrawal['status']}}</div>
+                  </button>
                   {% else  %}
-                  <div class="failed-status-frame"></div>
+                  <button class="rectangle-parent1">
+                  <div class="frame-child2"></div>
                   <div class="failed">{{withdrawal['status']}}</div>
-                  {% endif %}
-
                 </button>
+                  {% endif %}
               </div>
             </div>
           </div>
@@ -115,7 +134,7 @@
       {% endif %}
     </section>
 
-    <sction id="deposits" style="width: 100%; display: flex; flex-direction: column; gap: 10px;">
+    <section id="deposits" style="width: 100%; display: flex; flex-direction: column; gap: 10px;">
       {% if deposits %}
       {% for deposit in deposits %}
       <section class="empty-frame-vector-u-s-d-t">
@@ -133,24 +152,40 @@
                   <div class="price-rs-container">
                     <span>
                       <!-- <span>Price : </span> -->
-                      <span class="rs-918">{{deposit['timestamp']}}</span>
+                      <span class="rs-918">{{deposit['time']}}</span>
                     </span>
                   </div>
                 </div>
               </div>
               <div class="vector-container-inner">
+                
+                
+                {% if deposit['status'] == 'Processing' %}
                 <button class="frame-button">
-                  <div class="frame-child1"></div>
-                  <div class="pending">{{deposit['status']}}</div>
+                <div class="frame-child1"></div>
+                <div class="pending">{{deposit['status']}}</div>
                 </button>
-                {% if deposit['amount'] == None %}
-                <div class="price-text1" >Fetching</div>
-                {% else %}
-                <div class="price-text1" >{{deposit['amount']}}</div>
+                {% elif deposit['status'] == 'Success'  %}
+                <button class="success-frame">
+                <div class="success-frame-child"></div>
+                <div class="success">{{deposit['status']}}</div>
+                </button>
+                {% else  %}
+                <button class="rectangle-parent1">
+                <div class="frame-child2"></div>
+                <div class="failed">{{deposit['status']}}</div>
+                </button>
                 {% endif %}
 
 
+                {% if deposit['amount'] == None %}
+                <div class="price-text1" >Fetching...</div>
+                {% else %}
+                <div class="price-text1" >{{deposit['amount']}}</div>
+                {% endif %}
               </div>
+
+
             </div>
           </div>
           <div class="vector-container-parent">
@@ -160,12 +195,13 @@
               alt=""
               src="./static/assets/public/vector-991.svg"
             />
+            </div>
       </section>
       {% endfor %}
       {% else %}
         <p>No Deposits to display.</p>
       {% endif %}
-      </sction>
+      </section>
 
 
 
@@ -195,7 +231,13 @@
 
 
 
-
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="static/js/transactions.js"></script>
+    <script src="static/js/spinner.js"></script>
+
+
+
   </body>
 </html>

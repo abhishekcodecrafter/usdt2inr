@@ -335,7 +335,7 @@
     width: 184px;
     position: absolute;
     margin: 0 !important;
-    right: -8px;
+    right: 4px !important;
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -948,12 +948,13 @@
         }
   
         .bottom-nav a {
-            text-decoration: none;
-            color: #000000;
+            text-decoration: none !important;
+            color: #000000 !important;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+
   
         .bottom-nav img {
             width: 40px;
@@ -976,3 +977,14 @@
     background-color: #1acf61 !important;
     color: #f8f8f8 !important;
   }
+
+
+#withdrawals{
+  overflow: auto;
+  max-height: 300px;
+}
+
+#deposits{
+  overflow: auto;
+  max-height: 300px;
+}

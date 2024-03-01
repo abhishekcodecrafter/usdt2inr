@@ -1,6 +1,6 @@
 import time
 from random import randint
-
+from datetime import datetime
 from passlib.hash import bcrypt
 import logging
 from db.db_connector import DBConnector
@@ -55,6 +55,53 @@ def get_exchanges_todays_value():
     return result[0]
 
 
+def save_user_state_data(phone=None, Wallet_balance=None, User_Status=None):
+    if Wallet_balance is not None:
+        try:
+            print("Wallet Balance : " , Wallet_balance , phone )
+            query = f""" update users set usdt_balance = {Wallet_balance} where phone_number = {phone} """
+    
+            connector = DBConnector()
+            success = connector.execute_query(query)
+            connector.close_connection()
+
+            return success
+        except Exception as e:
+            return False
+
+    if User_Status is not None:
+
+        if User_Status == 'Active':
+            query = f"UPDATE users SET active = True WHERE phone_number = {phone}"
+        elif User_Status == 'Banned':
+            query = f"UPDATE users SET active = False WHERE phone_number = {phone}"
+
+
+        try:
+            connector = DBConnector()
+            success = connector.execute_query(query)
+            connector.close_connection()
+
+            return success
+        except Exception as e:
+            return False
+            
+
+
+def get_hold_balance(number):
+    query = f"SELECT sum(amount) from transactions WHERE phone_number = {number} AND status = 'PROCESSING' AND type = 'WITHDRAW' "
+
+    connector = DBConnector()
+    result = connector.fetch_all(query)
+    connector.close_connection()
+
+
+    if result is None:
+        return []
+    else:
+        return result[0][0]
+
+
 def get_all_users():
     query = "SELECT * FROM users"
 
@@ -62,7 +109,88 @@ def get_all_users():
     result = connector.fetch_all(query)
     connector.close_connection()
 
-    return result
+    if result is None:
+        return []
+    data = []
+    for row in result:
+        data.append({
+        "phone_number": row[0],
+        "usdt_balance": row[1],
+        "hold_balance": get_hold_balance(row[0]),
+        "t_me": row[3],
+        "transaction_password": row[4],
+        "active": row[5],
+    })
+
+    return data
+
+def get_all_transactions():
+    query = "SELECT * FROM transactions"
+
+    connector = DBConnector()
+    result = connector.fetch_all(query)
+    connector.close_connection()
+    
+    deposits = []
+    withdrawals = []
+    
+    if result is None:
+        return {'deposits': [], 'withdrawals': []}
+    
+    for row in result:
+        if row[2] == 'DEPOSIT':
+            deposits.append({
+                "phone_number": row[0],
+                "status": row[1],
+                "type": row[2],
+                "sub_type": row[3],
+                "deposit_address": row[4],
+                "txn_id": row[6],
+                "amount": row[10],
+                "created_at": row[11],
+                "deposit_txn_id": row[13],
+                "exchange_rate": row[14],
+            })
+    
+        else:
+            withdrawals.append({
+                "phone_number": row[0],
+                "status": row[1],
+                "type": row[2],
+                "sub_type": row[3],
+                "withdraw_address": row[5],
+                "txn_id": row[6],
+                "account_no": row[7],
+                "account_name": row[8],
+                "ifsc": row[9],
+                "amount": row[10],
+                "created_at": row[11],
+                "updated_at": row[12],
+                "exchange_rate": row[14],
+            })
+    
+    return {'deposits': deposits, 'withdrawals': withdrawals}
+
+
+def get_settings():
+    query = "SELECT * FROM settings"
+
+    connector = DBConnector()
+    result = connector.fetch_all(query)
+    connector.close_connection()
+
+    data = {
+                "exchange_rate": result[0][0],
+                "wazir_x_price": result[0][1],
+                "binance_price": result[0][2],
+                "ku_coin_price": result[0][3],
+                "invite_link": result[0][4],
+            }
+    
+    print(data)
+
+    return data
+
 
 
 def get_user_by_phone_number(phone_number):
@@ -86,15 +214,6 @@ def get_user_by_phone_number(phone_number):
         "wallet_qr": "https://chart.googleapis.com/chart?chs=300x300&chld=L|2&cht=qr&chl=bc1qraryeyzzzr343p8n4ha4v3dc49hemfdjz3m7m3"
     }
 
-
-def get_all_transactions():
-    query = "SELECT * FROM transactions"
-
-    connector = DBConnector()
-    result = connector.fetch_all(query)
-    connector.close_connection()
-
-    return result
 
 
 def get_users_all_transactions(number):
@@ -138,6 +257,9 @@ def transform_status(status):
         return "Failed"
     return status
 
+def convert_timestamp(timestamp):
+    return datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
+
 
 def get_deposits(phone_number):
     query = f"SELECT * FROM transactions where phone_number = {phone_number} and type='DEPOSIT'"
@@ -153,7 +275,7 @@ def get_deposits(phone_number):
             "status": transform_status(row[1]),
             "type": row[2],
             "amount": row[10],
-            "timestamp": row[11],
+            "time": convert_timestamp(row[11]),
             "exchange_rate": row[14]
         })
 
@@ -175,7 +297,7 @@ def get_withdrawls(phone_number):
             "status": transform_status(row[1]),
             "type": row[2],
             "amount": row[10],
-            "timestamp": row[11],
+            "time": convert_timestamp(row[11]),
             "exchange_rate": row[14]
         })
 
@@ -273,16 +395,16 @@ def authenticate_user_by_pass(phone, password):
         return True
 
 
-def create_INR_wdt_model(phone, amount, accountNo, accountName, ifsc):
+def create_INR_wdt_model(phone, amount, accountNo, accountName, ifsc ,exchange_rate):
     try:
         query = """
             INSERT INTO transactions (txn_id, phone_number, amount, account_no, account_name, ifsc,
-            created_at, updated_at,
+            exchange_rate,created_at, updated_at,
             status, type, sub_type)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'PROCESSING', 'WITHDRAW', 'INR')
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 'PROCESSING', 'WITHDRAW', 'INR')
         """
 
-        values = (get_txn_id(), phone, amount, accountNo, accountName, ifsc, int(time.time()), int(time.time()))
+        values = (get_txn_id(), phone, amount, accountNo, accountName, ifsc,exchange_rate,int(time.time()), int(time.time()))
 
         connector = DBConnector()
         success = connector.execute_query(query, values)
@@ -296,13 +418,13 @@ def create_INR_wdt_model(phone, amount, accountNo, accountName, ifsc):
         return False
 
 
-def create_deposit_model(phone, address, txn_id):
+def create_deposit_model(phone, address, txn_id,exchange_rate):
     try:
         query = """
-            INSERT INTO transactions (txn_id, phone_number, deposit_address, deposit_txn_id, created_at, updated_at, status, type, sub_type)
-            VALUES (%s, %s, %s, %s, %s, %s, 'PROCESSING', 'DEPOSIT', 'USDT')
+            INSERT INTO transactions (txn_id, phone_number, deposit_address, deposit_txn_id, exchange_rate, created_at, updated_at, status, type, sub_type)
+            VALUES (%s, %s, %s, %s, %s, %s,%s,'PROCESSING', 'DEPOSIT', 'USDT')
         """
-        values = (get_txn_id(), phone, address, txn_id, int(time.time()), int(time.time()))
+        values = (get_txn_id(), phone, address, txn_id,exchange_rate , int(time.time()), int(time.time()))
 
         connector = DBConnector()
         success = connector.execute_query(query, values)
@@ -317,11 +439,11 @@ def create_deposit_model(phone, address, txn_id):
 def create_USDT_wdt_model(phone, amount, withdraw_address, exchange_rate):
     try:
         query = """
-            INSERT INTO transactions (txn_id, phone_number, amount, withdraw_address, exchange_rate, status, type, sub_type)
-            VALUES (%s, %s, %s, %s, %s, 'PROCESSING', 'WITHDRAW', 'USDT')
+            INSERT INTO transactions (txn_id, phone_number, amount, withdraw_address, exchange_rate,created_at, updated_at , status, type, sub_type)
+            VALUES (%s, %s, %s, %s, %s,%s, %s, 'PROCESSING', 'WITHDRAW', 'USDT')
         """
 
-        values = (get_txn_id(), phone, amount, withdraw_address, exchange_rate)
+        values = (get_txn_id(), phone, amount, withdraw_address, exchange_rate,int(time.time()), int(time.time()))
 
         connector = DBConnector()
         success = connector.execute_query(query, values)
@@ -334,6 +456,11 @@ def create_USDT_wdt_model(phone, amount, withdraw_address, exchange_rate):
         print(f"An error occurred while creating INR withdrawal: {str(e)}")
         return False
 
-
 def get_txn_id():
     return "WME" + str(randint(1000000000, 9999999999))
+
+#APPROX. UNIQUE TXN ID'S 
+# def get_txn_id():
+#     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+#     random_number = randint(10000, 99999)
+#     return f"WME{timestamp}{random_number}"

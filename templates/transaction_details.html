@@ -8,9 +8,20 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 <link rel="stylesheet" href="/static/css/transaction_details.css">
+<link rel="stylesheet" href="static/css/spinner.css">
 </head>
 
 <body>
+
+
+    <div id="spinner" class="loading-state">
+        <div class="loading"></div>
+        <div class="loading-text">
+          <span class="orange-text">Hmm,</span>
+          <span class="black-text"> Loading....</span>
+        </div>
+      </div>
+
 
     <div class="container1">
         <div class="left-arrow" onclick="history.back()">
@@ -69,6 +80,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="/static/js/transaction_details.js"></script>
+    <script src="static/js/spinner.js"></script>
 
 </body>
 

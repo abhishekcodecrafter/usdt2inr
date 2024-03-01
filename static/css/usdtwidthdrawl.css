@@ -45,6 +45,11 @@ body {
     font-weight: bolder;
 }
 
+#sendotp {
+    background-color: #000000;
+    color: white;
+}
+
 .box p {
     color: white;
 }

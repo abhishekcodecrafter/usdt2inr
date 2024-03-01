@@ -13,14 +13,14 @@ def create_USDT_wdt():
         uusdt_address = data.get('accountNo')
         password = data.get('transactionPassword')
 
-        phone = get_user_phone_number();
+        phone = get_user_phone_number()
         if not phone:
             return redirect('/')
 
         user_details = get_user_by_phone_number(phone)
 
-        if amount > user_details['usdt_balance']:
-            return jsonify({'success': False, 'message': 'Insufficient balance'})
+        # if int(amount) > user_details['usdt_balance']:
+        #     return jsonify({'success': False, 'message': 'Insufficient balance To Trade!'})
 
         # Authenticate the user
         if not authenticate_user_by_pass(phone, password):
@@ -45,7 +45,7 @@ def authenticate_user_by_pass(phone, password):
         user = get_user_by_phone_number(phone)
 
         if user and len(user) > 0:
-            stored_hashed_password = user[0][6]
+            stored_hashed_password = user['transaction_password']
 
             # Check if the input password matches the stored hashed password
             if bcrypt.verify(password, stored_hashed_password):

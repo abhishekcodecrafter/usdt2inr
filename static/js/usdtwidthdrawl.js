@@ -76,10 +76,27 @@ document.addEventListener("DOMContentLoaded", function() {
               }, 3000);
 
             } else {
-              verificationMessage.removeAttribute('hidden');
-              verificationBox.removeAttribute('hidden');
-              verificationMessage.innerText = responseData.message;
-            }
+              var Forgotpassword = "/cwp";
+                    var RechargeNow = "/usdt_deposit_info?redirect=usdtwithdraw";
+                    
+                    if (responseData.message === "Authentication failed") {
+                        verificationMessage.innerHTML = `Wrong Transaction Password. Authentication failed. <br> <a href="${Forgotpassword}" style="color: bisque; text-decoration: underline;">Forgot Password?</a>`;
+                        verificationBox.removeAttribute('hidden');
+                        verificationMessage.removeAttribute('hidden');
+                    }
+                    
+                    if (responseData.message === "Insufficient balance To Trade!") {
+                        verificationMessage.innerHTML = `Insufficient balance To Trade! <br> <a href="${RechargeNow}" style="color: bisque; text-decoration: underline;">Recharge Now</a>`;
+                        verificationBox.removeAttribute('hidden');
+                        verificationMessage.removeAttribute('hidden');
+                    }
+                    
+                    if (responseData.message !== "Authentication failed" && responseData.message !== "Insufficient balance To Trade!") {
+                        verificationMessage.innerText = responseData.message;
+                        verificationBox.removeAttribute('hidden');
+                        verificationMessage.removeAttribute('hidden');
+                    }
+          }
         })
         .catch(error => {
             // Remove loading spinner or indicator here

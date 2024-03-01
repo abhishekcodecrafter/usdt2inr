@@ -1,9 +1,9 @@
 from flask import Flask, session, render_template, redirect, request, jsonify
-from db.models import create_user, edit_tg_username_model, get_current_exchange_rate, get_exchanges_todays_value, \
-    get_all_users, get_user_by_phone_number, get_users_all_transactions, get_all_transactions, \
-    get_a_transaction, create_transaction, create_deposit_model, get_no_completed_transactions, get_deposits, \
-    get_withdrawls, get_invite_link
-
+# from db.models import create_user, edit_tg_username_model, get_current_exchange_rate, get_exchanges_todays_value, \
+#     get_all_users, get_user_by_phone_number, get_users_all_transactions, get_all_transactions, \
+#     get_a_transaction, create_transaction, create_deposit_model, get_no_completed_transactions, get_deposits, \
+#     get_withdrawls, get_invite_link
+from db.models import *
 
 def get_user_phone_number():
     return session.get('phone_number', None)
@@ -202,7 +202,7 @@ def submitDeposit():
         if txn_id is None or txn_id == '':
             return jsonify({'success': False, 'message': 'Error! Transaction Id required'}), 500
 
-        success = create_deposit_model(user_phone_number, address, txn_id)
+        success = create_deposit_model(user_phone_number, address, txn_id,get_current_exchange_rate())
         if success:
             return jsonify({'success': True, 'message': 'Deposit Request Submitted'}), 200
         else:

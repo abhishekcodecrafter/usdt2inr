@@ -1,0 +1,128 @@
+.switch-button {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    border: none;
+    border-radius: 20px;
+    background: #dfd9ea;
+}
+
+.switch-button input {
+    display: none;
+}
+
+.switch-button .slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #dfd9ea; 
+    border-radius: 20px;
+    transition: background 0.28s cubic-bezier(0.4, 0, 0.2, 1), left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.switch-button input + .slider {
+    background: red; 
+    left: 0;
+}
+
+
+.switch-button input:checked + .slider {
+    background: #72da67; 
+    left: 25px;
+}
+
+
+ #header{
+        font-size: 10.5px;
+        font-weight: bolder;
+    }
+
+    [id^="row"] {
+        font-size: 10.5px;
+        font-weight:bold;
+    }
+
+    #transactionheader{
+        font-size: 10.5px;
+        font-weight: bolder;
+    }
+
+    [id^="transactionrow"] {
+        font-size: 10.5px;
+        font-weight:bold;
+    }
+
+    #settingsheader{
+        font-size: 10.5px;
+        font-weight: bolder;
+    }
+
+    [id^="settingsrow"] {
+        font-size: 10.5px;
+        font-weight:bold;
+    }
+
+
+    .btn-group .btn {
+            margin-right: 10px;
+            background-color: #dfd9ea;
+        }
+
+    .btn.active {
+            background-color: bisque;
+        }
+
+
+    .btn-group .btn {
+        font-size: 10.5px;
+        font-weight: bold;
+    }
+
+    
+    .TransactionDataContainer {
+    overflow-y: auto; 
+    max-height: 300px; 
+}
+
+
+
+@media (max-width: 456px) {
+
+    .switch-button {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 5px;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    border: none;
+    border-radius: 20px;
+    background: #72da67;
+}
+
+
+    #header{
+        font-size: 10.5px;
+        font-weight: bolder;
+    }
+
+    [id^="row"] {
+        font-size: 10.5px;
+        font-weight:bold;
+    }
+
+
+.t_me{
+    display: none;
+}
+
+
+
+}
