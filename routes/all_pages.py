@@ -5,6 +5,7 @@ from flask import Flask, session, render_template, redirect, request, jsonify
 #     get_withdrawls, get_invite_link
 from db.models import *
 
+
 def get_user_phone_number():
     return session.get('phone_number', None)
 
@@ -55,7 +56,6 @@ def transactions():
                            withdrawals=withdrawls, no_of_txns=no_of_txns)
 
 
-
 def transaction_details():
     user_phone_number = get_user_phone_number()
     if not user_phone_number:
@@ -69,8 +69,7 @@ def transaction_details():
     withdrawal_id = request.args.get('withdrawal_id')
     withdrawal_details = get_withdrawal_details(withdrawal_id)
 
-    print("Withdrawals details : ",withdrawal_details)
-
+    print("Withdrawals details : ", withdrawal_details)
 
     return render_template('transaction_details.html', details=withdrawal_details, no_of_txns=no_of_txns)
 
@@ -96,7 +95,7 @@ def inr_exchange():
         return redirect('/')
 
     user_details = get_user_by_phone_number(user_phone_number)
-    
+
     exchange_rate = get_current_exchange_rate()
     transaction_list = get_users_all_transactions(user_phone_number)
     data = list(transaction_list)
@@ -109,6 +108,7 @@ def cwp():
     if not user_phone_number:
         return redirect('/')
     return render_template('cwp.html', user_phonenumber=user_phone_number)
+
 
 def wp():
     user_phone_number = get_user_phone_number()
@@ -176,7 +176,6 @@ def rh():
     return render_template('rh.html', deposits=deposits, user_phonenumber=user_phone_number)
 
 
-
 def get_deposit_address(user_phone_number):
     user_details = get_user_by_phone_number(user_phone_number)
     return {
@@ -207,7 +206,7 @@ def submitDeposit():
         if txn_id is None or txn_id == '':
             return jsonify({'success': False, 'message': 'Error! Transaction Id required'}), 500
 
-        success = create_deposit_model(user_phone_number, address, txn_id,get_current_exchange_rate())
+        success = create_deposit_model(user_phone_number, address, txn_id, get_current_exchange_rate())
         if success:
             return jsonify({'success': True, 'message': 'Deposit Request Submitted'}), 200
         else:
@@ -215,7 +214,6 @@ def submitDeposit():
     except Exception as e:
         print("Error while submit deposit : ", e)
         return jsonify({'success': False, 'message': 'Deposit Request Failed'}), 500
-
 
 
 def usdt_deposit_info():
@@ -238,7 +236,8 @@ def full_profile():
     if exchange_rate:
         inr_value = exchange_rate
 
-    return render_template('fullprofile.html', user_details=data, inrvalue=inr_value, user_phonenumber=user_phone_number)
+    return render_template('fullprofile.html', user_details=data, inrvalue=inr_value,
+                           user_phonenumber=user_phone_number)
 
 
 def edit_tg_username():

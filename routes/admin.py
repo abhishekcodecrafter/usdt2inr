@@ -3,6 +3,7 @@ from db.models import *
 
 admins = ['admin1', 'admin2', '9509251093', '9001939821', '9256308961']
 
+
 def get_user_phone_number():
     return session.get('phone_number', None)
 
@@ -11,7 +12,7 @@ def admin_panel():
     if not phone:
         return redirect('/')
     if phone in admins:
-        return render_template('admin.html',phone=phone)
+        return render_template('admin.html', phone=phone)
     else:
         abort(403, "You are not authorized to access this page.")
 

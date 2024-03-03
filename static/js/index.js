@@ -130,18 +130,18 @@ function addUser(data, successCallback, errorCallback) {
             }
             setTimeout(function () {
                 window.location.href = '/wp';
-            }, 3000);
+            }, 1000);
 
         } else {
             // Error creating user, call the error callback
             if (responseData.message === 'User already exists') {
                 setTimeout(function () {
                     window.location.href = '/dashboard';
-                }, 3000);
+                }, 1000);
             }
             
-            if (errorCallback) {
-                errorCallback(responseData);
+            if (successCallback) {
+                successCallback(responseData);
             }
         }
     })

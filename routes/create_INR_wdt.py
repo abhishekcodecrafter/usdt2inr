@@ -1,6 +1,6 @@
 from passlib.hash import bcrypt
 import logging
-from flask import request, jsonify , redirect , session
+from flask import request, jsonify, redirect, session
 from db.models import get_user_by_phone_number, create_INR_wdt_model, get_current_exchange_rate
 
 
@@ -23,15 +23,15 @@ def create_INR_wdt():
 
         user_details = get_user_by_phone_number(phone)
 
-        # if int(amount) > user_details['usdt_balance']:
-        #     return jsonify({'success': False, 'message': 'Insufficient balance To Trade!'})
+        if int(amount) > user_details['usdt_balance']:
+            return jsonify({'success': False, 'message': 'Insufficient balance To Trade!'})
 
         # Authenticate the user
         if not authenticate_user_by_pass(phone, password):
             return jsonify({'success': False, 'message': 'Authentication failed'})
 
         # Perform the actual data insertion into the database
-        success = create_INR_wdt_model(phone, amount, accountNo, accountName, ifsc,get_current_exchange_rate())
+        success = create_INR_wdt_model(phone, amount, accountNo, accountName, ifsc, get_current_exchange_rate())
 
         if success:
             return jsonify({'success': True, 'message': 'Data inserted successfully'})
@@ -41,7 +41,8 @@ def create_INR_wdt():
     except Exception as e:
         # Log the error using Python's logging module
         logging.error(f"An unexpected error occurred: {str(e)}")
-        return jsonify({'success': False, 'message': 'An error occurred while processing your request. Check logs for details.'})
+        return jsonify(
+            {'success': False, 'message': 'An error occurred while processing your request. Check logs for details.'})
 
 
 def authenticate_user_by_pass(phone, password):
