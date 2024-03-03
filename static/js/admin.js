@@ -499,8 +499,8 @@ function displaySettingsData(SettingsData) {
                 <td class="text-md" id='binance_price' contenteditable>${SettingsData.binance_price || 'N/A'}</td>
                 <td class="text-md" id='ku_coin_price' contenteditable>${SettingsData.ku_coin_price}</td>
                 <td class="text-md" id='invite_link' contenteditable>${SettingsData.invite_link || 'N/A'}</td>
-                <td class="text-md" id='invite_link' contenteditable>${SettingsData.qr || 'N/A'}</td>
-                <td class="text-md" id='invite_link' contenteditable>${SettingsData.address || 'N/A'}</td>
+                <td class="text-md" id='qr' contenteditable>${SettingsData.qr || 'N/A'}</td>
+                <td class="text-md" id='address' contenteditable>${SettingsData.address || 'N/A'}</td>
             `;
 
 
