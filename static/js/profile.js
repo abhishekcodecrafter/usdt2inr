@@ -105,8 +105,9 @@ function changeAvatar(newAvatarSrc) {
 // Load the selected avatar from localStorage on page load
 document.addEventListener('DOMContentLoaded', function () {
   var savedAvatar = localStorage.getItem('selectedAvatar');
+  var avatar = document.getElementById('avatar');
+  
   if (savedAvatar) {
-    var avatar = document.getElementById('avatar');
     avatar.src = savedAvatar;
   }
   else {
