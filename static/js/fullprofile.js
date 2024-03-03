@@ -6,14 +6,14 @@ $(document).ready(function() {
   });
 
   document.addEventListener('DOMContentLoaded', function() {
-  var savedAvatar = localStorage.getItem('selectedAvatar');
-  if (savedAvatar) {
-      var avatar = document.getElementById('avatar');
-      avatar.src = savedAvatar;
-  }
-  else {
-    avatar.src = 'static/assets/avatars/av16.jpg';
-  }
+    var avatar = document.getElementById('avatar');
+    var savedAvatar = localStorage.getItem('selectedAvatar');
+
+    if (savedAvatar) {
+        avatar.src = savedAvatar;
+    } else {
+        avatar.src = 'static/assets/avatars/av16.jpg';
+    }
 });
   
 
