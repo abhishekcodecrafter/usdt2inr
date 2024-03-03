@@ -32,6 +32,18 @@ def get_current_exchange_rate():
     return result[0][0]
 
 
+def get_qr_and_address():
+    query = "SELECT qr, address FROM settings LIMIT 1;"
+
+    connector = DBConnector()
+    result = connector.fetch_all(query)
+    connector.close_connection()
+    if result is None or len(result) < 1:
+        return None
+
+    return result[0][0], result[0][1]
+
+
 def get_invite_link():
     query = "SELECT invite_link FROM settings LIMIT 1;"
     connector = DBConnector()
@@ -228,9 +240,9 @@ def get_settings():
         "binance_price": result[0][2],
         "ku_coin_price": result[0][3],
         "invite_link": result[0][4],
+        "qr": result[0][5],
+        "address": result[0][6]
     }
-
-    print(data)
 
     return data
 
@@ -251,9 +263,7 @@ def get_user_by_phone_number(phone_number):
         "hold_balance": result[2],
         "t_me": result[3],
         "transaction_password": result[4],
-        "active": result[5],
-        "wallet_address": "TUbzRkEnnMYZHfXU1zMVbngsnpNBBCV4Y3&token_id=TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
-        "wallet_qr": "https://i.ibb.co/nsvQ2LY/414331fe-ad01-4181-a825-50d42e560e63.jpg"
+        "active": result[5]
     }
 
 
@@ -466,7 +476,8 @@ def create_INR_wdt_model(phone, amount, accountNo, accountName, ifsc, exchange_r
         """
 
         values = (
-        get_txn_id(), phone, amount, accountNo, accountName, ifsc, exchange_rate, int(time.time()), int(time.time()))
+            get_txn_id(), phone, amount, accountNo, accountName, ifsc, exchange_rate, int(time.time()),
+            int(time.time()))
 
         connector = DBConnector()
         success = connector.execute_query(query, values)

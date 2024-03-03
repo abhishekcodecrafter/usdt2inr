@@ -95,11 +95,11 @@ def inr_exchange():
         return redirect('/')
 
     user_details = get_user_by_phone_number(user_phone_number)
-
     exchange_rate = get_current_exchange_rate()
-    transaction_list = get_users_all_transactions(user_phone_number)
-    data = list(transaction_list)
-    return render_template('inr_exchange.html', user_details=user_details, inrvalue=exchange_rate, transactions=data,
+    qr, address = get_qr_and_address()
+    user_details["wallet_address"] = address
+    user_details["wallet_qr"] = qr
+    return render_template('inr_exchange.html', user_details=user_details, inrvalue=exchange_rate,
                            user_phonenumber=user_phone_number)
 
 
@@ -161,10 +161,7 @@ def usdt_widthdrawl():
     exchange_rate = get_current_exchange_rate()
     if exchange_rate:
         inr_value = exchange_rate
-
-    transactions = get_users_all_transactions(user_phone_number)
-    data = list(transactions)
-    return render_template('usdtwidthdrawl.html', user_details=user_details, inrvalue=inr_value, transactions=data,
+    return render_template('usdtwidthdrawl.html', user_details=user_details, inrvalue=inr_value,
                            user_phonenumber=user_phone_number)
 
 
@@ -177,10 +174,10 @@ def rh():
 
 
 def get_deposit_address(user_phone_number):
-    user_details = get_user_by_phone_number(user_phone_number)
+    qr, address = get_qr_and_address()
     return {
-        "qr": user_details["wallet_qr"],
-        "address": user_details["wallet_address"]
+        "qr": qr,
+        "address": address
     }
 
 

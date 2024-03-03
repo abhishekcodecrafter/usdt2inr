@@ -224,7 +224,6 @@ function getTransactions(thisone) {
 
 function handleStatusToggle(idindex , phoneNumber , amount , txn_id , transactiontype) {
     const tdElement = document.getElementById(idindex);
-
     if (amount === 'null'){
         alert('Please Enter the amount first');
         return; 
@@ -487,12 +486,10 @@ function displaySettingsData(SettingsData) {
             <th class="text-sm">binance_price</th>
             <th  class="text-sm">ku_coin_price</th>
             <th class="text-sm">invite_link</th>
+            <th class="text-sm">QR Code</th>
+            <th class="text-sm">Address</th>
         `;
         table.appendChild(headerRow);
-
-
-        
-
             const row = document.createElement('tr');
             row.id = 'settingsrow';
             
@@ -502,6 +499,8 @@ function displaySettingsData(SettingsData) {
                 <td class="text-md" id='binance_price' contenteditable>${SettingsData.binance_price || 'N/A'}</td>
                 <td class="text-md" id='ku_coin_price' contenteditable>${SettingsData.ku_coin_price}</td>
                 <td class="text-md" id='invite_link' contenteditable>${SettingsData.invite_link || 'N/A'}</td>
+                <td class="text-md" id='invite_link' contenteditable>${SettingsData.qr || 'N/A'}</td>
+                <td class="text-md" id='invite_link' contenteditable>${SettingsData.address || 'N/A'}</td>
             `;
 
 

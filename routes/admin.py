@@ -7,6 +7,7 @@ admins = ['admin1', 'admin2', '9509251093', '9001939821', '9256308961']
 def get_user_phone_number():
     return session.get('phone_number', None)
 
+
 def admin_panel():
     phone = get_user_phone_number()
     if not phone:
@@ -51,7 +52,6 @@ def get_transactions():
     return jsonify(response_data)
 
 
-
 def get_settings_route():
     phone = get_user_phone_number()
 
@@ -59,17 +59,14 @@ def get_settings_route():
         if not phone in admins:
             abort(403, "You are not authorized to access this page.")
 
-
     try:
         settings = get_settings()
-
 
         return jsonify({'data': settings}), 200
 
     except Exception as e:
         print(f"Error in get_settings_route: {str(e)}")
         return jsonify({'error': 'Internal Server Error'}), 500
-
 
 
 def save_user_data():
@@ -86,18 +83,15 @@ def save_user_data():
         status = data.get('status')
 
         if edited_value:
-            save_user_state_data(phone=phone_number,Wallet_balance=edited_value)
+            save_user_state_data(phone=phone_number, Wallet_balance=edited_value)
 
         if status:
-             save_user_state_data(phone=phone_number,User_Status=status)
+            save_user_state_data(phone=phone_number, User_Status=status)
 
         return 'Data received successfully', 200
     except Exception as e:
         print(f"Error processing data: {str(e)}")
         return 'Error processing data', 500
-    
-
-
 
 
 def save_settings_route():
@@ -112,17 +106,14 @@ def save_settings_route():
         FieldName = data.get('idName')
         FieldValue = data.get('editedValue')
 
-        print(FieldName , FieldValue)
+        print(FieldName, FieldValue)
 
-
-        save_settings(idName=FieldName,value=FieldValue)
-
+        save_settings(idName=FieldName, value=FieldValue)
 
         return 'Data received successfully', 200
     except Exception as e:
         print(f"Error processing data: {str(e)}")
         return 'Error processing data', 500
-
 
 
 def save_transaction_state():
@@ -142,13 +133,14 @@ def save_transaction_state():
         transaction_type = data.get('TransactionType')
 
         if depositamount:
-            print(txn_id , depositamount)
-            save_transaction_state_data(txn_ID=txn_id,depositAmount=depositamount)
+            print(txn_id, depositamount)
+            save_transaction_state_data(txn_ID=txn_id, depositAmount=depositamount)
 
         elif status:
-            save_transaction_state_data(txn_ID=txn_id,transaction_status=status,phone=phone_number,Amount=walletupdateamount,transactionType=transaction_type)
-            print("Upadte amount for phone :",phone_number,"amount :",walletupdateamount,"For Transaction Type :",transaction_type)
-
+            save_transaction_state_data(txn_ID=txn_id, transaction_status=status, phone=phone_number,
+                                        Amount=walletupdateamount, transactionType=transaction_type)
+            print("Upadte amount for phone :", phone_number, "amount :", walletupdateamount, "For Transaction Type :",
+                  transaction_type)
 
         return 'Data received successfully', 200
     except Exception as e:
