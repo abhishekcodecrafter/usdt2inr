@@ -981,10 +981,10 @@
 
 #withdrawals{
   overflow: auto;
-  max-height: 300px;
+  max-height: fit-content;
 }
 
 #deposits{
   overflow: auto;
-  max-height: 300px;
+  max-height: fit-content;
 }

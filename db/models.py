@@ -253,7 +253,7 @@ def get_user_by_phone_number(phone_number):
         "transaction_password": result[4],
         "active": result[5],
         "wallet_address": "TUbzRkEnnMYZHfXU1zMVbngsnpNBBCV4Y3&token_id=TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
-        "wallet_qr": "https://ibb.co/RpmQnDs"
+        "wallet_qr": "https://i.ibb.co/nsvQ2LY/414331fe-ad01-4181-a825-50d42e560e63.jpg"
     }
 
 
