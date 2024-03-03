@@ -35,43 +35,58 @@
     <div class="transaction-details">
         <div class="detail">
             <span class="label">Order ID:</span>
-            <span class="value" id="orderID">123456789 <img src="/static/assets/svg-elements/copy-icon-black.png" id="copyIcon" onclick="copyToClipboard('orderID')" alt="Copy Icon"></span>
+            <span class="value" id="orderID">{{details['txn_id']}} <img src="/static/assets/svg-elements/copy-icon-black.png" id="copyIcon" onclick="copyToClipboard('orderID')" alt="Copy Icon"></span>
         </div>
         <div class="detail">
             <span class="label">USDT (TRC20):</span>
-            <span class="value">1000</span>
+            <span class="value">{{details['amount']}}</span>
         </div>
         <div class="detail">
             <span class="label">Rupees:</span>
-            <span class="value">75,000</span>
+            <span class="value">{{details['amount'] * details['exchange_rate']}}</span>
         </div>
         <div class="detail">
             <span class="label">Rate:</span>
-            <span class="value">1 USDT = 75 INR</span>
+            <span class="value">{{details['exchange_rate']}}</span>
         </div>
         <div class="detail">
             <span class="label">Account No:</span>
-            <span class="value">1234567890</span>
+            <span class="value">{{details['account_no']}}</span>
         </div>
         <div class="detail">
             <span class="label">Account Holder:</span>
-            <span class="value">John Doe</span>
+            <span class="value">{{details['account_name']}}</span>
         </div>
         <div class="detail">
             <span class="label">IFSC:</span>
-            <span class="value">ABC123456</span>
+            <span class="value">{{details['ifsc']}}</span>
         </div>
         <div class="detail">
             <span class="label">Create Time:</span>
-            <span class="value">2024-02-24 15:30:00</span>
+            <span class="value">{{details['created_at']}}</span>
         </div>
         <div class="detail">
             <span class="label">Transaction Time:</span>
-            <span class="value">2024-02-24 15:45:00</span>
+            <span class="value">{{details['updated_at']}}</span>
         </div>
         <div class="detail">
             <span class="label">Transaction Status:</span>
-            <span class="value" style="color: green;" >Completed</span>
+
+            {% if details['status'] == 'Success' %}
+            <span class="value" style="color:  green;">{{details['status']}}</span>
+
+            {% elif details['status'] == 'Failed' %}
+            <span class="value" style="color:   red;">{{details['status']}}</span>
+
+            {% elif details['status'] == 'Processing' %}
+            <span class="value" style="color:  orange;">{{details['status']}}</span>
+
+            {% else %}
+            <span class="value" style="color:  black;">{{details['status']}}</span>
+
+            {% endif %}
+            
+            
         </div>
     </div>
 

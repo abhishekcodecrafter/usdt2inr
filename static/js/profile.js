@@ -28,22 +28,17 @@ function redirectTo(page) {
 }
 
   
-   function openAvatarPopup() {
+function openAvatarPopup() {
+  document.body.style.overflow = 'hidden';
 
-    document.body.style.overflow = 'hidden';
-
-
-  
   var modal = document.createElement('div');
   modal.id = 'avatarModal';
   modal.className = 'modal d-flex align-items-center justify-content-center';
   modal.style.display = 'block';
 
-  
   var modalContent = document.createElement('div');
   modalContent.className = 'modal-content';
 
-  
   var closeButton = document.createElement('span');
   closeButton.className = 'close';
   closeButton.innerHTML = '&times;';
@@ -51,11 +46,9 @@ function redirectTo(page) {
     closeAvatarPopup();
   };
 
-  
   var title = document.createElement('h2');
   title.innerHTML = 'Select Avatar';
 
-  
   var avatarListContainer = document.createElement('div');
   avatarListContainer.id = 'avatarList';
   avatarListContainer.className = 'avatar-list';
@@ -84,7 +77,7 @@ function redirectTo(page) {
     avatarListContainer.appendChild(avatarContainer);
   }
 
-modal.addEventListener('click', function(event) {
+  modal.addEventListener('click', function(event) {
     if (event.target === modal) {
       closeAvatarPopup();
     }
@@ -92,22 +85,31 @@ modal.addEventListener('click', function(event) {
 }
 
 function closeAvatarPopup() {
+  document.body.style.overflow = '';
 
-  
-    document.body.style.overflow = '';
-    
   var modal = document.getElementById('avatarModal');
-
   document.body.removeChild(modal);
 }
 
 function changeAvatar(newAvatarSrc) {
   var avatar = document.getElementById('avatar');
 
+  // Save the selected avatar source in localStorage
+  localStorage.setItem('selectedAvatar', newAvatarSrc);
+
   avatar.src = newAvatarSrc;
 
   closeAvatarPopup();
 }
+
+// Load the selected avatar from localStorage on page load
+document.addEventListener('DOMContentLoaded', function () {
+  var savedAvatar = localStorage.getItem('selectedAvatar');
+  if (savedAvatar) {
+    var avatar = document.getElementById('avatar');
+    avatar.src = savedAvatar;
+  }
+});
 
 
 

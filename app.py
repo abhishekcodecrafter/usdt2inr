@@ -36,7 +36,7 @@ from routes.changewdtpasswd import change_withdrawals_password
 from routes.create_INR_wdt import create_INR_wdt
 from routes.create_USDT_wdt import create_USDT_wdt
 from routes.validate_IFSC import validate_IFSC
-from routes.admin import admin_panel , get_users , save_user_data , get_settings_route
+from routes.admin import *
 
 
 # Register routes
@@ -72,7 +72,9 @@ app.route('/admin')(admin_panel)
 app.route('/get_users')(get_users)
 app.route('/get_transactions')(get_all_transactions)
 app.route('/save_user_data', methods=['POST'])(save_user_data)
+app.route('/save_settings_route',methods=['POST'])(save_settings_route)
 app.route('/get_settings_route')(get_settings_route)
+app.route('/save_transaction_state_route' , methods=['POST'])(save_transaction_state)
 
 
 

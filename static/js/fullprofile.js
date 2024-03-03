@@ -5,6 +5,15 @@ $(document).ready(function() {
     });
   });
 
+  document.addEventListener('DOMContentLoaded', function() {
+  var savedAvatar = localStorage.getItem('selectedAvatar');
+  if (savedAvatar) {
+      var avatar = document.getElementById('avatar');
+      avatar.src = savedAvatar;
+  }
+});
+  
+
 
   function copyMobileNumber() {
 var mobileNumber = document.getElementById('mobileNumber');

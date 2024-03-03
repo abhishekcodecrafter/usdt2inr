@@ -72,7 +72,7 @@
     <section id="withdrawals" style="width: 100%; display: flex; flex-direction: column; gap: 10px">
       {% if withdrawals %}
       {% for withdrawal in withdrawals %}
-      <section onclick="window.location.href='/transaction_details'" class="empty-frame-vector-u-s-d-t">
+      <section onclick="window.location.href='/transaction_details?withdrawal_id={{ withdrawal.id }}'" class="empty-frame-vector-u-s-d-t">
         <div class="success-status-frame">{{ withdrawal['time'] }}</div>
         <div class="failed-status-frame">
           <div class="failed-status-frame-child"></div>

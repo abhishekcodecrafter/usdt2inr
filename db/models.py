@@ -55,6 +55,51 @@ def get_exchanges_todays_value():
     return result[0]
 
 
+
+def save_settings(idName, value):
+    try:
+        if isinstance(value, str):
+            value = f"'{value}'"
+
+        query = f"UPDATE settings SET {idName} = {value}"
+
+        connector = DBConnector()
+        success = connector.execute_query(query)
+        connector.close_connection()
+        return True
+    except Exception as e:
+        return False
+
+
+def save_transaction_state_data(txn_ID=None,phone=None, depositAmount=None, Amount=None, transaction_status=None , transactionType=None):
+    if depositAmount is not None:
+        try:
+            print("Deposit amount : " , depositAmount , txn_ID )
+            query = f""" update transactions set amount = {depositAmount} where txn_id = '{txn_ID}' """
+    
+            connector = DBConnector()
+            success = connector.execute_query(query)
+            connector.close_connection()
+
+            return success
+        except Exception as e:
+            return False
+
+    if transaction_status is not None:
+
+        print("Transaction Status : " , transaction_status , txn_ID)
+        query = f"UPDATE transactions SET status = '{transaction_status}' WHERE txn_id = '{txn_ID}'"
+
+        try:
+            connector = DBConnector()
+            success = connector.execute_query(query)
+            connector.close_connection()
+
+            return success
+        except Exception as e:
+            return False
+
+
 def save_user_state_data(phone=None, Wallet_balance=None, User_Status=None):
     if Wallet_balance is not None:
         try:
@@ -147,7 +192,7 @@ def get_all_transactions():
                 "deposit_address": row[4],
                 "txn_id": row[6],
                 "amount": row[10],
-                "created_at": row[11],
+                "created_at": convert_timestamp(row[11]),
                 "deposit_txn_id": row[13],
                 "exchange_rate": row[14],
             })
@@ -164,8 +209,8 @@ def get_all_transactions():
                 "account_name": row[8],
                 "ifsc": row[9],
                 "amount": row[10],
-                "created_at": row[11],
-                "updated_at": row[12],
+                "created_at": convert_timestamp(row[11]),
+                "updated_at": convert_timestamp(row[12]),
                 "exchange_rate": row[14],
             })
     
@@ -304,6 +349,36 @@ def get_withdrawls(phone_number):
     return data
 
 
+
+def get_withdrawal_details(txn_id):
+    query = f"SELECT * FROM transactions where txn_id = '{txn_id}' limit 1"
+
+    connector = DBConnector()
+    result = connector.fetch_all(query)
+    connector.close_connection()
+
+
+
+    print(result)
+
+
+    response = {
+            "txn_id": result[0][6],
+            "amount": result[0][10],
+            "exchange_rate": result[0][14],
+            "account_no": result[0][7],
+            "account_name": result[0][8],
+            "ifsc": result[0][9],
+            "created_at": convert_timestamp(result[0][11]),
+            "updated_at": convert_timestamp(result[0][12]), 
+            "status": transform_status(result[0][1]),
+        }
+
+
+    return response
+
+
+
 def get_a_transaction(phone_number, txn_id):
     query = f"SELECT * FROM transactions where phone_number = {phone_number} And txn_id = {txn_id}"
 
@@ -368,23 +443,18 @@ def edit_wdt_password_model(password, phone):
 def authenticate_user_by_pass(phone, password):
     try:
         connector = DBConnector()
-
-        # Retrieve the hashed password and salt from the database
         query = "SELECT transaction_password, salt FROM users WHERE phone_number = %s"
         values = (phone,)
         result = connector.fetch_all(query, values)
 
         if not result or len(result) == 0:
-            # User not found
             return False
 
         stored_password = result[0][0]
         salt = result[0][1]
 
-        # Hash the entered password with the retrieved salt
         entered_password_hashed = bcrypt.hashpw(password.encode('utf-8'), salt.encode('utf-8'))
 
-        # Check if the hashed entered password matches the stored password
         success = bcrypt.checkpw(entered_password_hashed, stored_password.encode('utf-8'))
 
         connector.close_connection()

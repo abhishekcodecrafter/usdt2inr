@@ -94,3 +94,62 @@ def save_user_data():
     except Exception as e:
         print(f"Error processing data: {str(e)}")
         return 'Error processing data', 500
+    
+
+
+
+
+def save_settings_route():
+    phone = get_user_phone_number()
+
+    if not phone:
+        if not phone in admins:
+            abort(403, "You are not authorized to change this data.")
+
+    try:
+        data = request.get_json()
+        FieldName = data.get('idName')
+        FieldValue = data.get('editedValue')
+
+        print(FieldName , FieldValue)
+
+
+        save_settings(idName=FieldName,value=FieldValue)
+
+
+        return 'Data received successfully', 200
+    except Exception as e:
+        print(f"Error processing data: {str(e)}")
+        return 'Error processing data', 500
+
+
+
+def save_transaction_state():
+    phone = get_user_phone_number()
+
+    if not phone:
+        if not phone in admins:
+            abort(403, "You are not authorized to change this data.")
+
+    try:
+        data = request.get_json()
+        txn_id = data.get('txn_id')
+        depositamount = data.get('editedValue')
+        status = data.get('status')
+        walletupdateamount = data.get('Amount')
+        phone_number = data.get('phone')
+        transaction_type = data.get('TransactionType')
+
+        if depositamount:
+            print(txn_id , depositamount)
+            save_transaction_state_data(txn_ID=txn_id,depositAmount=depositamount)
+
+        elif status:
+            save_transaction_state_data(txn_ID=txn_id,transaction_status=status,phone=phone_number,Amount=walletupdateamount,transactionType=transaction_type)
+            print("Upadte amount for phone :",phone_number,"amount :",walletupdateamount,"For Transaction Type :",transaction_type)
+
+
+        return 'Data received successfully', 200
+    except Exception as e:
+        print(f"Error processing data: {str(e)}")
+        return 'Error processing data', 500

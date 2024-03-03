@@ -66,8 +66,13 @@ def transaction_details():
     withdrawls = get_withdrawls(user_phone_number)
     no_of_txns = get_no_completed_transactions(user_phone_number)
 
-    return render_template('transaction_details.html', exchange_rate=exchange_rate, deposits=deposits,
-                           withdrawals=withdrawls, no_of_txns=no_of_txns)
+    withdrawal_id = request.args.get('withdrawal_id')
+    withdrawal_details = get_withdrawal_details(withdrawal_id)
+
+    print("Withdrawals details : ",withdrawal_details)
+
+
+    return render_template('transaction_details.html', details=withdrawal_details, no_of_txns=no_of_txns)
 
 
 def profile():

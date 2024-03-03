@@ -2,9 +2,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const arrowDiv = document.getElementById('arrowDiv');
   console.log('Arrow back button is clicked.');
   arrowDiv.addEventListener('click', function () {
+    var currentUrl = window.location.href;
+var urlParams = new URLSearchParams(window.location.search);
+var redirection = urlParams.get('redirect');
+if (redirection === 'dash') {
     redirectTo('/dashboard');
+} else {
+    redirectTo('/fullprofile');
+}
   });
 });
+
 
 function submitDeposit() {
     const walletAddress = $('#wallet-address').text();
