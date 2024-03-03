@@ -11,6 +11,9 @@ $(document).ready(function() {
       var avatar = document.getElementById('avatar');
       avatar.src = savedAvatar;
   }
+  else {
+    avatar.src = 'static/assets/avatars/av16.jpg';
+  }
 });
   
 
