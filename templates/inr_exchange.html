@@ -69,7 +69,7 @@
         <form id="form">
             <div class="form-group">
                 <label for="amount">Amount (USDT):</label>
-                <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter Amount in USDT" required autocomplete="on" autofocus oninput="calculateINR({{user_details['usdt_balance']}})">
+                <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter Amount in USDT" required autocomplete="on" autofocus oninput="calculateINR({{inrvalue}})">
             </div>
             <div id="result" class="result"></div>
             <div class="form-group">
