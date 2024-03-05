@@ -4,6 +4,7 @@ from flask import Flask, session, render_template, redirect, request, jsonify
 #     get_a_transaction, create_transaction, create_deposit_model, get_no_completed_transactions, get_deposits, \
 #     get_withdrawls, get_invite_link
 from db.models import *
+import requests
 
 
 def get_user_phone_number():
@@ -190,6 +191,31 @@ def usdt_deposit():
     return render_template('usdt_deposit.html', address_info=address_info)
 
 
+class TransactionNotFound(Exception):
+    pass
+
+class TransactionAPIError(Exception):
+    pass
+
+def get_transaction_info(hash_value):
+    try:
+        api_url = f"https://apilist.tronscanapi.com/api/transaction-info?hash={hash_value}"
+        response = requests.get(api_url)
+
+        if response.status_code == 200:
+            transaction_info = response.json()
+            print(transaction_info)
+            if not transaction_info:  # Check if JSON response is empty
+                raise TransactionNotFound("Not Found")
+            return transaction_info
+        else:
+            raise TransactionAPIError("Invalid response of hash : %s".format(hash_value))
+    except TransactionNotFound as e:
+        raise e
+    except Exception as e:
+        raise TransactionAPIError(str(e))
+
+
 def submitDeposit():
     try:
         user_phone_number = get_user_phone_number()
@@ -197,15 +223,38 @@ def submitDeposit():
             return redirect('/')
 
         data = request.json
-        address = data.get('address')
         txn_id = data.get('txnId')
 
         if txn_id is None or txn_id == '':
-            return jsonify({'success': False, 'message': 'Error! Transaction Id required'}), 500
+            return jsonify({'success': False, 'message': 'Error! Transaction Hash required'}), 500
 
-        success = create_deposit_model(user_phone_number, address, txn_id, get_current_exchange_rate())
+        if len(txn_id) < 60:
+            return jsonify({'success': False, 'message': 'Invalid Transaction Hash'}), 500
+
+        qr, address = get_qr_and_address()
+
+        details = {}
+        try:
+            details = get_transaction_info(txn_id)
+        except TransactionNotFound as e:
+            return jsonify({'success': False, 'message': 'Not able to fetch details, enter correct hash'}), 500
+        except TransactionAPIError as e:
+            create_deposit_model(user_phone_number, address, txn_id, get_current_exchange_rate(), "PROCESSING", None)
+            return jsonify({'success': False, 'message': 'Not able to fetch details, we are manually checking'}), 500
+
+        info = details["trc20TransferInfo"][0]
+        print(info)
+        if not info or info["symbol"] != "USDT" or info["tokenType"] != "trc20":
+            return jsonify({'success': False, 'message': 'Provided input is not valid hash of USDT TRC20'}), 500
+
+        if info["to_address"] != address:
+            return jsonify({'success': False, 'message': 'Transaction not received on given address'}), 500
+
+        amount = int(info["amount_str"])/(10 ** info["decimals"])
+        status = "PROCESSING"
+        success = create_deposit_model(user_phone_number, address, txn_id, get_current_exchange_rate(), status, amount)
         if success:
-            return jsonify({'success': True, 'message': 'Deposit Request Submitted'}), 200
+            return jsonify({'success': True, 'message': 'Transaction detected, processing your request'}), 200
         else:
             return jsonify({'success': False, 'message': 'Deposit Request Failed'}), 500
     except Exception as e:

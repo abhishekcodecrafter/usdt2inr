@@ -491,13 +491,13 @@ def create_INR_wdt_model(phone, amount, accountNo, accountName, ifsc, exchange_r
         return False
 
 
-def create_deposit_model(phone, address, txn_id, exchange_rate):
+def create_deposit_model(phone, address, txn_id, exchange_rate, status, amount):
     try:
         query = """
-            INSERT INTO transactions (txn_id, phone_number, deposit_address, deposit_txn_id, exchange_rate, created_at, updated_at, status, type, sub_type)
-            VALUES (%s, %s, %s, %s, %s, %s,%s,'PROCESSING', 'DEPOSIT', 'USDT')
+            INSERT INTO transactions (txn_id, phone_number, deposit_address, deposit_txn_id, exchange_rate, created_at, updated_at, status, amount, type, sub_type)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 'DEPOSIT', 'USDT')
         """
-        values = (get_txn_id(), phone, address, txn_id, exchange_rate, int(time.time()), int(time.time()))
+        values = (get_txn_id(), phone, address, txn_id, exchange_rate, int(time.time()), int(time.time()), status, amount)
 
         connector = DBConnector()
         success = connector.execute_query(query, values)
