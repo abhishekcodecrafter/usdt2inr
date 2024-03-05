@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from flask import Flask, render_template
 from flask_cors import CORS
 import platform
@@ -5,6 +7,7 @@ import platform
 
 app = Flask(__name__)
 app.secret_key = 'UnseenUmbrellaNeverGotaShower'
+app.permanent_session_lifetime = timedelta(minutes=60*24*7)
 CORS(app)
 
 

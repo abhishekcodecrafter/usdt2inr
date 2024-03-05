@@ -30,6 +30,7 @@ def verify_code():
 
             if response_data.get('Status') == "Success":
                 session['phone_number'] = number
+                session.permanent = True
                 return jsonify({'success': True, 'message': 'Verification successful'}), 200
             else:
                 return jsonify({'success': False, 'error': 'Invalid verification code or expired'}), 400
