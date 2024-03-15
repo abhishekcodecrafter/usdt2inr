@@ -17,8 +17,6 @@ def get_bank_details(ifsc_code):
         return {"error": f"HTTP Error: {errh}"}
     except requests.exceptions.RequestException as err:
         return {"error": f"Request Exception: {err}"}
-    except requests.exceptions.JSONDecodeError:
-        return {"error": "Response is not in JSON format"}
     except Exception as e:
         return {"error": "Unexpected Error"}
 
