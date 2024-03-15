@@ -20,6 +20,7 @@ class DBConnector:
             print(f"Error executing query: {e}")
             self.connection.rollback()
             return False
+
     def execute_query_raise(self, query, values=None):
         try:
             self.cursor.execute(query, values)

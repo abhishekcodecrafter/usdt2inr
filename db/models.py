@@ -556,14 +556,14 @@ def create_USDT_wdt_model(phone, amount, withdraw_address, exchange_rate):
     try:
         query = """
             INSERT INTO transactions (txn_id, phone_number, amount, withdraw_address, exchange_rate,created_at, updated_at, deposit_txn_id, status, type, sub_type)
-            VALUES (%s, %s, %s, %s, %s,%s, %s, 'PROCESSING', 'WITHDRAW', 'USDT')
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'PROCESSING', 'WITHDRAW', 'USDT')
         """
 
         tid = get_txn_id()
         values = (tid, phone, amount, withdraw_address, exchange_rate, int(time.time()), int(time.time()), tid)
 
         connector = DBConnector()
-        success = connector.execute_query(query, values)
+        success = connector.execute_query_raise(query, values)
         connector.close_connection()
 
         return success

@@ -6,7 +6,6 @@ app = Flask(__name__)
 def get_bank_details(ifsc_code):
     url = f"https://ifsc.rizad.me/?ifsc={ifsc_code}"
     response = requests.get(url)
-
     try:
         response.raise_for_status()  # Check for HTTP errors
         result = response.json()
@@ -17,6 +16,8 @@ def get_bank_details(ifsc_code):
         return {"error": f"Request Exception: {err}"}
     except requests.exceptions.JSONDecodeError:
         return {"error": "Response is not in JSON format"}
+    except Exception as e:
+        return {"error": "Unexpected Error"}
 
 @app.route('/Validate_IFSC', methods=['POST'])
 def validate_IFSC():
