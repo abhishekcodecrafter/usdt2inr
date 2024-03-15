@@ -132,16 +132,19 @@ def save_transaction_state():
         phone_number = data.get('phone')
         transaction_type = data.get('TransactionType')
 
-        if depositamount:
-            print(txn_id, depositamount)
-            save_transaction_state_data(txn_ID=txn_id, depositAmount=depositamount)
+        # if depositamount:
+        #     print(txn_id, depositamount)
+        #     save_transaction_state_data(txn_ID=txn_id, depositAmount=depositamount)
 
-        elif status:
-            save_transaction_state_data(txn_ID=txn_id, transaction_status=status, phone=phone_number,
+        if status:
+            success = save_transaction_state_data(txn_ID=txn_id, transaction_status=status, phone=phone_number,
                                         Amount=walletupdateamount, transactionType=transaction_type)
-            print("Upadte amount for phone :", phone_number, "amount :", walletupdateamount, "For Transaction Type :",
-                  transaction_type)
-
+            if success:
+                print("Update amount for phone :", phone_number, "amount :", walletupdateamount, "For Transaction Type :",
+                      transaction_type)
+                return 'Data received successfully', 200
+            else:
+                return 'Error processing request', 500
         return 'Data received successfully', 200
     except Exception as e:
         print(f"Error processing data: {str(e)}")

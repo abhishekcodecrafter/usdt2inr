@@ -4,12 +4,12 @@ from flask import Flask, render_template
 from flask_cors import CORS
 import platform
 
+from routes.send_message import download_apk
 
 app = Flask(__name__)
 app.secret_key = 'UnseenUmbrellaNeverGotaShower'
-app.permanent_session_lifetime = timedelta(minutes=60*24*7)
+app.permanent_session_lifetime = timedelta(minutes=60 * 24 * 7)
 CORS(app)
-
 
 system = platform.system()
 development = False
@@ -40,7 +40,6 @@ from routes.create_INR_wdt import create_INR_wdt
 from routes.create_USDT_wdt import create_USDT_wdt
 from routes.validate_IFSC import validate_IFSC
 from routes.admin import *
-
 
 # Register routes
 app.route('/')(index)
@@ -75,17 +74,15 @@ app.route('/admin')(admin_panel)
 app.route('/get_users')(get_users)
 app.route('/get_transactions')(get_all_transactions)
 app.route('/save_user_data', methods=['POST'])(save_user_data)
-app.route('/save_settings_route',methods=['POST'])(save_settings_route)
+app.route('/save_settings_route', methods=['POST'])(save_settings_route)
 app.route('/get_settings_route')(get_settings_route)
-app.route('/save_transaction_state_route' , methods=['POST'])(save_transaction_state)
-
+app.route('/save_transaction_state_route', methods=['POST'])(save_transaction_state)
+app.route('/download_apk')(download_apk)
 
 
 @app.errorhandler(404)
 def page_not_found(error):
     return redirect('/')
-
-
 
 
 if __name__ == '__main__':
@@ -94,6 +91,7 @@ if __name__ == '__main__':
 
     if production:
         from gevent.pywsgi import WSGIServer
+
         port = 8000
         http_server = WSGIServer(('', port), app)
         print(f'Server is running on http://localhost:{port}')

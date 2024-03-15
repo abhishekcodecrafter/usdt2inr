@@ -4,6 +4,9 @@ from datetime import datetime
 from passlib.hash import bcrypt
 import logging
 from db.db_connector import DBConnector
+import pytz
+
+from routes.send_message import random_string, HashAlreadyExist
 
 
 def create_user(phone_number, usdt_balance, hold_balance, active):
@@ -98,18 +101,38 @@ def save_transaction_state_data(txn_ID=None, phone=None, depositAmount=None, Amo
             return False
 
     if transaction_status is not None:
+        if "COMPLETED" == transaction_status and transactionType == "DEPOSIT":
+            query1 = f"UPDATE users SET usdt_balance = usdt_balance + {Amount} WHERE phone_number = '{phone}'"
+            query2 = f"UPDATE transactions SET status = '{transaction_status}', settled = 1 WHERE txn_id = '{txn_ID}' and settled != 1"
+            try:
+                connector = DBConnector()
+                success = connector.execute_queries(query1, query2)
+                connector.close_connection()
+                return success
+            except Exception as e:
+                return False
 
-        print("Transaction Status : ", transaction_status, txn_ID)
-        query = f"UPDATE transactions SET status = '{transaction_status}' WHERE txn_id = '{txn_ID}'"
+        if "COMPLETED" == transaction_status and transactionType == "WITHDRAW":
+            query1 = f" UPDATE users SET hold_balance = hold_balance - {Amount} WHERE phone_number = '{phone}'"
+            query2 = f"UPDATE transactions SET status = '{transaction_status}', settled = 1 WHERE txn_id = '{txn_ID}' and settled != 1"
+            try:
+                connector = DBConnector()
+                success = connector.execute_queries(query1, query2)
+                connector.close_connection()
+                return success
+            except Exception as e:
+                return False
 
-        try:
-            connector = DBConnector()
-            success = connector.execute_query(query)
-            connector.close_connection()
+        else:
+            query = f"UPDATE transactions SET status = '{transaction_status}' WHERE txn_id = '{txn_ID}'"
+            try:
+                connector = DBConnector()
+                success = connector.execute_query(query)
+                connector.close_connection()
 
-            return success
-        except Exception as e:
-            return False
+                return success
+            except Exception as e:
+                return False
 
 
 def save_user_state_data(phone=None, Wallet_balance=None, User_Status=None):
@@ -180,7 +203,9 @@ def get_all_users():
 
 
 def get_all_transactions():
-    query = "SELECT * FROM transactions"
+    ten_days_ago_timestamp = int(time.time()) - (3 * 24 * 60 * 60)
+
+    query = f"SELECT * FROM transactions where created_at > {ten_days_ago_timestamp} ORDER BY created_at DESC;"
 
     connector = DBConnector()
     result = connector.fetch_all(query)
@@ -310,7 +335,18 @@ def transform_status(status):
 
 
 def convert_timestamp(timestamp):
-    return datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
+    utc_datetime = datetime.utcfromtimestamp(timestamp)
+
+    # Define the timezone for India (IST)
+    ist_timezone = pytz.timezone('Asia/Kolkata')
+
+    # Convert UTC datetime to IST datetime
+    ist_datetime = utc_datetime.replace(tzinfo=pytz.utc).astimezone(ist_timezone)
+
+    # Format IST datetime as string
+    ist_time = ist_datetime.strftime('%Y-%m-%d %H:%M:%S')
+
+    return ist_time
 
 
 def get_deposits(phone_number):
@@ -470,17 +506,20 @@ def create_INR_wdt_model(phone, amount, accountNo, accountName, ifsc, exchange_r
     try:
         query = """
             INSERT INTO transactions (txn_id, phone_number, amount, account_no, account_name, ifsc,
-            exchange_rate,created_at, updated_at,
+            exchange_rate, created_at, updated_at, deposit_txn_id,
             status, type, sub_type)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 'PROCESSING', 'WITHDRAW', 'INR')
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'PROCESSING', 'WITHDRAW', 'INR')
         """
 
+        query2 = f"UPDATE users SET usdt_balance = usdt_balance - {amount}, hold_balance = hold_balance + {amount} WHERE phone_number = '{phone}'"
+
+        tid =get_txn_id()
         values = (
-            get_txn_id(), phone, amount, accountNo, accountName, ifsc, exchange_rate, int(time.time()),
-            int(time.time()))
+            tid, phone, amount, accountNo, accountName, ifsc, exchange_rate, int(time.time()),
+            int(time.time()), tid)
 
         connector = DBConnector()
-        success = connector.execute_query(query, values)
+        success = connector.execute_queries(query1=query, query2=query2, values1=values)
         connector.close_connection()
 
         return success
@@ -500,11 +539,15 @@ def create_deposit_model(phone, address, txn_id, exchange_rate, status, amount):
         values = (get_txn_id(), phone, address, txn_id, exchange_rate, int(time.time()), int(time.time()), status, amount)
 
         connector = DBConnector()
-        success = connector.execute_query(query, values)
+        success = connector.execute_query_raise(query, values)
         connector.close_connection()
 
         return success
     except Exception as e:
+        if "transactions.unique_deposit_txn_id" in str(e):
+            raise HashAlreadyExist("Transaction already exists with given hash")
+
+        print(str(e))
         logging.error(f"An error occurred while creating deposit txn: {str(e)}")
         return False
 
@@ -512,11 +555,12 @@ def create_deposit_model(phone, address, txn_id, exchange_rate, status, amount):
 def create_USDT_wdt_model(phone, amount, withdraw_address, exchange_rate):
     try:
         query = """
-            INSERT INTO transactions (txn_id, phone_number, amount, withdraw_address, exchange_rate,created_at, updated_at , status, type, sub_type)
+            INSERT INTO transactions (txn_id, phone_number, amount, withdraw_address, exchange_rate,created_at, updated_at, deposit_txn_id, status, type, sub_type)
             VALUES (%s, %s, %s, %s, %s,%s, %s, 'PROCESSING', 'WITHDRAW', 'USDT')
         """
 
-        values = (get_txn_id(), phone, amount, withdraw_address, exchange_rate, int(time.time()), int(time.time()))
+        tid = get_txn_id()
+        values = (tid, phone, amount, withdraw_address, exchange_rate, int(time.time()), int(time.time()), tid)
 
         connector = DBConnector()
         success = connector.execute_query(query, values)

@@ -20,6 +20,36 @@ class DBConnector:
             print(f"Error executing query: {e}")
             self.connection.rollback()
             return False
+    def execute_query_raise(self, query, values=None):
+        try:
+            self.cursor.execute(query, values)
+            self.connection.commit()  # Commit the changes to the database
+            return True
+        except Exception as e:
+            print(f"Error executing query: {e}")
+            self.connection.rollback()
+            raise e
+
+    def execute_queries(self, query1, query2,  values1=None, values2=None):
+        try:
+            self.cursor.execute("START TRANSACTION;")
+            self.cursor.execute(query1, values1)
+            if self.cursor.rowcount == 0:
+                self.connection.rollback()
+                return False
+
+            self.cursor.execute(query2, values2)
+            if self.cursor.rowcount == 0:
+                self.connection.rollback()
+                return False
+            else:
+                self.connection.commit()  # Commit the changes to the database
+                return True
+        except Exception as e:
+            print(f"Error executing query: {e}")
+            self.connection.rollback()
+            return False
+
 
     def fetch_all(self, query, values=None):
         self.cursor.execute(query, values)
