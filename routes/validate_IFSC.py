@@ -5,8 +5,8 @@ app = Flask(__name__)
 
 
 def get_bank_details(ifsc_code):
-    url = f"https://ifsc.rizad.me/?ifsc={ifsc_code}"
     try:
+        url = f"https://ifsc.rizad.me/?ifsc={ifsc_code}"
         response = requests.get(url)
         response.raise_for_status()  # Check for HTTP errors
         result = response.json()
