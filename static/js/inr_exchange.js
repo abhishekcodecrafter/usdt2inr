@@ -59,7 +59,6 @@ const verificationMessage = document.getElementById('verificationMessage');
                 },
                 body: JSON.stringify(data),
             })
-
             .then(response => response.json())
             .then(response_data => {
                 console.log(response_data);
