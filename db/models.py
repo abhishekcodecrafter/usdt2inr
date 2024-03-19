@@ -306,6 +306,27 @@ def convert_timestamp(timestamp):
     return datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
 
 
+
+
+def get_user_banks(phone_number):
+    query = f"SELECT DISTINCT account_no, account_name, ifsc FROM transactions WHERE phone_number = {phone_number} AND type = 'WITHDRAW';"
+    connector = DBConnector()
+    result = connector.fetch_all(query)
+    connector.close_connection()
+    if result is None:
+        return []
+    data = []
+    for row in result:
+        if row[0] is None or row[1] is None or row[2] is None:
+            continue
+        data.append({
+            "account_no": row[0],
+            "account_name": transform_status(row[1]),
+            "IFSC": row[2],
+        })
+        
+    return data
+
 def get_deposits(phone_number):
     query = f"SELECT * FROM transactions where phone_number = {phone_number} and type='DEPOSIT'"
     connector = DBConnector()

@@ -1,3 +1,24 @@
+$(document).ready(function(){
+    $('#bankModal').modal('show');
+  });
+
+  document.getElementById("selectBank").addEventListener("click", function() {
+    $('#bankModal').modal('show');
+  });
+
+
+  function fillForm(accountNo, accountName, ifsc) {
+    document.getElementById("accountNo").value = accountNo;
+    document.getElementById("accountName").value = accountName;
+    document.getElementById("ifsc").value = ifsc;
+    $('#bankModal').modal('hide'); 
+    $('#amount').focus();
+  }
+  
+  
+  
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const arrowDiv = document.getElementById('scrollArrow');
     console.log('Arrow back button is clicked.');

@@ -96,12 +96,12 @@ def inr_exchange():
         return redirect('/')
 
     user_details = get_user_by_phone_number(user_phone_number)
-    
+    user_banks = get_user_banks(user_phone_number)
     exchange_rate = get_current_exchange_rate()
     transaction_list = get_users_all_transactions(user_phone_number)
     data = list(transaction_list)
     return render_template('inr_exchange.html', user_details=user_details, inrvalue=exchange_rate, transactions=data,
-                           user_phonenumber=user_phone_number)
+                           user_phonenumber=user_phone_number,user_banks=user_banks)
 
 
 def cwp():
@@ -109,6 +109,12 @@ def cwp():
     if not user_phone_number:
         return redirect('/')
     return render_template('cwp.html', user_phonenumber=user_phone_number)
+
+def add_bank():
+    user_phone_number = get_user_phone_number()
+    if not user_phone_number:
+        return redirect('/')
+    return render_template('add_bank_details.html', user_phonenumber=user_phone_number)
 
 def wp():
     user_phone_number = get_user_phone_number()
