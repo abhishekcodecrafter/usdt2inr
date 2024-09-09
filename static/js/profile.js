@@ -126,10 +126,4 @@ window.onclick = function(event) {
     if (event.target == document.getElementById('editUsernameModal')) {
         closeEditUsernameModal();
     }
-};ror response from the server
-      console.error('Error updating username:', error);
-      // Display an error message
-      alert('Error updating username. Please try again.');
-    }
-  });
-}
+};

@@ -146,44 +146,4 @@ document.getElementById('reenterPassword').addEventListener('input', function() 
         passwordMatchError.style.color = 'green';
     }
     passwordMatchError.style.display = 'block';
-});sage.removeAttribute('hidden');
-                verificationBox.removeAttribute('hidden');
-                verificationMessage.innerText = 'Invalid OTP. Please enter the correct OTP.';
-            }
-        })
-
-        
-        .catch(error => {
-            console.error('Error verifying OTP:', error);
-            verificationMessage.removeAttribute('hidden');
-            verificationBox.removeAttribute('hidden');
-            verificationMessage.innerText = 'An error occurred while verifying OTP. Please try again.';
-        });
-    } else {
-        verificationMessage.removeAttribute('hidden');
-        verificationBox.removeAttribute('hidden');
-        verificationMessage.innerText = 'Invalid OTP. Please enter the correct OTP.';
-    }
-}
-
-$(document).ready(function() {
-    $('#reenterPassword').on('input', function() {
-        const newPassword = $('#newPassword').val().trim();
-        const reenterPassword = $(this).val().trim();
-
-        if (newPassword !== reenterPassword) {
-            // Passwords do not match, display an error message
-            $('#passwordMatchError').text('Passwords do not match').css('color', 'red').show();
-        } else {
-            // Passwords match, display a success message in green
-            $('#passwordMatchError').text('Passwords matched').css('color', 'green').show();
-        }
-    });
 });
-
-
-
-
-function redirectToProfile() {
-    window.location.href = "/profile";
-}
