@@ -2,11 +2,9 @@ from flask import Flask, render_template
 from flask_cors import CORS
 import platform
 
-
 app = Flask(__name__)
 app.secret_key = 'UnseenUmbrellaNeverGotaShower'
 CORS(app)
-
 
 system = platform.system()
 development = False
@@ -77,22 +75,18 @@ app.route('/save_settings_route',methods=['POST'])(save_settings_route)
 app.route('/get_settings_route')(get_settings_route)
 app.route('/save_transaction_state_route' , methods=['POST'])(save_transaction_state)
 
-
-
 @app.errorhandler(404)
 def page_not_found(error):
     return redirect('/')
 
-
-
-
 if __name__ == '__main__':
     if development:
-        app.run(host='0.0.0.0', port=8000, debug=True)
+        app.run(host='0.0.0.0', port=8001, debug=True)
 
     if production:
-        from gevent.pywsgi import WSGIServer
-        port = 8000
-        http_server = WSGIServer(('', port), app)
-        print(f'Server is running on http://localhost:{port}')
-        http_server.serve_forever()
+        app.run(host='0.0.0.0', port=8001, debug=True)
+        #from gevent.pywsgi import WSGIServer
+        #port = 8000
+        #http_server = WSGIServer(('', port), app)
+        #print(f'Server is running on http://localhost:{port}')
+        #http_server.serve_forever()

@@ -1,172 +1,152 @@
-console.log("Script Loaded");
-
+let secret;
 const verificationBox = document.getElementById('verificationBox');
 const verificationMessage = document.getElementById('verificationMessage');
-verificationMessage.setAttribute('hidden', 'true');
-const otpbox = document.getElementById('otp');
-const loginsignupbtn = document.getElementById('btn-verification');
-const verifyotpelements = document.getElementById('sendotp');
-
-var secret;
 
 function sendOTP() {
-    console.log("function Loaded");
-    const phoneNumber = document.querySelector('#phoneNumber').textContent.trim();
-    console.log(phoneNumber)
+    const phoneNumber = document.getElementById('phoneNumber').textContent.trim();
+    console.log("Sending OTP to:", phoneNumber);
 
+    document.getElementById('spinner').style.display = 'flex';
 
     if (phoneNumber && phoneNumber.length === 10 && !isNaN(phoneNumber)) {
-        
-        // Prepare the data for the API request
-        const data = {
-            number: phoneNumber,
-        };
+        const data = { number: phoneNumber };
 
-        // Make the API request to send the verification code
         fetch('/sendVerification', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
         })
-
         .then(response => response.json())
         .then(responseData => {
-            // Check the response and handle accordingly
+            document.getElementById('spinner').style.display = 'none';
             if (responseData.success) {
-                secret = responseData['secret']
-                verificationMessage.removeAttribute('hidden');
-                verificationBox.removeAttribute('hidden');
-                verificationMessage.innerText = `OTP sent to ${phoneNumber}`;
-                console.log("Using Static Folder JS");
+                // Don't store the secret on the client side for production
+                showVerificationMessage(`OTP sent to ${phoneNumber}`, true);
+                document.getElementById('otpButton').textContent = 'Resend OTP';
             } else {
-                verificationMessage.removeAttribute('hidden');
-                verificationBox.removeAttribute('hidden');
-                verificationMessage.innerText = `Failed to send OTP to ${phoneNumber} server IDLE`;
+                showVerificationMessage(`Failed to send OTP. ${responseData.message || 'Please try again.'}`, false);
             }
         })
         .catch(error => {
-            console.error('Error sending OTP:', error);
-            verificationMessage.removeAttribute('hidden');
-            verificationBox.removeAttribute('hidden');
-            verificationMessage.innerText = `An error occurred while sending OTP. Please try again.`;
+            console.error('Error in OTP sending process:', error);
+            document.getElementById('spinner').style.display = 'none';
+            showVerificationMessage(`An error occurred: ${error.message}. Please try again.`, false);
         });
     } else {
-        verificationMessage.removeAttribute('hidden');
-        verificationBox.removeAttribute('hidden');
-        verificationMessage.innerText = `Please enter a valid 10-digit phone number.`;
+        document.getElementById('spinner').style.display = 'none';
+        showVerificationMessage(`Invalid phone number: ${phoneNumber}. Please enter a valid 10-digit number.`, false);
     }
 }
 
-$(document).ready(function() {
-    $('#form').submit(function(event) {
-      
-        event.preventDefault();
-        
-        authenticateUser()
+function showVerificationMessage(message, isSuccess) {
+    console.log(`Showing verification message: ${message} (Success: ${isSuccess})`);
+    verificationMessage.textContent = message;
+    verificationBox.hidden = false;
+    verificationBox.className = isSuccess ? 'success' : '';
+    setTimeout(() => {
+        verificationBox.hidden = true;
+    }, 5000);
+}
 
-    });
+document.getElementById('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    authenticateUser();
 });
 
-
 function getFormData() {
-    const phoneNumber = $('#phoneNumber').text().trim(); 
-    const newPassword = $('#newPassword').val().trim();
-    const reenterPassword = $('#reenterPassword').val().trim();
-    const securityOTP = $('#securityOTP').val().trim();
-
-    
-
     return {
-        phoneNumber: phoneNumber,
-        newPassword: newPassword,
-        reenterPassword: reenterPassword,
-        securityOTP: securityOTP
+        phoneNumber: document.getElementById('phoneNumber').textContent.trim(),
+        newPassword: document.getElementById('newPassword').value.trim(),
+        reenterPassword: document.getElementById('reenterPassword').value.trim(),
+        securityOTP: document.getElementById('securityOTP').value.trim()
     };
 }
 
-
-
 function authenticateUser() {
     const formData = getFormData();
-
     const otpEntered = formData.securityOTP;
 
-    console.log("Hello Form Data : ",formData)
     if (otpEntered && !isNaN(otpEntered) && otpEntered.length === 6) {
-        // Prepare the data for the API request
-        const phoneNumber = document.querySelector('#phoneNumber').textContent.trim();
-        const data = {
-            number: phoneNumber,
-            enteredCode: otpEntered,
-            secret: secret
-        };
+        document.getElementById('spinner').style.display = 'flex';
 
-        console.log(data);
-
-        // Make the API request to verify the entered OTP
         fetch('/verifyCode', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                number: formData.phoneNumber,
+                enteredCode: otpEntered
+            }),
         })
-
-
         .then(response => response.json())
         .then(responseData => {
-            console.log('response Data : ',responseData)
             if (responseData.success) {
-
-                verificationMessage.removeAttribute('hidden');
-                verificationBox.removeAttribute('hidden');
-                verificationMessage.innerText = 'Authentication successful! changing your password...';
-
-
-                   // Call the Flask endpoint to change withdrawals password
-                   
-               // Call the Flask endpoint to change withdrawals password
-                fetch('/change_wdtpassword', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                })
-                .then(response => response.json())
-                .then(responseData => {
-                    if (responseData.success){
-                        // Reset the form after successful submission
-                        document.getElementById("form").reset();
-
-                    // Handle the success response from the server
-                    console.log('Withdrawals password changed successfully:', responseData);
-                    // Additional logic as needed
-                    verificationMessage.removeAttribute('hidden');
-                    verificationBox.removeAttribute('hidden');
-                    verificationMessage.innerText = 'Changed withdrawals password successfully.';
-                    setTimeout(function() {
-                        window.location.href = "/profile";
-                    }, 3000);
-                } else {
-                    // Display an error message
-                    alert(responseData.message);
-                }
-                })
-                .catch(error => {
-                    // Handle the error response from the server
-                    console.error('Error changing withdrawals password:', error);
-                    verificationMessage.removeAttribute('hidden');
-                    verificationBox.removeAttribute('hidden');
-                    verificationMessage.innerText = 'Error changing withdrawals password. Please try again.';
-                });
-
-
-
+                showVerificationMessage('OTP verified successfully. Changing your password...', true);
+                changeWithdrawalPassword(formData);
             } else {
-                verificationMessage.removeAttribute('hidden');
+                document.getElementById('spinner').style.display = 'none';
+                showVerificationMessage('Invalid OTP. Please enter the correct OTP.', false);
+            }
+        })
+        .catch(error => {
+            console.error('Error verifying OTP:', error);
+            document.getElementById('spinner').style.display = 'none';
+            showVerificationMessage('An error occurred while verifying OTP. Please try again.', false);
+        });
+    } else {
+        showVerificationMessage('Invalid OTP. Please enter the correct OTP.', false);
+    }
+}
+
+function changeWithdrawalPassword(formData) {
+    fetch('/change_wdtpassword', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        document.getElementById('spinner').style.display = 'none';
+        if (responseData.success) {
+            showVerificationMessage('Changed withdrawals password successfully.', true);
+            clearForm();
+            setTimeout(function() {
+                window.history.back();
+            }, 3000);
+        } else {
+            showVerificationMessage(responseData.message || 'Error changing withdrawals password. Please try again.', false);
+        }
+    })
+    .catch(error => {
+        console.error('Error changing withdrawals password:', error);
+        document.getElementById('spinner').style.display = 'none';
+        showVerificationMessage('Error changing withdrawals password. Please try again.', false);
+    });
+}
+
+function clearForm() {
+    document.getElementById('newPassword').value = '';
+    document.getElementById('reenterPassword').value = '';
+    document.getElementById('securityOTP').value = '';
+    document.getElementById('passwordMatchError').textContent = '';
+    document.getElementById('passwordMatchError').style.display = 'none';
+    document.getElementById('otpButton').textContent = 'Send OTP';
+}
+
+// Password match checking
+document.getElementById('reenterPassword').addEventListener('input', function() {
+    const newPassword = document.getElementById('newPassword').value.trim();
+    const reenterPassword = this.value.trim();
+    const passwordMatchError = document.getElementById('passwordMatchError');
+
+    if (newPassword !== reenterPassword) {
+        passwordMatchError.textContent = 'Passwords do not match';
+        passwordMatchError.style.color = 'red';
+    } else {
+        passwordMatchError.textContent = 'Passwords matched';
+        passwordMatchError.style.color = 'green';
+    }
+    passwordMatchError.style.display = 'block';
+});sage.removeAttribute('hidden');
                 verificationBox.removeAttribute('hidden');
                 verificationMessage.innerText = 'Invalid OTP. Please enter the correct OTP.';
             }

@@ -2,97 +2,245 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Order Details</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USDT Withdrawal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4A4FE4;
+            --secondary-color: #6C70E0;
+            --background-color: #F4F6FA;
+            --card-background: #FFFFFF;
+            --text-color: #333333;
+            --text-light: #666666;
+            --success-color: #4CAF50;
+            --danger-color: #F44336;
+        }
 
-    <link rel="stylesheet" href="static/css/usdtwidthdrawl.css">
-    <link rel="stylesheet" href="static/css/global.css">
-    <link rel="stylesheet" href="static/css/inrwrh1.css">
-    <link rel="stylesheet" href="static/css/spinner.css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 2rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .back-arrow {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .balance-section {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .balance-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .balance-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .price-inr {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .instructions {
+            background-color: var(--card-background);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .instructions h3 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .instructions ol {
+            padding-left: 1.5rem;
+        }
+
+        #verificationBox {
+            background-color: var(--success-color);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .loading-state {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+        }
+
+        .loading {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-
-
-  <div id="spinner" class="loading-state">
-    <div class="loading"></div>
-    <div class="loading-text">
-      <span class="orange-text">Hmm,</span>
-      <span class="black-text"> Loading....</span>
-    </div>
-  </div>
-
-
-
-    <section class="i-phone-pro-max-frame">
-        <div class="left-arrow" id="scrollArrow" onclick="redirectTo('/fullprofile')">
-            <img src="static/assets/svg-elements/navigate-back.png" alt="Navigate Back">
-          </div>
-
-        <div class="i-phone-pro-max-frame-child"></div>
-        <div class="f-r-a-m-e">
-          <h2 class="order">Order</h2>
+    <div id="spinner" class="loading-state" style="display: none;">
+        <div class="loading"></div>
+        <div class="loading-text">
+            <span style="color: #FFA500;">Hmm,</span>
+            <span> Loading....</span>
         </div>
-        <div class="frame-parent4">
-          <div class="rectangle-parent6">
-            <div class="frame-child7"></div>
-            <div class="account-no-frame">
-              <b class="available-balancetext">{{user_details['usdt_balance'] | round(2) }}</b>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <div class="back-arrow" onclick="redirectTo('/fullprofile')">
+                <i class="fas fa-arrow-left"></i>
             </div>
-            <div class="available-balance-usdt-container">
-              <p class="available-balance">Available Balance</p>
-              <p class="usdt9">(USDT)</p>
+            <h1>USDT Withdrawal</h1>
+        </header>
+
+        <div class="card">
+            <div class="balance-section">
+                <div class="balance-label">Available Balance (USDT)</div>
+                <div class="balance-amount">{{user_details['usdt_balance'] | round(2) }}</div>
+                <div class="price-inr">≈ ₹{{inrvalue | round(2) }}</div>
             </div>
-          </div>
-          <div class="amount-frame">
-            <div class="amount-frame-child"></div>
-            <b class="b1">₹{{inrvalue | round(2) }}</b>
-            <div class="price-inr">Price (INR)</div>
-          </div>
+
+            <form id="form">
+                <div class="form-group">
+                    <label for="amount">Amount (USDT):</label>
+                    <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter Amount in USDT" required autocomplete="on" autofocus>
+                </div>
+                <div class="form-group">
+                    <label for="usdtaddress">USDT Address:</label>
+                    <input type="text" class="form-control" id="usdtaddress" name="usdtaddress" placeholder="Enter Your USDT Address" required autocomplete="on">
+                </div>
+                <div class="form-group">
+                    <label for="transactionPassword">Transaction Password:</label>
+                    <input type="password" class="form-control" id="transactionPassword" name="transactionPassword" placeholder="Enter Your Transaction Password" required autocomplete="on">
+                </div>
+                <div id="verificationBox" hidden>
+                    <p id="verificationMessage"></p>
+                </div>
+                <button id="sendotp" class="btn" type="submit">Submit</button>
+            </form>
         </div>
-      </section>
 
-      <div id="phone" hidden>{{ user_details['phone_number'] }}</div>
-
-      <div class="containerform form-container">
-        <form id="form">
-            <div class="form-group">
-                <label for="amount">Amount (USDT):</label>
-                <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter Amount in USDT" required autocomplete="on" autofocus>
-            </div>
-            <div class="form-group">
-                <label for="accountNo">USDT Address:</label>
-                <input type="text" class="form-control" id="usdtaddress" name="usdtaddress" placeholder="Enter Your USDT Address" required autocomplete="on">
-            </div>
-            <div class="form-group">
-                <label for="transactionPassword">Transaction Password:</label>
-                <input type="password" class="form-control" id="transactionPassword" name="transactionPassword" placeholder="Enter Your Transaction Password" required autocomplete="on">
-            </div>
-            <div id="verificationBox" hidden>
-              <p id="verificationMessage" hidden></p>
-          </div>
-            <button id="sendotp" class="btn btn-block" id="changePassword">Submit</button>
-        </form>
+        <div class="instructions">
+            <h3>Instructions:</h3>
+            <ol>
+                <li>Please make sure you have enough USDT to trade.</li>
+                <li>Available withdrawal time: 10 AM to 10 PM, Monday to Sunday.</li>
+            </ol>
+        </div>
     </div>
 
-    <div class="containerinst instructions text-center">
-        <h3 style="margin-bottom: 0;"><strong>Instructions:</strong></h3>
-        <ol style="padding-left: 0; list-style: none;">
-            <li>Please make sure you have enough USDT to trade.</li>
-            <li>Available withdrawal time: 10 AM to 10 PM, Monday to Sunday.</li>
-        </ol>
-    </div>
-    
+    <div id="phone" hidden>{{ user_details['phone_number'] }}</div>
 
-
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<script src="static/js/usdtwidthdrawl.js"></script>
-<script src="static/js/spinner.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="static/js/usdtwidthdrawl.js"></script>
+    <script src="static/js/spinner.js"></script>
+    <script>
+        function redirectTo(url) {
+            document.getElementById('spinner').style.display = 'flex';
+            setTimeout(() => {
+                window.location.href = url;
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
