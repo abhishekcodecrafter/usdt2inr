@@ -102,7 +102,7 @@ function updateUsername() {
 
     // Make an AJAX request to update the username
     fetch('/edit_tg_username', {
-        method: 'PUT',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },

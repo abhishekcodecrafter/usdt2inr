@@ -11,7 +11,7 @@ def change_withdrawals_password():
         reenter_password = data.get('reenterPassword')
         security_otp = data.get('securityOTP')
 
-        phone = get_user_phone_number();
+        phone = get_user_phone_number()
         if not phone:
             return redirect('/')
         # You might want to add additional validation logic here

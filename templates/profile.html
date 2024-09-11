@@ -434,13 +434,38 @@
         }
 
         function updateUsername() {
-            const newUsername = document.getElementById('newUsername').value;
-            // Here you would typically send an AJAX request to update the username on the server
-            // For this example, we'll just update it on the frontend
+    const newUsername = document.getElementById('newUsername').value;
+    
+    if (!newUsername) {
+        alert('Please enter a new username.');
+        return;
+    }
+
+    console.log('Sending new username:', newUsername);
+
+    fetch('/edit_tg_username', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ newUsername: newUsername }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Server response:', data);
+        if (data.success) {
             document.getElementById('usernameDisplay').textContent = newUsername;
             closeEditUsernameModal();
             showVerificationMessage('Username updated successfully');
+        } else {
+            throw new Error(data.message || 'Failed to update username');
         }
+    })
+    .catch(error => {
+        console.error('Error updating username:', error);
+        alert('Error updating username: ' + error.message);
+    });
+}
 
         // Close modals when clicking outside of them
         window.onclick = function(event) {
@@ -462,5 +487,8 @@
             }
         });
     </script>
+
+
+
 </body>
 </html>

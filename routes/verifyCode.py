@@ -5,10 +5,12 @@ import requests
 def verify_code():
     try:
         data = request.json
-        print(data)
+        print("Printing Data : ",data)
         number = data.get('number')
         entered_code_string = data.get('enteredCode')
         secret = data.get('secret')
+
+
 
         if not number or not entered_code_string:
             return jsonify({'success': False, 'error': 'Number and code are required parameters'}), 400
@@ -40,5 +42,5 @@ def verify_code():
             return jsonify({'success': False, 'error': 'Error verifying code'}), 500
 
     except Exception as e:
-        print('Error verifying code:', e)
+        print('Error verifpying code:', e)
         return jsonify({'success': False, 'error': 'Error verifying code'}), 500

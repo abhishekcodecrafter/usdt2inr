@@ -462,6 +462,7 @@ def create_transaction(txn_id, status, amount, type, user_id):
 
 
 def edit_tg_username_model(username, phone):
+    print("From models : ",username)
     query = """
      UPDATE users SET t_me = %s WHERE phone_number = %s
     """

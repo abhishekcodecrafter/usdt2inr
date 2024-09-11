@@ -1,181 +1,204 @@
-$(document).ready(function(){
-    $('#bankModal').modal('show');
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('form');
+  const accountNoInput = document.getElementById('accountNo');
+  const accountNameInput = document.getElementById('accountName');
+  const ifscInput = document.getElementById('ifsc');
+  const modal = document.getElementById('bankModal');
+  const scrollArrow = document.getElementById('scrollArrow');
+
+  let isNewBank = false;
+
+  // Check if modal exists before accessing its properties
+  const closeBtn = modal ? modal.querySelector('.close') : null;
+  const newBankOption = document.getElementById('newBankOption');
+
+  // Event listeners
+  if (form) form.addEventListener('submit', handleFormSubmit);
+  if (ifscInput) ifscInput.addEventListener('input', validateIFSC);
+  [accountNoInput, accountNameInput, ifscInput].forEach(input => {
+      if (input) input.addEventListener('click', showModal);
   });
+  if (closeBtn) closeBtn.addEventListener('click', hideModal);
+  if (newBankOption) newBankOption.addEventListener('click', enableNewBankEntry);
+  if (scrollArrow) scrollArrow.addEventListener('click', handleBackArrow);
 
-  document.getElementById("selectBank").addEventListener("click", function() {
-    $('#bankModal').modal('show');
-  });
-
-
-  function fillForm(accountNo, accountName, ifsc) {
-    document.getElementById("accountNo").value = accountNo;
-    document.getElementById("accountName").value = accountName;
-    document.getElementById("ifsc").value = ifsc;
-    $('#bankModal').modal('hide'); 
-    $('#amount').focus();
-  }
-  
-  
-  
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    const arrowDiv = document.getElementById('scrollArrow');
-    console.log('Arrow back button is clicked.');
-    arrowDiv.addEventListener('click', function () {
-      var currentUrl = window.location.href;
-  var urlParams = new URLSearchParams(window.location.search);
-  var redirection = urlParams.get('redirect');
-  if (redirection === 'dash') {
-      redirectTo('/dashboard');
-  } else {
-      redirectTo('/fullprofile');
-  }
-    });
-  });
-
-
-
-
-
-
-const verificationBox = document.getElementById('verificationBox');
-const verificationMessage = document.getElementById('verificationMessage');  
-  
-  
-  document.addEventListener("DOMContentLoaded", function() {
-        var arrow = document.getElementById("scrollArrow");
-        var container = document.querySelector(".container");
-    
-        window.addEventListener("scroll", function() {
-            arrow.style.display = isElementInViewport(container) ? "block" : "none";
-        });
-    
-        function isElementInViewport(el) {
-            var rect = el.getBoundingClientRect();
-            return (
-                rect.top >= 0 &&
-                rect.left >= 0 &&
-                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-            );
+  // Event delegation for bank cards
+  if (modal) {
+    modal.addEventListener('click', function(e) {
+        const card = e.target.closest('.bank-card');
+        if (card) {
+            const accountNo = card.getAttribute('data-account-no');
+            const accountName = card.getAttribute('data-account-name');
+            const ifsc = card.getAttribute('data-ifsc');
+            console.log('Bank card clicked:', { accountNo, accountName, ifsc });
+            window.fillForm(accountNo, accountName, ifsc);
+            isNewBank = false;
         }
-
-
-        var ifscInput = document.getElementById('ifsc');
-
-        ifscInput.addEventListener('input', function(event) {
-            var inputValue = event.target.value;
-        
-            var serverEndpoint = '/Validate_IFSC';
-        
-            var data = {
-                ifsc: inputValue
-            };
-        
-            fetch(serverEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => response.json())
-            .then(response_data => {
-                console.log(response_data);
-                if (response_data.status == 'Success'){
-                    msgbox = document.getElementById("Validation_Msg")
-                    msgbox.innerHTML = `<span style="color: green;">${response_data.bank_details['BANK']}, ${response_data.bank_details['BRANCH']}</span>`;
-                }
-                if (response_data.status == 'Failed'){
-                    msgbox = document.getElementById("Validation_Msg")
-                    msgbox.innerHTML = `Invalid IFSC code: <span style="color: red;">${inputValue}</span>`;
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                msgbox = document.getElementById("Validation_Msg")
-                msgbox.innerHTML = `Server Error : ${error}`;
-            });
-        });
-        
-
     });
-    
-    function redirectTo(page) {
-        window.location.href = page;
-    }
-    
-    $(document).ready(function() {
-        $("#form").submit(function(event) {
-            event.preventDefault();
-    
-            var data = {
-                phone: $("#phone").text().trim(),
-                amount: $("#amount").val(),
-                accountNo: $("#accountNo").val(),
-                accountName: $("#accountName").val(),
-                ifsc: $("#ifsc").val(),
-                transactionPassword: $("#transactionPassword").val()
-            };
-    
-            console.log("Data to be sent:", data);
+}
 
-            // Display loading spinner or some indicator here
+  // Close modal when clicking outside
+  window.addEventListener('click', function(e) {
+      if (e.target === modal) {
+          hideModal();
+      }
+  });
 
-            fetch('/create_INR_wdt_request', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => response.json())
-            .then(responseData => {
-                // Remove loading spinner or indicator here
-    
-                if (responseData.success) {
-                    // Reset the form after successful submission
-                    document.getElementById("form").reset();
-                    // Handle the success response from the server
-                    console.log('success:', responseData);
+  function showModal() {
+      if (!isNewBank && modal) {
+          modal.style.display = 'block';
+      }
+  }
 
-                    verificationMessage.innerText = `Order Details Submitted successfully.`;
-                    verificationBox.removeAttribute('hidden');
-                    verificationMessage.removeAttribute('hidden');
-                    setTimeout(function() {
-                        window.location.href = "/dashboard";
-                    }, 3000);
-                } else {
-                    var Forgotpassword = "/cwp";
-                    var RechargeNow = "/usdt_deposit_info?redirect=usdtwithdraw";
-                    
-                    if (responseData.message === "Authentication failed") {
-                        verificationMessage.innerHTML = `Wrong Transaction Password. Authentication failed. <br> <a href="${Forgotpassword}" style="color: bisque; text-decoration: underline;">Forgot Password?</a>`;
-                        verificationBox.removeAttribute('hidden');
-                        verificationMessage.removeAttribute('hidden');
-                    }
-                    
-                    if (responseData.message === "Insufficient balance To Trade!") {
-                        verificationMessage.innerHTML = `Insufficient balance To Trade! <br> <a href="${RechargeNow}" style="color: bisque; text-decoration: underline;">Recharge Now</a>`;
-                        verificationBox.removeAttribute('hidden');
-                        verificationMessage.removeAttribute('hidden');
-                    }
-                    
-                    if (responseData.message !== "Authentication failed" && responseData.message !== "Insufficient balance To Trade!") {
-                        verificationMessage.innerText = responseData.message;
-                        verificationBox.removeAttribute('hidden');
-                        verificationMessage.removeAttribute('hidden');
-                    }
-                    
-                }
-            })
-            .catch(error => {
-                console.error('Error submitting INR WDT Details:', error);
-                
-                verificationMessage.innerText = `Error occurred. Please try again`;
-                    verificationBox.removeAttribute('hidden');
-                    verificationMessage.removeAttribute('hidden');
-            });
-        });
-    });
+  function hideModal() {
+      if (modal) modal.style.display = 'none';
+  }
+
+  // Make fillForm globally accessible
+  window.fillForm = function(accountNo, accountName, ifsc) {
+    console.log('fillForm called with:', accountNo, accountName, ifsc);
+    if (accountNoInput && accountNo) accountNoInput.value = accountNo;
+    if (accountNameInput && accountName) accountNameInput.value = accountName;
+    if (ifscInput && ifsc) ifscInput.value = ifsc;
+    console.log('Form filled. Current values:', 
+        accountNoInput?.value || 'N/A', 
+        accountNameInput?.value || 'N/A', 
+        ifscInput?.value || 'N/A'
+    );
+    hideModal();
+}
+
+  function enableNewBankEntry() {
+      isNewBank = true;
+      if (accountNoInput) {
+          accountNoInput.readOnly = false;
+          accountNoInput.value = '';
+      }
+      if (accountNameInput) {
+          accountNameInput.readOnly = false;
+          accountNameInput.value = '';
+      }
+      if (ifscInput) {
+          ifscInput.readOnly = false;
+          ifscInput.value = '';
+      }
+      hideModal();
+  }
+
+  function handleBackArrow() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirection = urlParams.get('redirect');
+      window.location.href = redirection === 'dash' ? '/dashboard' : '/fullprofile';
+  }
+
+  function validateIFSC(event) {
+      const inputValue = event.target.value;
+      const serverEndpoint = '/Validate_IFSC';
+      const data = { ifsc: inputValue };
+
+      fetch(serverEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(response_data => {
+          console.log(response_data);
+          const msgbox = document.getElementById('Validation_Msg');
+          if (msgbox) {
+              if (response_data.status === 'Success') {
+                  msgbox.innerHTML = `<span style="color: green;">${response_data.bank_details['BANK']}, ${response_data.bank_details['BRANCH']}</span>`;
+              } else if (response_data.status === 'Failed') {
+                  msgbox.innerHTML = `Invalid IFSC code: <span style="color: red;">${inputValue}</span>`;
+              }
+          }
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          const msgbox = document.getElementById('Validation_Msg');
+          if (msgbox) msgbox.innerHTML = `Server Error: ${error}`;
+      });
+  }
+
+  function handleFormSubmit(event) {
+      event.preventDefault();
+
+      try {
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+
+          // Validate that all required fields are filled
+          for (let key in data) {
+              if (!data[key] && key !== 'transactionPassword') { // Make transactionPassword optional
+                  throw new Error(`${key} is required`);
+              }
+          }
+
+          // Add isNewBank flag to the data
+          data.isNewBank = isNewBank;
+
+          console.log('Data to be sent:', data);
+
+          const spinner = document.getElementById('spinner');
+          if (spinner) spinner.style.display = 'block';
+
+          fetch('/create_INR_wdt_request', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+          })
+          .then(response => response.json())
+          .then(responseData => {
+              if (spinner) spinner.style.display = 'none';
+              handleResponse(responseData);
+          })
+          .catch(error => {
+              console.error('Error submitting INR WDT Details:', error);
+              if (spinner) spinner.style.display = 'none';
+              showVerificationMessage('Error occurred while submitting. Please try again.');
+          });
+      } catch (error) {
+          console.error('Error preparing form data:', error);
+          showVerificationMessage(error.message);
+      }
+  }
+
+  function handleResponse(responseData) {
+      if (responseData.success) {
+          if (form) form.reset();
+          console.log('success:', responseData);
+          showVerificationMessage('Order Details Submitted successfully.');
+          setTimeout(() => { window.location.href = '/dashboard'; }, 3000);
+      } else {
+          let message = responseData.message;
+          if (message === 'Authentication failed') {
+              message += ` <br> <a href="/cwp" style="color: bisque; text-decoration: underline;">Forgot Password?</a>`;
+          } else if (message === 'Insufficient balance To Trade!') {
+              message += ` <br> <a href="/usdt_deposit_info?redirect=usdtwithdraw" style="color: blue; text-decoration: underline;">Recharge Now</a>`;
+          }
+          showVerificationMessage(message);
+      }
+  }
+
+  function showVerificationMessage(message) {
+      const verificationBox = document.getElementById('verificationBox');
+      const verificationMessage = document.getElementById('verificationMessage');
+      if (verificationMessage) verificationMessage.innerHTML = message;
+      if (verificationBox) verificationBox.removeAttribute('hidden');
+      if (verificationMessage) verificationMessage.removeAttribute('hidden');
+  }
+
+  function calculateINR(constantValue) {
+      const amountInput = document.getElementById('amount');
+      const resultElement = document.getElementById('result');
+      if (amountInput && resultElement) {
+          const inputValue = parseFloat(amountInput.value);
+          const result = (inputValue * constantValue).toFixed(2);
+          resultElement.innerText = "INR " + result;
+          resultElement.classList.add("show");
+      }
+  }
+
+  // Expose necessary functions to global scope
+  window.calculateINR = calculateINR;
+});

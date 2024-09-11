@@ -1,18 +1,19 @@
 import requests
 from flask import Flask, request, jsonify
 
-from routes.send_message import send_message
-
 app = Flask(__name__)
 
-
-def get_bank_details(ifsc_code):
+def get_bank_details_from_ifsc_lookup(ifsc_code):
+    url = f"https://ifsc-lookup-api.p.rapidapi.com/{ifsc_code}"
+    headers = {
+        "x-rapidapi-key": "f1ef54d763mshc7f6cdbe8d56c93p19fef1jsnd00a57dfaeda",
+        "x-rapidapi-host": "ifsc-lookup-api.p.rapidapi.com"
+    }
+    
     try:
-        url = f"https://ifsc.rizad.me/?ifsc={ifsc_code}"
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         response.raise_for_status()  # Check for HTTP errors
-        result = response.json()
-        return result
+        return response.json()
     except requests.exceptions.HTTPError as errh:
         return {"error": f"HTTP Error: {errh}"}
     except requests.exceptions.RequestException as err:
@@ -20,29 +21,33 @@ def get_bank_details(ifsc_code):
     except Exception as e:
         return {"error": "Unexpected Error"}
 
-
 @app.route('/Validate_IFSC', methods=['POST'])
 def validate_IFSC():
     try:
         data = request.get_json()
         ifsc_code = data.get('ifsc')
-        bank_details = get_bank_details(ifsc_code)
+        bank_details = get_bank_details_from_ifsc_lookup(ifsc_code)
 
         if "error" in bank_details:
-            print(bank_details["error"])
-            response_data = {
+            return jsonify({
                 'status': 'Failed',
                 'message': f'Invalid IFSC Code: {ifsc_code}',
                 'error': bank_details["error"]
-            }
+            }), 400
         else:
-            response_data = {
+            return jsonify({
                 'status': 'Success',
                 'message': 'IFSC code validated successfully',
                 'bank_details': bank_details
-            }
+            })
 
-        return jsonify(response_data)
     except Exception as e:
-        send_message(f"Error in fetching ifsc code : {e}")
-        raise e
+        # Log or handle the exception as needed
+        return jsonify({
+            'status': 'Failed',
+            'message': 'An unexpected error occurred.',
+            'error': str(e)
+        }), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)

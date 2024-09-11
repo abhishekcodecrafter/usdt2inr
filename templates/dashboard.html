@@ -40,29 +40,29 @@
         }
 
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
 
-        .greeting {
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
+.logo-container {
+    display: flex;
+    align-items: center;
+}
 
-        .name {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
+.brand-logo {
+    height: 33px;
+    width: 192px;
+}
 
-        .profile-pic {
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            border: 2px solid var(--primary-color);
-        }
+.profile-pic {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    cursor: pointer;
+}
 
         .balance-section {
             background-color: var(--card-background);
@@ -152,68 +152,76 @@
         }
 
         .market-stats {
-            background-color: var(--card-background);
-            border-radius: 1rem;
-            padding: 1rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+    background-color: var(--card-background);
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-        .market-stats-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
+.market-stats-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
 
-        .market-stat-item {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-        }
+.market-stat-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
 
-        .market-stat-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
+.market-stat-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
 
-        .market-stat-info {
-            display: flex;
-            flex-direction: column;
-        }
+.market-stat-icon {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        .market-stat-name {
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
+.market-stat-info {
+    display: flex;
+    flex-direction: column;
+}
 
-        .market-stat-symbol {
-            font-size: 0.8rem;
-            color: var(--text-light);
-        }
+.market-stat-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
 
-        .market-graph {
-            width: 5rem;
-            height: 2rem;
-        }
+.market-stat-symbol {
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
 
-        .market-stat-values {
-            text-align: right;
-        }
+.market-graph {
+    width: 5rem;
+    height: 2rem;
+}
 
-        .market-stat-amount {
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
+.market-stat-values {
+    text-align: right;
+}
 
-        .market-stat-change {
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
+.market-stat-amount {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.market-stat-change {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
 
         .actions {
             position: fixed;
@@ -332,20 +340,35 @@
 <body>
     <div class="container">
         <header class="header">
-            <div>
-                <div class="greeting">Good Morning</div>
-                <div class="name">Robert Fox</div>
-            </div>
-            <img onclick="redirectTo('/profile')" class="profile-pic" src="https://img.freepik.com/free-photo/3d-cartoon-style-character_23-2151034097.jpg?size=626&ext=jpg&ga=GA1.1.1516324045.1722800140&semt=sph" alt="Profile Picture">
-        </header>
+    <div class="logo-container">
+        <img src="https://i.ibb.co/6DN9MNM/Screenshot-2024-09-11-230208-removebg-preview.png" alt="Brand Logo" class="brand-logo">
+    </div>
+    <img class="profile-pic" src="static/assets/avatars/av18.jpg" alt="Profile Picture" onclick="redirectTo('/profile')">
+</header>
 
         <section class="balance-section">
             <div class="balance-label">Total Balance</div>
             <div class="balance-amount">${{user_details['usdt_balance'] | round(2) }}</div>
-            <div class="balance-change">+$1,234.56 (7.65%)</div>
+            <div class="balance-change">INR {{inrvalue | round(2) }}  </div>
         </section>
 
         <div class="crypto-cards">
+            <div class="crypto-card">
+                <div class="crypto-card-header">
+                    <img class="crypto-icon" src="https://coinremitter.com/assets/img/supported_currency/currency_usdttrc20.png" alt="Bitcoin">
+                    <div>
+                        <div class="crypto-name">USDT</div>
+                        <div class="card-symbol">TRC-20</div>
+                    </div>
+                </div>
+                <div class="crypto-chart">
+                    <canvas id="usdtChart"></canvas>
+                </div>
+                <div class="crypto-card-footer">
+                    <div class="crypto-amount">$8,870</div>
+                    <div class="crypto-change">+16.15%</div>
+                </div>
+            </div>
             <div class="crypto-card">
                 <div class="crypto-card-header">
                     <img class="crypto-icon" src="https://as1.ftcdn.net/v2/jpg/04/81/85/70/1000_F_481857096_PCV5sqbQdjSCBvaYsL6TcQjIW8ZrIKaz.jpg" alt="Bitcoin">
@@ -383,6 +406,20 @@
         <section class="market-stats">
             <div class="market-stats-title">Market Statistics</div>
             <div class="market-stat-item">
+                <img class="crypto-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMy3hKpfoRG5GPdxvP5p3zkNYVW_xBuR2i8g&s" alt="Bitcoin">
+                <div class="market-stat-info">
+                    <div class="market-stat-name">USDT</div>
+                    <div class="market-stat-symbol">TRC-20</div>
+                </div>
+                <div class="market-graph">
+                    <canvas id="usdtMiniChart"></canvas>
+                </div>
+                <div class="market-stat-values">
+                    <div class="market-stat-amount">$54,445.01</div>
+                    <div class="market-stat-change" style="color: var(--success-color);">+86.7%</div>
+                </div>
+            </div>
+            <div class="market-stat-item">
                 <img class="crypto-icon" src="https://as1.ftcdn.net/v2/jpg/04/81/85/70/1000_F_481857096_PCV5sqbQdjSCBvaYsL6TcQjIW8ZrIKaz.jpg" alt="Bitcoin">
                 <div class="market-stat-info">
                     <div class="market-stat-name">Bitcoin</div>
@@ -394,6 +431,20 @@
                 <div class="market-stat-values">
                     <div class="market-stat-amount">$99,284.01</div>
                     <div class="market-stat-change" style="color: var(--success-color);">+68.3%</div>
+                </div>
+            </div>
+            <div class="market-stat-item">
+                <img class="crypto-icon" src="https://s2.coinmarketcap.com/static/img/coins/200x200/1027.png" alt="Bitcoin">
+                <div class="market-stat-info">
+                    <div class="market-stat-name">Etherium</div>
+                    <div class="market-stat-symbol">ETH</div>
+                </div>
+                <div class="market-graph">
+                    <canvas id="etheriumMiniChart"></canvas>
+                </div>
+                <div class="market-stat-values">
+                    <div class="market-stat-amount">$95,545.08</div>
+                    <div class="market-stat-change" style="color: var(--success-color);">+74.8%</div>
                 </div>
             </div>
             <!-- Add more market stat items here -->
@@ -422,7 +473,18 @@
     </nav>
 
    <script>
+
+     // Load saved avatar on page load
+     document.addEventListener('DOMContentLoaded', function () {
+            var savedAvatar = localStorage.getItem('selectedAvatar');
+            var avatar = document.querySelector('.profile-pic');
+            if (savedAvatar) {
+                avatar.src = savedAvatar;
+            }
+        });
+
     // Chart.js configurations
+    const UsdtData = [90, 90, 80, 80, 100, 120, 110];
     const bitcoinData = [100, 80, 90, 70, 110, 100, 120];
     const ethereumData = [80, 100, 70, 90, 80, 110, 100];
 
@@ -438,7 +500,7 @@
         },
         elements: {
             point: {
-                radius: 0
+                radius: 1
             },
             line: {
                 tension: 0.4
@@ -462,11 +524,30 @@
         });
     };
 
-    // Create charts
-    const bitcoinChart = createChart(document.getElementById('bitcoinChart').getContext('2d'), bitcoinData, '#F7931A');
-    const ethereumChart = createChart(document.getElementById('ethereumChart').getContext('2d'), ethereumData, '#627EEA');
+ 
+const usdtChart = createChart(
+    document.getElementById('usdtChart').getContext('2d'),
+    UsdtData, 
+    '#26A17B'
+);
 
-    // Mini chart for market statistics
+
+const bitcoinChart = createChart(
+    document.getElementById('bitcoinChart').getContext('2d'),
+    bitcoinData, 
+    '#F7931A' 
+);
+
+
+const ethereumChart = createChart(
+    document.getElementById('ethereumChart').getContext('2d'),
+    ethereumData, 
+    '#627EEA' 
+);
+
+
+
+    
     const createMiniChart = (ctx, data, color) => {
         return new Chart(ctx, {
             type: 'line',
@@ -493,28 +574,31 @@
         });
     };
 
-    const bitcoinMiniChart = createMiniChart(document.getElementById('bitcoinMiniChart').getContext('2d'), [80, 100, 70, 90, 110], '#F7931A');
+  
+const bitcoinMiniChart = createMiniChart(
+    document.getElementById('bitcoinMiniChart').getContext('2d'),
+    [70, 85, 75, 90, 80], 
+    '#F7931A' 
+);
 
-    // Function to update time-based greeting
-    const updateGreeting = () => {
-        const hour = new Date().getHours();
-        const greeting = document.querySelector('.greeting');
-        if (hour < 12) {
-            greeting.textContent = 'Good Morning';
-        } else if (hour < 18) {
-            greeting.textContent = 'Good Afternoon';
-        } else {
-            greeting.textContent = 'Good Evening';
-        }
-    };
 
-    // Call updateGreeting on page load
-    updateGreeting();
+const usdtMiniChart = createMiniChart(
+    document.getElementById('usdtMiniChart').getContext('2d'),
+    [90, 80, 85, 75, 70], 
+    '#26A17B' 
+);
 
-    // Update greeting every minute
-    setInterval(updateGreeting, 60000);
 
-    // Add click event listeners to navigation items
+const ethereumMiniChart = createMiniChart(
+    document.getElementById('etheriumMiniChart').getContext('2d'),
+    [50, 60, 55, 65, 60], 
+    '#627EEA' 
+);
+
+
+
+
+    
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
@@ -524,33 +608,8 @@
         });
     });
 
-    // Simulate loading more market statistics
-    const loadMoreStats = () => {
-        const marketStats = document.querySelector('.market-stats');
-        const newStat = document.createElement('div');
-        newStat.className = 'market-stat-item';
-        newStat.innerHTML = `
-            <img class="crypto-icon" src="https://s2.coinmarketcap.com/static/img/coins/200x200/1027.png" alt="Ethereum">
-            <div class="market-stat-info">
-                <div class="market-stat-name">Ethereum</div>
-                <div class="market-stat-symbol">ETH</div>
-            </div>
-            <div class="market-graph">
-                <canvas id="ethereumMiniChart"></canvas>
-            </div>
-            <div class="market-stat-values">
-                <div class="market-stat-amount">$3,284.15</div>
-                <div class="market-stat-change" style="color: var(--success-color);">+5.2%</div>
-            </div>
-        `;
-        marketStats.appendChild(newStat);
 
-        // Create mini chart for the new stat
-        createMiniChart(document.getElementById('ethereumMiniChart').getContext('2d'), [90, 70, 80, 110, 100], '#627EEA');
-    };
 
-    // Simulate loading more stats after a delay
-    setTimeout(loadMoreStats, 2000);
 </script>
 
 <script src="static/js/dashboard.js"></script>

@@ -4,6 +4,7 @@ const successMessage = document.getElementById("successMessage");
 const otpbox = document.getElementById('otp');
 const loginsignupbtn = document.getElementById('btn-verification');
 const verifyotpelements = document.getElementById('sendotp');
+const sendotp = document.getElementById('otpButton');
 const resendOtp = document.getElementById('resendOtpText');
 var secret = null;
 
@@ -28,6 +29,7 @@ function sendOTP() {
                 let wrongNumberLink = "javascript:history.back();";
                 verificationMessage.removeAttribute('hidden');
                 verificationBox.removeAttribute('hidden');
+                sendotp.setAttribute('hidden', 'true');
                 verificationMessage.innerHTML = `OTP sent to ${phoneNumber} <br> <a href="${wrongNumberLink}" style="color: bisque; text-decoration: underline;">Wrong number?</a>`;
                 console.log("Using Static Folder JS");
                 verifyotpelements.setAttribute('hidden', 'true');

@@ -246,47 +246,5 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="static/js/cwp.js"></script>
     <script src="static/js/spinner.js"></script>
-    <script>
-        function sendOTP() {
-            document.getElementById('spinner').style.display = 'flex';
-            setTimeout(() => {
-                document.getElementById('spinner').style.display = 'none';
-                document.getElementById('otpButton').textContent = 'Resend OTP';
-                showVerificationMessage('OTP sent successfully!', true);
-            }, 1000);
-        }
-
-        function showVerificationMessage(message, isSuccess) {
-            const verificationBox = document.getElementById('verificationBox');
-            const verificationMessage = document.getElementById('verificationMessage');
-            verificationMessage.textContent = message;
-            verificationBox.hidden = false;
-            verificationBox.className = isSuccess ? 'success' : '';
-            setTimeout(() => {
-                verificationBox.hidden = true;
-            }, 3000);
-        }
-
-        document.getElementById('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const newPassword = document.getElementById('newPassword').value;
-            const reenterPassword = document.getElementById('reenterPassword').value;
-            const otp = document.getElementById('securityOTP').value;
-
-            if (newPassword !== reenterPassword) {
-                document.getElementById('passwordMatchError').textContent = 'Passwords do not match';
-                return;
-            }
-
-            document.getElementById('spinner').style.display = 'flex';
-            setTimeout(() => {
-                document.getElementById('spinner').style.display = 'none';
-                showVerificationMessage('Password changed successfully!', true);
-            }, 1500);
-        });
-    </script>
-    
-    <script src="static/js/cwp.js"></script>
-    
 </body>
 </html>

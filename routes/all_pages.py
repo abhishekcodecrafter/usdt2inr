@@ -109,6 +109,28 @@ def profile():
         raise e
 
 
+bank_details = [
+    [87987987987789, 'Robert', 'BARB0ADORXX'],
+    [75975975977575, 'Sarah', 'HDFC0005678'],
+    [98989898989898, 'John', 'AXIS0004321'],
+    [45645645645645, 'Emily', 'SBIN0009876'],
+    [23423423423423, 'Michael', 'YESB0003456'],
+    [67867867867867, 'Sophia', 'KKBK0006543'],
+    [12312312312312, 'David', 'BARB0002345'],
+    [89089089089089, 'Olivia', 'PUNB0008765'],
+    [11223344556677, 'James', 'IBKL0001122'],
+    [99887766554433, 'Linda', 'UBIN0003344']
+]
+
+user_banks = [
+    {
+        "account_no": str(details[0]),
+        "account_name": details[1],
+        "IFSC": details[2]
+    }
+    for details in bank_details
+]
+
 def inr_exchange():
     try:
         user_phone_number = get_user_phone_number()
@@ -121,10 +143,11 @@ def inr_exchange():
         user_details["wallet_address"] = address
         user_details["wallet_qr"] = qr
         return render_template('inr_exchange.html', user_details=user_details, inrvalue=exchange_rate,
-                               user_phonenumber=user_phone_number)
+                               user_phonenumber=user_phone_number,user_banks=user_banks)
     except Exception as e:
         send_message(f"Error on loading INR Exchange : {e}")
         raise e
+
 
 
 def cwp():
@@ -343,7 +366,11 @@ def full_profile():
 def edit_tg_username():
     try:
         user_phone_number = get_user_phone_number()
-        new_username = request.form.get('newUsername')
+        data = request.json
+        new_username = data.get('newUsername')
+        if not new_username:
+            return jsonify({'success': False, 'message': 'Username is missing'}), 400
+        print(new_username)
         success = edit_tg_username_model(new_username, user_phone_number)
 
         return jsonify({'success': success})

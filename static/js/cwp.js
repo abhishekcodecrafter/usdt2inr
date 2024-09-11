@@ -1,12 +1,24 @@
-let secret;
+console.log("Script Loaded");
+
 const verificationBox = document.getElementById('verificationBox');
 const verificationMessage = document.getElementById('verificationMessage');
+const otpButton = document.getElementById('otpButton');
+const spinner = document.getElementById('spinner');
+const form = document.getElementById('form');
+const phoneNumberElement = document.getElementById('phoneNumber');
+const newPasswordInput = document.getElementById('newPassword');
+const reenterPasswordInput = document.getElementById('reenterPassword');
+const securityOTPInput = document.getElementById('securityOTP');
+const passwordMatchError = document.getElementById('passwordMatchError');
+
+let secret = null;
 
 function sendOTP() {
-    const phoneNumber = document.getElementById('phoneNumber').textContent.trim();
+    console.log("sendOTP function called");
+    const phoneNumber = phoneNumberElement.textContent.trim();
     console.log("Sending OTP to:", phoneNumber);
 
-    document.getElementById('spinner').style.display = 'flex';
+    showSpinner();
 
     if (phoneNumber && phoneNumber.length === 10 && !isNaN(phoneNumber)) {
         const data = { number: phoneNumber };
@@ -18,22 +30,24 @@ function sendOTP() {
         })
         .then(response => response.json())
         .then(responseData => {
-            document.getElementById('spinner').style.display = 'none';
-            if (responseData.success) {
-                // Don't store the secret on the client side for production
+            hideSpinner();
+            if (responseData.success && responseData.secret) {
+                secret = responseData.secret;
+                console.log("Secret received:", secret); // Remove in production
                 showVerificationMessage(`OTP sent to ${phoneNumber}`, true);
-                document.getElementById('otpButton').textContent = 'Resend OTP';
+                otpButton.textContent = 'Resend OTP';
             } else {
+                console.error("Failed to receive secret from server");
                 showVerificationMessage(`Failed to send OTP. ${responseData.message || 'Please try again.'}`, false);
             }
         })
         .catch(error => {
             console.error('Error in OTP sending process:', error);
-            document.getElementById('spinner').style.display = 'none';
+            hideSpinner();
             showVerificationMessage(`An error occurred: ${error.message}. Please try again.`, false);
         });
     } else {
-        document.getElementById('spinner').style.display = 'none';
+        hideSpinner();
         showVerificationMessage(`Invalid phone number: ${phoneNumber}. Please enter a valid 10-digit number.`, false);
     }
 }
@@ -42,108 +56,165 @@ function showVerificationMessage(message, isSuccess) {
     console.log(`Showing verification message: ${message} (Success: ${isSuccess})`);
     verificationMessage.textContent = message;
     verificationBox.hidden = false;
-    verificationBox.className = isSuccess ? 'success' : '';
-    setTimeout(() => {
-        verificationBox.hidden = true;
-    }, 5000);
+    verificationBox.className = isSuccess ? 'success' : 'error';
+    if (isSuccess) {
+        setTimeout(() => {
+            verificationBox.hidden = true;
+        }, 5000);
+    }
 }
 
-document.getElementById('form').addEventListener('submit', function(e) {
+form.addEventListener('submit', function(e) {
     e.preventDefault();
-    authenticateUser();
+    if (validateForm()) {
+        authenticateUser();
+    }
 });
+
+function validateForm() {
+    const formData = getFormData();
+    
+    if (!formData.newPassword || !formData.reenterPassword) {
+        showVerificationMessage('Please enter both passwords.', false);
+        return false;
+    }
+
+    if (formData.newPassword !== formData.reenterPassword) {
+        showVerificationMessage('Passwords do not match. Please try again.', false);
+        return false;
+    }
+
+    if (formData.newPassword.length < 6) {
+        showVerificationMessage('Password must be at least 6 characters long.', false);
+        return false;
+    }
+
+    if (!formData.securityOTP || formData.securityOTP.length !== 6 || isNaN(formData.securityOTP)) {
+        showVerificationMessage('Please enter a valid 6-digit OTP.', false);
+        return false;
+    }
+
+    if (!secret) {
+        showVerificationMessage('Please request an OTP before submitting.', false);
+        return false;
+    }
+
+    return true;
+}
 
 function getFormData() {
     return {
-        phoneNumber: document.getElementById('phoneNumber').textContent.trim(),
-        newPassword: document.getElementById('newPassword').value.trim(),
-        reenterPassword: document.getElementById('reenterPassword').value.trim(),
-        securityOTP: document.getElementById('securityOTP').value.trim()
+        phoneNumber: phoneNumberElement.textContent.trim(),
+        newPassword: newPasswordInput.value.trim(),
+        reenterPassword: reenterPasswordInput.value.trim(),
+        securityOTP: securityOTPInput.value.trim()
     };
 }
 
 function authenticateUser() {
     const formData = getFormData();
-    const otpEntered = formData.securityOTP;
+    showSpinner();
 
-    if (otpEntered && !isNaN(otpEntered) && otpEntered.length === 6) {
-        document.getElementById('spinner').style.display = 'flex';
-
-        fetch('/verifyCode', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                number: formData.phoneNumber,
-                enteredCode: otpEntered
-            }),
-        })
-        .then(response => response.json())
-        .then(responseData => {
-            if (responseData.success) {
-                showVerificationMessage('OTP verified successfully. Changing your password...', true);
-                changeWithdrawalPassword(formData);
-            } else {
-                document.getElementById('spinner').style.display = 'none';
-                showVerificationMessage('Invalid OTP. Please enter the correct OTP.', false);
-            }
-        })
-        .catch(error => {
-            console.error('Error verifying OTP:', error);
-            document.getElementById('spinner').style.display = 'none';
-            showVerificationMessage('An error occurred while verifying OTP. Please try again.', false);
-        });
-    } else {
-        showVerificationMessage('Invalid OTP. Please enter the correct OTP.', false);
+    if (!secret) {
+        console.error("Secret is missing. Cannot authenticate.");
+        hideSpinner();
+        showVerificationMessage('Error: OTP not requested. Please request a new OTP.', false);
+        return;
     }
-}
 
-function changeWithdrawalPassword(formData) {
-    fetch('/change_wdtpassword', {
+    const data = {
+        number: formData.phoneNumber,
+        enteredCode: formData.securityOTP,
+        secret: secret
+    };
+
+    console.log("Sending authentication data:", data); // Remove in production
+
+    fetch('/verifyCode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(data),
     })
     .then(response => response.json())
     .then(responseData => {
-        document.getElementById('spinner').style.display = 'none';
+        console.log("Server response:", responseData); // Remove in production
+        if (responseData.success) {
+            showVerificationMessage('OTP verified successfully. Changing your password...', true);
+            changeWithdrawalPassword(formData);
+        } else {
+            hideSpinner();
+            showVerificationMessage('Invalid OTP. Please enter the correct OTP.', false);
+        }
+    })
+    .catch(error => {
+        console.error('Error verifying OTP:', error);
+        hideSpinner();
+        showVerificationMessage('An error occurred while verifying OTP. Please try again.', false);
+    });
+}
+
+function changeWithdrawalPassword(formData) {
+    const data = {
+        ...formData,
+        secret: secret
+    };
+
+    fetch('/change_wdtpassword', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        hideSpinner();
         if (responseData.success) {
             showVerificationMessage('Changed withdrawals password successfully.', true);
             clearForm();
             setTimeout(function() {
-                window.history.back();
-            }, 3000);
+                window.location.href = "/profile";
+            }, 2000);
         } else {
             showVerificationMessage(responseData.message || 'Error changing withdrawals password. Please try again.', false);
         }
     })
     .catch(error => {
         console.error('Error changing withdrawals password:', error);
-        document.getElementById('spinner').style.display = 'none';
+        hideSpinner();
         showVerificationMessage('Error changing withdrawals password. Please try again.', false);
     });
 }
 
 function clearForm() {
-    document.getElementById('newPassword').value = '';
-    document.getElementById('reenterPassword').value = '';
-    document.getElementById('securityOTP').value = '';
-    document.getElementById('passwordMatchError').textContent = '';
-    document.getElementById('passwordMatchError').style.display = 'none';
-    document.getElementById('otpButton').textContent = 'Send OTP';
+    newPasswordInput.value = '';
+    reenterPasswordInput.value = '';
+    securityOTPInput.value = '';
+    passwordMatchError.textContent = '';
+    passwordMatchError.style.display = 'none';
+    otpButton.textContent = 'Send OTP';
+    secret = null;
+    console.log("Form cleared and secret reset");
 }
 
-// Password match checking
-document.getElementById('reenterPassword').addEventListener('input', function() {
-    const newPassword = document.getElementById('newPassword').value.trim();
+function showSpinner() {
+    spinner.style.display = 'flex';
+}
+
+function hideSpinner() {
+    spinner.style.display = 'none';
+}
+
+reenterPasswordInput.addEventListener('input', function() {
+    const newPassword = newPasswordInput.value.trim();
     const reenterPassword = this.value.trim();
-    const passwordMatchError = document.getElementById('passwordMatchError');
 
     if (newPassword !== reenterPassword) {
         passwordMatchError.textContent = 'Passwords do not match';
         passwordMatchError.style.color = 'red';
     } else {
-        passwordMatchError.textContent = 'Passwords matched';
+        passwordMatchError.textContent = 'Passwords match';
         passwordMatchError.style.color = 'green';
     }
     passwordMatchError.style.display = 'block';
 });
+
+otpButton.addEventListener('click', sendOTP);

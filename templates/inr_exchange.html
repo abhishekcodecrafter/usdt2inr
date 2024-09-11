@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -185,6 +184,26 @@
             cursor: pointer;
         }
 
+        .bank-card {
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .bank-card:hover {
+            background-color: #f0f0f0;
+        }
+
+        #newBankOption {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
         .loading-state {
             position: fixed;
             top: 0;
@@ -254,7 +273,7 @@
 
     <div class="container">
         <header class="header">
-            <div class="back-arrow" id="scrollArrow">
+            <div class="back-arrow" id="scrollArrow" onclick="handleBackArrow()">
                 <i class="fas fa-arrow-left"></i>
             </div>
             <h1>Order</h1>
@@ -283,16 +302,16 @@
             </div>
             <div class="form-group">
                 <label for="accountNo">Account No.:</label>
-                <input type="number" class="form-control" id="accountNo" name="accountNo" placeholder="Enter Account Number" required autocomplete="on">
+                <input type="number" class="form-control" id="accountNo" name="accountNo" placeholder="Enter Account Number" required autocomplete="on" readonly>
             </div>
             <div class="form-group">
                 <label for="accountName">Account Holder Name:</label>
-                <input type="name" class="form-control" id="accountName" name="accountName" placeholder="Enter Account Holder Name" required autocomplete="on">
+                <input type="text" class="form-control" id="accountName" name="accountName" placeholder="Enter Account Holder Name" required autocomplete="on" readonly>
             </div>
             <div class="form-group">
                 <label for="ifsc">IFSC:</label>
                 <div id="Validation_Msg" class="mb-2"></div>
-                <input type="text" class="form-control" id="ifsc" name="ifsc" placeholder="Enter IFSC Code" required autocomplete="on">
+                <input type="text" class="form-control" id="ifsc" name="ifsc" placeholder="Enter IFSC Code" required autocomplete="on" readonly>
             </div>
             <div class="form-group">
                 <label for="transactionPassword">Transaction Password:</label>
@@ -316,15 +335,22 @@
     {% if user_banks %}
     <div id="bankModal" class="modal">
         <div class="modal-content">
+            
             <span class="close">&times;</span>
             <h2>Select Bank</h2>
-            {% for bank in user_banks %}
-            <div class="card" onclick="fillForm('{{ bank.account_no }}', '{{ bank.account_name }}', '{{ bank.IFSC }}')">
-                <p>{{ bank.account_no }}</p>
-                <p>{{ bank.account_name }}</p>
-                <p>{{ bank.IFSC }}</p>
-            </div>
-            {% endfor %}
+
+            <div id="newBankOption" onclick="enableNewBankEntry()">+ Add New Bank Account</div>
+
+            {% if user_banks %}
+                {% for bank in user_banks %}
+                <div class="bank-card" onclick="fillForm('{{ bank.account_no }}', '{{ bank.account_name }}', '{{ bank.IFSC }}')">
+                    <p>Account No: {{ bank.account_no }}</p>
+                    <p>Account Name: {{ bank.account_name }}</p>
+                    <p>IFSC: {{ bank.IFSC }}</p>
+                </div>
+                {% endfor %}
+            {% endif %}
+            
         </div>
     </div>
     {% endif %}
@@ -332,31 +358,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="static/js/inr_exchange.js"></script>
     <script src="static/js/spinner.js"></script>
-    <script>
-        // Modal functionality
-        var modal = document.getElementById("bankModal");
-        var btn = document.getElementById("selectBank");
-        var span = document.getElementsByClassName("close")[0];
-
-        if (btn) {
-            btn.onclick = function() {
-                modal.style.display = "block";
-            }
-        }
-
-        if (span) {
-            span.onclick = function() {
-                modal.style.display = "none";
-            }
-        }
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-
-        // Assuming fillForm function is defined in inr_exchange.js
-    </script>
+    
 </body>
 </html>
