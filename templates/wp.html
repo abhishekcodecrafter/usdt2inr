@@ -1,68 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Withdrawals Password Change</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="static/css/wp.css">
-  <link rel="stylesheet" href="static/css/spinner.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Up Withdrawals Password</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A4FE4;
+            --secondary-color: #6C70E0;
+            --background-color: #F4F6FA;
+            --card-background: #FFFFFF;
+            --text-color: #333333;
+            --text-light: #666666;
+            --success-color: #4CAF50;
+            --danger-color: #F44336;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 0.25rem;
+            font-size: 1rem;
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.25rem;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        #verificationBox {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        #verificationBox.success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        #verificationBox.error {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        #passwordMatchError {
+            color: var(--danger-color);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .loading-state {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+        }
+
+        .loading {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 100%;
+            }
+
+            .card {
+                padding: 1rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            input[type="password"], .btn {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 <body>
-
-
-  <div id="spinner" class="loading-state">
-    <div class="loading"></div>
-    <div class="loading-text">
-
-      <span class="black-text"> Loading....</span>
+    <div id="spinner" class="loading-state" style="display: none;">
+        <div class="loading"></div>
+        <div class="loading-text">
+            <span style="color: #FFA500;">Hmm,</span>
+            <span> Loading....</span>
+        </div>
     </div>
-  </div>
 
+    <div id="phoneNumber" hidden>{{user_phonenumber}}</div>
 
+    <div class="container">
+        <h2>Set Up Withdrawals Password</h2>
 
-  <div id="phoneNumber" hidden>{{user_phonenumber}}</div>
+        <div class="card">
+            <div id="verificationBox" hidden>
+                <p id="verificationMessage"></p>
+            </div>
 
-  <div class="container1">
-  <h2 class="text-center">Set Up Withdrawals Password</h2>
-  </div>
+            <form id="form">
+                <div class="form-group">
+                    <label for="newPassword">Enter Password</label>
+                    <input type="password" id="newPassword" placeholder="Enter Password" name="newPassword" required>
+                </div>
 
-  <div class="container">
-    <div id="verificationBox" hidden>
-      <p id="verificationMessage" hidden></p>
-  </div>
-    <form id="form">
-      <div class="form-group">
-        <label for="newPassword">Enter Password</label>
-        <input type="password" class="form-control" id="newPassword" placeholder="Enter Password" name="newPassword" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="reenterPassword">Re-Enter Password</label>
-        <div id="passwordMatchError"></div>
-        <input type="password" class="form-control" id="reenterPassword" placeholder="Re-Enter Password" name="reenterPassword" required>
-      </div>
-      <div class="form-group">
-        <div id="verificationBox" hidden>
-          <p id="verificationMessage"></p>
-      </div>
-      </div>
-      <button type="submit"  class="btn btn-block" id="changePassword">Save & Proceed</button>
-    </form>
+                <div class="form-group">
+                    <label for="reenterPassword">Re-Enter Password</label>
+                    <input type="password" id="reenterPassword" placeholder="Re-Enter Password" name="reenterPassword" required>
+                    <div id="passwordMatchError"></div>
+                </div>
 
-  </div>
+                <button type="submit" id="changePassword" class="btn">Save & Proceed</button>
+            </form>
+        </div>
+    </div>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const form = $('#form');
+            const newPasswordInput = $('#newPassword');
+            const reenterPasswordInput = $('#reenterPassword');
+            const passwordMatchError = $('#passwordMatchError');
+            const verificationBox = $('#verificationBox');
+            const verificationMessage = $('#verificationMessage');
+            const spinner = $('#spinner');
 
+            form.on('submit', function(e) {
+                e.preventDefault();
+                const newPassword = newPasswordInput.val();
+                const reenterPassword = reenterPasswordInput.val();
 
+                if (newPassword !== reenterPassword) {
+                    passwordMatchError.text('Passwords do not match');
+                    return;
+                }
 
-  <script src="static/js/wp.js"></script>
-  <script src="static/js/spinner.js"></script>
+                passwordMatchError.text('');
+                spinner.show();
 
+                // AJAX call to change password
+                $.ajax({
+                    url: '/change_wdtpassword',
+                    method: 'POST',
+                    data: {
+                        newPassword: newPassword,
+                        reenterPassword: reenterPassword,
+                        phoneNumber: $('#phoneNumber').text()
+                    },
+                    success: function(response) {
+                        spinner.hide();
+                        if (response.success) {
+                            verificationMessage.text('Password changed successfully');
+                            verificationBox.show().removeClass('error').addClass('success');
+                            setTimeout(function() {
+                                window.location.href = "/profile";
+                            }, 2000);
+                        } else {
+                            verificationMessage.text(response.message || 'Failed to change password');
+                            verificationBox.show().removeClass('success').addClass('error');
+                        }
+                    },
+                    error: function() {
+                        spinner.hide();
+                        verificationMessage.text('An error occurred. Please try again.');
+                        verificationBox.show().removeClass('success').addClass('error');
+                    }
+                });
+            });
+
+            // Real-time password match checking
+            reenterPasswordInput.on('input', function() {
+                if (newPasswordInput.val() !== reenterPasswordInput.val()) {
+                    passwordMatchError.text('Passwords do not match');
+                } else {
+                    passwordMatchError.text('');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
-

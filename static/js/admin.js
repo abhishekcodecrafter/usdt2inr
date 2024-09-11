@@ -224,6 +224,7 @@ function getTransactions(thisone) {
 
 function handleStatusToggle(idindex , phoneNumber , amount , txn_id , transactiontype) {
     const tdElement = document.getElementById(idindex);
+
     if (amount === 'null'){
         alert('Please Enter the amount first');
         return; 

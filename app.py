@@ -11,6 +11,7 @@ app.secret_key = 'UnseenUmbrellaNeverGotaShower'
 app.permanent_session_lifetime = timedelta(minutes=60 * 24 * 7)
 CORS(app)
 
+
 system = platform.system()
 development = False
 production = False
@@ -88,7 +89,7 @@ def page_not_found(error):
 
 if __name__ == '__main__':
     if development:
-        app.run(host='0.0.0.0', port=8000, debug=True)
+        app.run(host='0.0.0.0', port=8001, debug=True)
 
     if production:
         from gevent.pywsgi import WSGIServer

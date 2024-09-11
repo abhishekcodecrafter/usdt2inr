@@ -1,72 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Withdrawals Password Change</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="static/css/cwp.css">
-  <link rel="stylesheet" href="static/css/spinner.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Withdrawals Password</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4A4FE4;
+            --secondary-color: #6C70E0;
+            --background-color: #F4F6FA;
+            --card-background: #FFFFFF;
+            --text-color: #333333;
+            --text-light: #666666;
+            --success-color: #4CAF50;
+            --danger-color: #F44336;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 4rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .back-arrow {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        .input-group {
+            display: flex;
+        }
+
+        .input-group .form-control {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            flex-grow: 1;
+        }
+
+        .input-group .btn {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        #passwordMatchError, #verificationBox {
+            color: var(--danger-color);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        #verificationBox.success {
+            color: var(--success-color);
+        }
+
+        .loading-state {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+        }
+
+        .loading {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .card {
+                padding: 1rem;
+            }
+
+            .form-control, .btn {
+                font-size: 0.9rem;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .input-group .form-control, .input-group .btn {
+                border-radius: 0.5rem;
+            }
+
+            .input-group .btn {
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-
-  <div id="spinner" class="loading-state">
-    <div class="loading"></div>
-    <div class="loading-text">
-
-      <span class="black-text"> Loading....</span>
-    </div>
-  </div>
-
-  <div id="phoneNumber" hidden>{{user_phonenumber}}</div>
-
-  <div class="container1">
-    <div class="left-arrow" onclick="history.back()">
-      <img src="static/assets/svg-elements/navigate-back.png" alt="Navigate Back">
-  </div>
-  <h2 class="text-center">Change Withdrawals Password</h2>
-  </div>
-
-  <div class="container">
-    
-    <form id="form">
-      <div class="form-group">
-        <label for="newPassword">Enter New Password</label>
-        <input type="password" class="form-control" id="newPassword" placeholder="Enter Your New Password" name="newPassword" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="reenterPassword">Re-Enter New Password</label>
-        <div id="passwordMatchError" ></div>
-        <input type="password" class="form-control" id="reenterPassword" placeholder="Re-Enter Your New Password" name="reenterPassword" required>
-      </div>
-      <div class="form-group">
-        <div id="verificationBox" hidden>
-          <p id="verificationMessage"></p>
-      </div>
-        <label for="securityOTP">Enter OTP</label>
-        <div class="input-group">
-          <input type="text" class="form-control" id="securityOTP" placeholder="Enter Otp You Received" name="securityOTP" required>
-          <div class="input-group-append">
-            <button type="button" class="btn" onclick="sendOTP()" id="otpButton">Send OTP</button>
-          </div>
+    <div id="spinner" class="loading-state" style="display: none;">
+        <div class="loading"></div>
+        <div class="loading-text">
+            <span style="color: #FFA500;">Hmm,</span>
+            <span> Loading....</span>
         </div>
-      </div>
-      <button type="submit"  class="btn btn-block" id="changePassword">Change</button>
-    </form>
+    </div>
 
-  </div>
+    <div class="container">
+        <header class="header">
+            <div class="back-arrow" onclick="history.back()">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <h1>Change Withdrawals Password</h1>
+        </header>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <div class="card">
+            <form id="form">
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" class="form-control" id="newPassword" placeholder="Enter your new password" name="newPassword" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reenterPassword">Confirm New Password</label>
+                    <input type="password" class="form-control" id="reenterPassword" placeholder="Re-enter your new password" name="reenterPassword" required>
+                    <div id="passwordMatchError"></div>
+                </div>
 
+                <div class="form-group">
+                    <label for="securityOTP">OTP Verification</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="securityOTP" placeholder="Enter OTP" name="securityOTP" required>
+                        <button type="button" class="btn" onclick="sendOTP()" id="otpButton">Send OTP</button>
+                    </div>
+                    <div id="verificationBox" hidden>
+                        <p id="verificationMessage"></p>
+                    </div>
+                </div>
 
+                <button type="submit" class="btn btn-block" id="changePassword">Change Password</button>
+            </form>
+        </div>
+    </div>
 
-  <script src="static/js/cwp.js"></script>
-  <script src="static/js/spinner.js"></script>
+    <div id="phoneNumber" hidden>{{user_phonenumber}}</div>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="static/js/cwp.js"></script>
+    <script src="static/js/spinner.js"></script>
+    <script>
+        function sendOTP() {
+            document.getElementById('spinner').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('spinner').style.display = 'none';
+                document.getElementById('otpButton').textContent = 'Resend OTP';
+                showVerificationMessage('OTP sent successfully!', true);
+            }, 1000);
+        }
+
+        function showVerificationMessage(message, isSuccess) {
+            const verificationBox = document.getElementById('verificationBox');
+            const verificationMessage = document.getElementById('verificationMessage');
+            verificationMessage.textContent = message;
+            verificationBox.hidden = false;
+            verificationBox.className = isSuccess ? 'success' : '';
+            setTimeout(() => {
+                verificationBox.hidden = true;
+            }, 3000);
+        }
+
+        document.getElementById('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newPassword = document.getElementById('newPassword').value;
+            const reenterPassword = document.getElementById('reenterPassword').value;
+            const otp = document.getElementById('securityOTP').value;
+
+            if (newPassword !== reenterPassword) {
+                document.getElementById('passwordMatchError').textContent = 'Passwords do not match';
+                return;
+            }
+
+            document.getElementById('spinner').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('spinner').style.display = 'none';
+                showVerificationMessage('Password changed successfully!', true);
+            }, 1500);
+        });
+    </script>
+    
+    <script src="static/js/cwp.js"></script>
+    
 </body>
 </html>
-
