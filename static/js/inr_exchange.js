@@ -80,17 +80,16 @@ const verificationMessage = document.getElementById('verificationMessage');
                 },
                 body: JSON.stringify(data),
             })
-
             .then(response => response.json())
             .then(response_data => {
                 console.log(response_data);
                 if (response_data.status == 'Success'){
                     msgbox = document.getElementById("Validation_Msg")
-                    msgbox.innerHTML = `Bank Found Successfully. <span style="color: green;">${response_data.bank_details['BANK']}</span>`;
+                    msgbox.innerHTML = `<span style="color: green;">${response_data.bank_details['BANK']}, ${response_data.bank_details['BRANCH']}</span>`;
                 }
                 if (response_data.status == 'Failed'){
                     msgbox = document.getElementById("Validation_Msg")
-                    msgbox.innerHTML = `Not a Valid IFSC Code: <span style="color: red;">${inputValue}</span>`;
+                    msgbox.innerHTML = `Invalid IFSC code: <span style="color: red;">${inputValue}</span>`;
                 }
             })
             .catch(error => {

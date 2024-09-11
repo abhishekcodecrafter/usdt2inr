@@ -36,10 +36,11 @@ function submitDeposit() {
         if (responseData.success) {
             var successMsg = document.getElementById('deposit-alert');
             successMsg.style.display = 'block';
+            successMsg.innerHTML = responseData.message
             setTimeout(function () {
                 successMsg.style.display = 'none';
                 window.location.href = '/dashboard';
-            }, 3000);
+            }, 4000);
         } else {
             console.error('Error on submit deposit', responseData);
             var errorMsg = document.getElementById('deposit-alert');
@@ -47,8 +48,10 @@ function submitDeposit() {
             errorMsg.style.display = 'block';
             setTimeout(function () {
                 errorMsg.style.display = 'none';
-            }, 3000);
+            }, 4000);
         }
+        var input = document.getElementById('txnID');
+        input.value = ''
     })
     .catch(error => {
         console.error('Error on submit deposit', error);

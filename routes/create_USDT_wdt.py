@@ -4,6 +4,7 @@ from flask import request, jsonify, redirect
 from flask_cors import CORS
 from db.models import get_user_by_phone_number, create_USDT_wdt_model, get_current_exchange_rate
 from routes.all_pages import get_user_phone_number
+from routes.send_message import send_message
 
 
 def create_USDT_wdt():
@@ -27,11 +28,13 @@ def create_USDT_wdt():
             return jsonify({'success': False, 'message': 'Authentication failed'})
 
         # Perform the actual data insertion into the database
-        success = create_USDT_wdt_model(phone,amount,uusdt_address, get_current_exchange_rate())
+        success = create_USDT_wdt_model(phone, amount, uusdt_address, get_current_exchange_rate())
 
         if success:
+            send_message(f"New withdrawal request of type USDT of amount {amount} from {phone} received. Please take the action")
             return jsonify({'success': True, 'message': 'Data inserted successfully'})
         else:
+            send_message(f"Error occurred on usdt withdrawal of amount {amount} from {phone}")
             return jsonify({'success': False, 'message': 'Failed to insert data'})
 
     except Exception as e:
