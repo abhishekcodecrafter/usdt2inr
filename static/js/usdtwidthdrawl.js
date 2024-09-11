@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                     
                     if (responseData.message === "Insufficient balance To Trade!") {
-                        verificationMessage.innerHTML = `Insufficient balance To Trade! <br> <a href="${RechargeNow}" style="color: bisque; text-decoration: underline;">Recharge Now</a>`;
+                        verificationMessage.innerHTML = `Insufficient balance To Trade! <br> <a href="${RechargeNow}" style="color: bisque; text-decoration: underline;">Deposit Now</a>`;
                         verificationBox.removeAttribute('hidden');
                         verificationMessage.removeAttribute('hidden');
                     }

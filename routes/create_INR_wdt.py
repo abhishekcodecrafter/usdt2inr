@@ -1,7 +1,8 @@
 from passlib.hash import bcrypt
 import logging
-from flask import request, jsonify , redirect , session
+from flask import request, jsonify, redirect, session
 from db.models import get_user_by_phone_number, create_INR_wdt_model, get_current_exchange_rate
+from routes.send_message import send_message
 
 
 def get_user_phone_number():
@@ -23,25 +24,28 @@ def create_INR_wdt():
 
         user_details = get_user_by_phone_number(phone)
 
-        # if int(amount) > user_details['usdt_balance']:
-        #     return jsonify({'success': False, 'message': 'Insufficient balance To Trade!'})
+        if int(amount) > user_details['usdt_balance']:
+            return jsonify({'success': False, 'message': 'Insufficient balance To Trade!'})
 
         # Authenticate the user
         if not authenticate_user_by_pass(phone, password):
             return jsonify({'success': False, 'message': 'Authentication failed'})
 
         # Perform the actual data insertion into the database
-        success = create_INR_wdt_model(phone, amount, accountNo, accountName, ifsc,get_current_exchange_rate())
+        success = create_INR_wdt_model(phone, amount, accountNo, accountName, ifsc, get_current_exchange_rate())
 
         if success:
+            send_message(f"New withdraw request of amount '{amount}' from '{phone}'")
             return jsonify({'success': True, 'message': 'Data inserted successfully'})
         else:
             return jsonify({'success': False, 'message': 'Failed to insert data'})
 
     except Exception as e:
         # Log the error using Python's logging module
+        send_message(f"Error while withdraw request : '{phone}', Error: '{e}'")
         logging.error(f"An unexpected error occurred: {str(e)}")
-        return jsonify({'success': False, 'message': 'An error occurred while processing your request. Check logs for details.'})
+        return jsonify(
+            {'success': False, 'message': 'An error occurred while processing your request. Check logs for details.'})
 
 
 def authenticate_user_by_pass(phone, password):

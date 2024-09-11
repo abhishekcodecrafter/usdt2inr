@@ -1,6 +1,7 @@
 from flask import request, jsonify, redirect
 from db.models import create_user, get_user_by_phone_number
 from routes.all_pages import get_user_phone_number
+from routes.send_message import send_message
 
 
 def add_user():
@@ -25,4 +26,5 @@ def add_user():
         else:
             return jsonify({"success": False, "message": "User already exists"}), 200
     except Exception as e:
+        send_message(f"Error while creating user : '{phone_number}', '{e}'")
         return jsonify({"success": False, "message": f"Error: {str(e)}"})
