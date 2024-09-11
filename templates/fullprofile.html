@@ -6,22 +6,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>Full Profile Settings</title>
-
     <link rel="stylesheet" href="static/css/fullprofile.css">
     <link rel="stylesheet" href="static/css/spinner.css">
-
 </head>
 <body>
-
   <div id="spinner" class="loading-state">
     <div class="loading"></div>
     <div class="loading-text">
-      <span class="orange-text">Hmm,</span>
       <span class="black-text"> Loading....</span>
     </div>
   </div>
-
-
 <div class="profile-container">
     <div class="profile-picture">
       <img id="avatar" onclick="redirectTo('/profile')" alt="User Avatar" onerror="this.onerror=null; this.src='av18.jpg'">
@@ -82,11 +76,11 @@
           <div class="arrow"><img width="20" height="20" src="https://img.icons8.com/carbon-copy/100/000000/right-squared.png" alt="right-squared"/></div>
       </div>
       <hr class="list-divider">
-        <div onclick="redirectTo('/help')" class="list-card">
+        <div class="list-card">
             <div class="icon">
             <img id="limage" src="static/assets/svg-elements/help.png" alt="Help Icon">
             </div>
-            <div class="name">Help</div>
+            <div class="name"><a href="https://t.me/wallet_me_usdt">Support Channel</a></div>
             <div class="arrow"><img width="20" height="20" src="https://img.icons8.com/carbon-copy/100/000000/right-squared.png" alt="right-squared"/></div>
         </div>
     </div>

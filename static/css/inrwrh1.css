@@ -347,3 +347,13 @@
   padding: 0 0 var(--padding-smi);
   gap: 13px 0;
 }
+
+.result {
+  color: green;
+  padding-bottom: 10px; /* Adjust as needed */
+}
+
+/* Additional class to show the div */
+.show {
+  display: block;
+}

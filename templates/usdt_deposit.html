@@ -17,7 +17,7 @@
     <div id="spinner" class="loading-state">
         <div class="loading"></div>
         <div class="loading-text">
-          <span class="orange-text">Hmm,</span>
+
           <span class="black-text"> Loading....</span>
         </div>
       </div>
@@ -40,12 +40,12 @@
 </div>
 
     <div class="qr-code">
-        <img id='qr-code-img'  src="{{ address_info['qr'] }}" alt="QR Code">
+        <img id='qr-code-img'  src="{{ address_info['qr'] }}" alt="QR Code" width="300" height="300">
         <div class="wallet-address">
             <p id="wallet-address">{{ address_info["address"] }}</p>
         </div>
         <div id="successmsg">Copied</div>
-        <div id="deposit-alert">Request Submited!!</div>
+        <div id="deposit-alert"></div>
         <button class="btn  btn-block copy-btn" onclick="copyWalletAddress()">Copy Address</button>
         <form>
             <div class="txnid position-relative">

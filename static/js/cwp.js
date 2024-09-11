@@ -122,12 +122,8 @@ function authenticateUser() {
 
                 verificationMessage.removeAttribute('hidden');
                 verificationBox.removeAttribute('hidden');
-                verificationMessage.innerText = 'Authentication successful! changing your password...';
+                verificationMessage.innerText = 'Otp Verified! Changing password';
 
-
-                   // Call the Flask endpoint to change withdrawals password
-                   
-               // Call the Flask endpoint to change withdrawals password
                 fetch('/change_wdtpassword', {
                     method: 'POST',
                     headers: {
@@ -140,16 +136,12 @@ function authenticateUser() {
                     if (responseData.success){
                         // Reset the form after successful submission
                         document.getElementById("form").reset();
-
-                    // Handle the success response from the server
-                    console.log('Withdrawals password changed successfully:', responseData);
-                    // Additional logic as needed
                     verificationMessage.removeAttribute('hidden');
                     verificationBox.removeAttribute('hidden');
-                    verificationMessage.innerText = 'Changed withdrawals password successfully.';
+                    verificationMessage.innerText = 'Password changed successfully.';
                     setTimeout(function() {
                         window.location.href = "/profile";
-                    }, 3000);
+                    }, 2000);
                 } else {
                     // Display an error message
                     alert(responseData.message);
@@ -160,7 +152,7 @@ function authenticateUser() {
                     console.error('Error changing withdrawals password:', error);
                     verificationMessage.removeAttribute('hidden');
                     verificationBox.removeAttribute('hidden');
-                    verificationMessage.innerText = 'Error changing withdrawals password. Please try again.';
+                    verificationMessage.innerText = 'Error changing password. Please try again.';
                 });
 
 
