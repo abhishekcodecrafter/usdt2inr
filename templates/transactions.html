@@ -276,39 +276,24 @@
     </div>
 
     <nav class="nav-bar">
-        <a href="/dashboard" class="nav-item">
+        <div onclick="redirectTo('/dashboard' )" class="nav-item">
             <i class="fas fa-home"></i>
             <span class="nav-text">Home</span>
-        </a>
-        <a href="/transactions" class="nav-item active">
+        </div>
+        <div onclick="redirectTo('/transactions' )" class="nav-item active">
             <i class="fas fa-exchange-alt"></i>
             <span class="nav-text">Transactions</span>
-        </a>
-        <a href="/fullprofile" class="nav-item">
+        </div>
+        <div onclick="redirectTo('/refer')" class="nav-item">
+            <i class="fas fa-user-plus"></i>
+            <span class="nav-text">Refer</span>
+        </div>
+        <div onclick="redirectTo('/fullprofile')" class="nav-item">
             <i class="fas fa-cog"></i>
-            <span class="nav-text">Profile</span>
-        </a>
+            <span class="nav-text">Settings</span>
+        </div>
     </nav>
 
-    <script>
-        function toggleTransactions(type) {
-            const withdrawalsSection = document.getElementById('withdrawals');
-            const depositsSection = document.getElementById('deposits');
-            const withdrawalsButton = document.getElementById('withdrawalsButton');
-            const depositsButton = document.getElementById('depositsButton');
-
-            if (type === 'withdrawals') {
-                withdrawalsSection.style.display = 'block';
-                depositsSection.style.display = 'none';
-                withdrawalsButton.classList.add('active');
-                depositsButton.classList.remove('active');
-            } else {
-                withdrawalsSection.style.display = 'none';
-                depositsSection.style.display = 'block';
-                withdrawalsButton.classList.remove('active');
-                depositsButton.classList.add('active');
-            }
-        }
-    </script>
+    <script src="static/js/transactions.js"></script>
 </body>
 </html>

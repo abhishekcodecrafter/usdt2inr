@@ -1,23 +1,23 @@
-function toggleTransactions(activeButton) {
-    var withdrawalsButton = document.getElementById("withdrawalsButton");
-    var depositsButton = document.getElementById("depositsButton");
-    var withdrawalSection = document.getElementById("withdrawals");
-    var depositSections = document.getElementById("deposits");
+function redirectTo(page) {
+    window.location.href = page;
+  }
 
-    if (activeButton === 'withdrawals') {
-        withdrawalsButton.classList.add("active");
-        depositsButton.classList.remove("active");
-        withdrawalSection.style.display = "flex";
-        depositSections.style.display = "none";
+
+  function toggleTransactions(type) {
+    const withdrawalsSection = document.getElementById('withdrawals');
+    const depositsSection = document.getElementById('deposits');
+    const withdrawalsButton = document.getElementById('withdrawalsButton');
+    const depositsButton = document.getElementById('depositsButton');
+
+    if (type === 'withdrawals') {
+        withdrawalsSection.style.display = 'block';
+        depositsSection.style.display = 'none';
+        withdrawalsButton.classList.add('active');
+        depositsButton.classList.remove('active');
     } else {
-        withdrawalsButton.classList.remove("active");
-        depositsButton.classList.add("active");
-        depositSections.style.display = "flex";
-        withdrawalSection.style.display = "none";
+        withdrawalsSection.style.display = 'none';
+        depositsSection.style.display = 'block';
+        withdrawalsButton.classList.remove('active');
+        depositsButton.classList.add('active');
     }
 }
-
-
-document.addEventListener("DOMContentLoaded", function() {
-    toggleTransactions('withdrawals');
-});

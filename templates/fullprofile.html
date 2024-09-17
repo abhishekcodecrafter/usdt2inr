@@ -258,19 +258,22 @@
     </div>
 
     <nav class="nav-bar">
-        <div onclick="redirectTo('/dashboard')" class="nav-item">
+        <div onclick="redirectTo('/dashboard' )" class="nav-item">
             <i class="fas fa-home"></i>
             <span class="nav-text">Home</span>
         </div>
-        <div onclick="redirectTo('/transactions')" class="nav-item">
+        <div onclick="redirectTo('/transactions' )" class="nav-item">
             <i class="fas fa-exchange-alt"></i>
             <span class="nav-text">Transactions</span>
         </div>
-      <div onclick="redirectTo('/fullprofile')" class="nav-item active">
-    <i class="fas fa-cog"></i>
-    <span class="nav-text">Settings</span>
-</div>
-
+        <div onclick="redirectTo('/refer')" class="nav-item">
+            <i class="fas fa-user-plus"></i>
+            <span class="nav-text">Refer</span>
+        </div>
+        <div onclick="redirectTo('/fullprofile')" class="nav-item active">
+            <i class="fas fa-cog"></i>
+            <span class="nav-text">Settings</span>
+        </div>
     </nav>
 
     <div id="tusername" hidden>{{ user_details['t_me'] }}</div>

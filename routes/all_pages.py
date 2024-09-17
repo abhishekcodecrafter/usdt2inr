@@ -156,6 +156,12 @@ def cwp():
         return redirect('/')
     return render_template('cwp.html', user_phonenumber=user_phone_number)
 
+def refer():
+    user_phone_number = get_user_phone_number()
+    if not user_phone_number:
+        return redirect('/')
+    return render_template('refer.html', user_phonenumber=user_phone_number)
+
 def add_bank():
     user_phone_number = get_user_phone_number()
     if not user_phone_number:
