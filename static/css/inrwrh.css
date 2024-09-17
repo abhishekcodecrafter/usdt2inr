@@ -1,172 +1,251 @@
+:root {
+    --primary-color: #4A4FE4;
+    --secondary-color: #6C70E0;
+    --background-color: #F4F6FA;
+    --card-background: #FFFFFF;
+    --text-color: #333333;
+    --text-light: #666666;
+    --success-color: #4CAF50;
+    --danger-color: #F44336;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background-color: #f8f9fa;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding-bottom: 2rem;
 }
-
-.wrapper {
-    background-color: #01449f;
-}
-
-#sendotp{
-    background-color: black;
-    color: white;
-}
-
-#selectBank{
-    background-color: #333333;
-    color: white;
-    margin-top: -4%;
-    margin-bottom: 1%;
-}
-
-
-
-#verificationBox {
-    background-color: #333333;
-    color: #ffffff; 
-    border-radius: 10px;
-    padding: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
 
 .container {
+    width: 100%;
+    max-width: 600px;
+    padding: 1rem;
+    margin: 0 auto;
+}
+
+.header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    padding: 20px;
-    margin: 15px auto;
-    background-color: transparent;
+    margin-bottom: 1.5rem;
 }
 
-.container1 {
-    color: white;
-    margin-bottom: 5%;
+.back-arrow {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-right: 1rem;
+    cursor: pointer;
 }
 
-.box {
-    flex: 1;
+.header h1 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.card {
+    background-color: var(--card-background);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.balance-card {
     text-align: center;
 }
 
-.box h2 {
+.balance-title {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.balance-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.price-card {
+    text-align: center;
+}
+
+.price-title {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.price-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: var(--primary-color);
     color: white;
-    font-size: 16px; 
-    font-weight: bolder;
+    margin-bottom: 1rem;
 }
 
-.box p {
-    color: white;
-}
-
-.box-content {
-    margin-top: 10px;
-}
-
-.left-arrow {
-top: 30px;
-left: 15px;
-cursor: pointer;
-width: 24px;
-height: 24px;
-}
-
-.left-arrow img {
-width: 35px;
-height: 35px;
-fill: white;
-filter: brightness(1.5);
-}
-
-.form-container {
-max-width: 600px !important;
-margin: 20px auto;
-margin-top: 20px !important;
+.btn:hover {
+    background-color: var(--secondary-color);
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
+
+#verificationBox {
+    color: black;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
 }
 
 .instructions {
-    margin-left: 25px;
-    margin-top: 20px;
-    max-width: 300px;
+    background-color: var(--card-background);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
 }
 
-
-@media only screen and (max-width: 767px){
-    .container {
-        max-width: 400px;
-        margin: 0px auto;
-        }
-        
-        .containerform {
-        max-width: 320px !important;
-        margin: 0px auto;
-        margin-top: 20px !important;
-        }
-        
-        .left-arrow {
-        z-index: 2;
-        position: fixed;
-        top: 15px;
-        left: 30px;
-        cursor: pointer;
-        width: 15px;
-        height: 15px;
-        }
-        
-        h2 {
-        font-size: medium;
-        }
+.instructions h3 {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
 }
 
-
-@media only screen and (max-width: 480px) {
-
-.container {
-max-width: 600px;
-margin: 0px auto;
+.instructions ol {
+    padding-left: 1.5rem;
 }
 
-.containerform {
-max-width: 200px;
-margin: 0px auto;
-margin-top: 20px !important;
-}
-
-.left-arrow {
-z-index: 2;
-position: fixed;
-top: 15px;
-left: 30px;
-cursor: pointer;
-width: 15px;
-height: 15px;
-}
-
-h2 {
-font-size: medium;
-}
-
-
-}
-
-
-.modal-bottom {
+.modal {
+    display: none;
     position: fixed;
-    bottom: 0;
+    z-index: 1000;
     left: 0;
-    right: 0;
-    margin: 0 auto;
-  }
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
 
-.card {
-      cursor: pointer;
+.modal-content {
+    background-color: var(--card-background);
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 1rem;
+    width: 80%;
+    max-width: 500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.bank-card {
+    cursor: pointer;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.bank-card:hover {
+    background-color: #f0f0f0;
+}
+
+#newBankOption {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.loading-state {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+}
+
+.loading {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding: 2rem;
     }
-.card:hover {
-      background-color: #f8f9fa;
+
+    .header h1 {
+        font-size: 2rem;
     }
+
+    .balance-amount, .price-amount {
+        font-size: 1.8rem;
+    }
+
+    .btn {
+        font-size: 1.1rem;
+    }
+}

@@ -1,183 +1,331 @@
+:root {
+  --primary-color: #4A4FE4;
+  --secondary-color: #6C70E0;
+  --background-color: #F4F6FA;
+  --card-background: #FFFFFF;
+  --text-color: #333333;
+  --text-light: #666666;
+  --success-color: #4CAF50;
+  --danger-color: #F44336;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
-    background-color: var(--white);
-    margin-bottom: 100px !important;
-  }
-
-  .header {
-    background-color: var(--white);
-    color: var(--black);
-    padding: 15px;
-    margin: 15px;
-    font-size: larger;
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center;
-    height: min-content;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  padding-bottom: 8rem;
 }
 
-/* Add this style to center the SVG within .header */
-.header svg {
-    margin: 0 auto;
-    display: block;
-}
-
-
-  #first-card img {
-      width: 40px;
-      height: 40px;
-  }
-
-  .first-card {
-    margin: 10px !important;
-    margin-top: -10px !important;
-  }
-
-  .card {
-      background-color: #01449f;
-  }
-  
-
-
-  .card1 {
-  border: 1px solid #ccc;
-  background-color:  #000000;
-  color:azure;
-  border-radius: 8px;
-  color: white;
-  margin-left:0px;
-  margin: 20px;
-  padding: 10px;
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  margin: -10px; /* Add negative margin to counteract the padding on columns */
-}
-
-.col-md-4 {
-  flex: 0 0 45%; /* Adjust flex value to make the columns take half the width */
-  box-sizing: border-box;
-  border-radius: 10px;
-  margin: 10px; /* Add margin to each column */
-  background-color: #1F1F1F;
-}
-
-.col-md-12{
-  box-sizing: border-box;
-  border-radius: 10px;
-  margin: 10px; /* Add margin to each column */
-  background-color: #1F1F1F;
-}
-
-.col-md-4 h1 {
-  width: 100%; /* Match the width of the column */
-  height: 100%; /* Match the height of the column */
-  margin: 0; /* Reset margin for h1 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.col-md-4:last-child {
-  margin-right: 0;
-  justify-content: flex-end;
-}
-
-.card2 {
- 
-  border: 1px solid #ccc;
-  background-color: transparent;
-  border-radius: 8px;
-  color: black;
-  margin-top: 25px;
+.container {
   width: 100%;
+  padding: 1rem;
+  margin: 0 auto;
 }
 
-.card-header {
+.header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1.5rem;
+}
+
+.logo-container {
+display: flex;
+align-items: center;
+border-radius: 5px;
+}
+
+.logo-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 25px;
+}
+
+
+.profile-pic {
+width: 2.5rem;
+height: 2.5rem;
+border-radius: 50%;
+border: 2px solid var(--primary-color);
+cursor: pointer;
+}
+
+.balance-section {
+  background-color: var(--card-background);
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.balance-label {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.balance-amount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.balance-change {
+  font-size: 0.9rem;
+  color: var(--success-color);
+  font-weight: 600;
+}
+
+.crypto-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.crypto-card {
+  background-color: var(--card-background);
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.crypto-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.crypto-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+}
+
+.crypto-name {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.card-symbol {
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+.crypto-chart {
+  height: 5rem;
+  margin-bottom: 0.75rem;
+}
+
+.crypto-card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.left-section img {
-  width: 100px; 
-  height: 100px; 
+.crypto-amount {
+  font-size: 1rem;
+  font-weight: 700;
 }
 
-.right-section {
-  text-align: right;
+.crypto-change {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--success-color);
+  background-color: rgba(76, 175, 80, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
 }
 
-.deposit-button {
-  background-color: green;
-  color: white;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 4px;
-  font-size: larger;
-  font-weight: bolder;
-  cursor: pointer;
+.market-stats {
+background-color: var(--card-background);
+border-radius: 1rem;
+padding: 1rem;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.market-stats-title {
+font-size: 1.1rem;
+font-weight: 700;
+color: var(--primary-color);
+margin-bottom: 1rem;
+}
+
+.market-stat-item {
+display: grid;
+grid-template-columns: auto 1fr auto auto;
+align-items: center;
+gap: 0.75rem;
+margin-bottom: 1rem;
+padding-bottom: 1rem;
+border-bottom: 1px solid #eee;
+}
+
+.market-stat-item:last-child {
+border-bottom: none;
+margin-bottom: 0;
+padding-bottom: 0;
+}
+
+.market-stat-icon {
+width: 2rem;
+height: 2rem;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.market-stat-info {
+display: flex;
+flex-direction: column;
+}
+
+.market-stat-name {
+font-size: 0.9rem;
+font-weight: 600;
+}
+
+.market-stat-symbol {
+font-size: 0.8rem;
+color: var(--text-light);
+}
+
+.market-graph {
+width: 5rem;
+height: 2rem;
+}
+
+.market-stat-values {
+text-align: right;
+}
+
+.market-stat-amount {
+font-size: 0.9rem;
+font-weight: 600;
+}
+
+.market-stat-change {
+font-size: 0.8rem;
+font-weight: 600;
+}
+
+.actions {
+  position: fixed;
+  bottom: 60px; /* Adjust this value based on the height of your nav-bar */
+  left: 0;
+  right: 0;
   display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  /* background-color: var(--background-color); */
+  z-index: 1000;
+}
+
+.action-button {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: 1.25rem;
+  text-align: center;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  margin: 0 0.5rem;
+}
+
+.action-button:first-child {
+  margin-right: 0.5rem;
+}
+
+.nav-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  background-color: var(--card-background);
+  padding: 0.5rem 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  text-decoration: none;
+  color: var(--text-light);
+  z-index: 4;
 }
 
-#close{
-  font-size: larger;
-  font-weight: bolder;
+.nav-item.active {
+  color: var(--primary-color);
 }
 
-.wallet-icon {
-  margin-right: 8px; 
-  width: 25px !important;
-  height: 25px !important;
+.nav-item i {
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
 }
 
-.card-body {
-  margin-top: 10px;
-  padding: 6px 10px;
+.nav-text {
+  font-size: 0.7rem;
 }
 
-.bold-value {
-  font-weight: bold;
- 
+.digital-gold {
+  position: relative;
+  top: -0.75rem;
+  background-color: var(--secondary-color);
+  padding: 0.5rem;
+  border-radius: 50%;
+  color: white;
 }
 
-.bottom-nav {
-  z-index: 1;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #f8f9fa;
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.1); 
-      }
+.digital-gold i {
+  margin-bottom: 0;
+}
 
-      .bottom-nav a {
-          text-decoration: none;
-          color: #000000;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-      }
+.digital-gold .nav-text {
+  display: none;
+}
 
-      .bottom-nav img {
-          width: 40px;
-          height: 40px;
-          margin-bottom: 0px; 
-      }
+@media (min-width: 480px) {
+  .container {
+      max-width: 480px;
+  }
+}
 
-     
-      .bottom-nav a.active {
-          color: #000000;
-          
-      }
+@media (min-width: 768px) {
+  .container {
+      max-width: 768px;
+  }
 
-.bottom-nav a.active svg path {
-  fill:#000000; 
+  .crypto-cards {
+      grid-template-columns: repeat(2, 1fr);
+  }
+
+  .balance-amount {
+      font-size: 2rem;
+  }
+
+  .name {
+      font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+      max-width: 1024px;
+  }
+
+  .crypto-cards {
+      grid-template-columns: repeat(3, 1fr);
+  }
 }
