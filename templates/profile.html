@@ -6,6 +6,7 @@
     <title>User Profile</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         :root {
             --primary-color: #4A4FE4;
@@ -295,7 +296,7 @@
     <div id="spinner" class="loading-state" style="display: none;">
         <div class="loading"></div>
         <div class="loading-text">
-            <span style="color: #FFA500;">Hmm,</span>
+            <span style="color: #FFA500;"></span>
             <span> Loading....</span>
         </div>
     </div>
@@ -370,125 +371,10 @@
         </div>
     </div>
 
-    <script>
-        function openAvatarPopup() {
-            const popup = document.getElementById('avatarPopup');
-            const avatarList = document.getElementById('avatarList');
-            avatarList.innerHTML = ''; // Clear existing avatars
-
-            for (let i = 11; i <= 35; i++) {
-                const avatarSrc = `static/assets/avatars/av${i}.jpg`;
-                const avatarImg = document.createElement('img');
-                avatarImg.src = avatarSrc;
-                avatarImg.alt = `Avatar ${i}`;
-                avatarImg.className = 'avatar-option';
-                avatarImg.onclick = () => changeAvatar(avatarSrc);
-                avatarList.appendChild(avatarImg);
-            }
-
-            popup.style.display = 'block';
-        }
-
-        function closeAvatarPopup() {
-            document.getElementById('avatarPopup').style.display = 'none';
-        }
-
-        function changeAvatar(newAvatarSrc) {
-            const avatar = document.getElementById('avatar');
-            avatar.src = newAvatarSrc;
-            localStorage.setItem('selectedAvatar', newAvatarSrc);
-            closeAvatarPopup();
-            showVerificationMessage('Avatar updated successfully');
-        }
-
-        function redirectTo(url) {
-            window.location.href = url;
-        }
-
-        function copyInviteLink() {
-            const inviteLink = document.getElementById('invite-code').textContent;
-            navigator.clipboard.writeText(inviteLink).then(() => {
-                showVerificationMessage('Invite link copied to clipboard!');
-            }, (err) => {
-                console.error('Could not copy text: ', err);
-                showVerificationMessage('Failed to copy invite link');
-            });
-        }
-
-        function showVerificationMessage(message) {
-            const verificationBox = document.getElementById('verificationBox');
-            const verificationMessage = document.getElementById('verificationMessage');
-            verificationMessage.textContent = message;
-            verificationBox.hidden = false;
-            setTimeout(() => {
-                verificationBox.hidden = true;
-            }, 2000);
-        }
-
-        function openEditUsernameModal() {
-            document.getElementById('editUsernameModal').style.display = 'block';
-        }
-
-        function closeEditUsernameModal() {
-            document.getElementById('editUsernameModal').style.display = 'none';
-        }
-
-        function updateUsername() {
-    const newUsername = document.getElementById('newUsername').value;
-    
-    if (!newUsername) {
-        alert('Please enter a new username.');
-        return;
-    }
-
-    console.log('Sending new username:', newUsername);
-
-    fetch('/edit_tg_username', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ newUsername: newUsername }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Server response:', data);
-        if (data.success) {
-            document.getElementById('usernameDisplay').textContent = newUsername;
-            closeEditUsernameModal();
-            showVerificationMessage('Username updated successfully');
-        } else {
-            throw new Error(data.message || 'Failed to update username');
-        }
-    })
-    .catch(error => {
-        console.error('Error updating username:', error);
-        alert('Error updating username: ' + error.message);
-    });
-}
-
-        // Close modals when clicking outside of them
-        window.onclick = function(event) {
-            const editUsernameModal = document.getElementById('editUsernameModal');
-            const avatarPopup = document.getElementById('avatarPopup');
-            if (event.target == editUsernameModal) {
-                closeEditUsernameModal();
-            } else if (event.target == avatarPopup) {
-                closeAvatarPopup();
-            }
-        }
-
-        // Load saved avatar on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            const savedAvatar = localStorage.getItem('selectedAvatar');
-            const avatar = document.getElementById('avatar');
-            if (savedAvatar) {
-                avatar.src = savedAvatar;
-            }
-        });
-    </script>
-
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="static/js/toaster.js"></script>
+    <script src="static/js/profile.js"></script>
 
 </body>
 </html>

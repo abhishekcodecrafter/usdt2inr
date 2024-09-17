@@ -155,11 +155,11 @@ document.addEventListener('DOMContentLoaded', function() {
           .catch(error => {
               console.error('Error submitting INR WDT Details:', error);
               if (spinner) spinner.style.display = 'none';
-              showVerificationMessage('Error occurred while submitting. Please try again.');
+              showToast('error',`Error occurred while submitting. Please try again.`)
           });
       } catch (error) {
           console.error('Error preparing form data:', error);
-          showVerificationMessage(error.message);
+          showToast('error',`${error.message}`)
       }
   }
 
@@ -167,26 +167,31 @@ document.addEventListener('DOMContentLoaded', function() {
       if (responseData.success) {
           if (form) form.reset();
           console.log('success:', responseData);
-          showVerificationMessage('Order Details Submitted successfully.');
+          showToast('success',`Order Details Submitted successfully.`)
           setTimeout(() => { window.location.href = '/dashboard'; }, 3000);
       } else {
           let message = responseData.message;
+          let toastmsg = ''
           if (message === 'Authentication failed') {
-              message += ` <br> <a href="/cwp" style="color: bisque; text-decoration: underline;">Forgot Password?</a>`;
+              message += `  <br> Wrong Transaction Password. <br> <a href="/cwp" style="color: gray; text-decoration: underline;">Forgot Password?</a>`;
+              toastmsg = 'Authentication failed';
           } else if (message === 'Insufficient balance To Trade!') {
               message += ` <br> <a href="/usdt_deposit_info?redirect=usdtwithdraw" style="color: blue; text-decoration: underline;">Recharge Now</a>`;
+              toastmsg = 'Insufficient balance';
           }
           showVerificationMessage(message);
+          showToast('warning',`${toastmsg}`)
       }
   }
 
   function showVerificationMessage(message) {
-      const verificationBox = document.getElementById('verificationBox');
-      const verificationMessage = document.getElementById('verificationMessage');
-      if (verificationMessage) verificationMessage.innerHTML = message;
-      if (verificationBox) verificationBox.removeAttribute('hidden');
-      if (verificationMessage) verificationMessage.removeAttribute('hidden');
-  }
+    const verificationBox = document.getElementById('verificationBox');
+    const verificationMessage = document.getElementById('verificationMessage');
+    if (verificationMessage) verificationMessage.innerHTML = message;
+    if (verificationBox) verificationBox.removeAttribute('hidden');
+    if (verificationMessage) verificationMessage.removeAttribute('hidden');
+}
+
 
   function calculateINR(constantValue) {
       const amountInput = document.getElementById('amount');

@@ -34,21 +34,13 @@ function submitDeposit() {
     .then(response => response.json())
     .then(responseData => {
         if (responseData.success) {
-            var successMsg = document.getElementById('deposit-alert');
-            successMsg.style.display = 'block';
-            successMsg.innerHTML = responseData.message
+            showToast('success', `${responseData.message}`);
             setTimeout(function () {
-                successMsg.style.display = 'none';
                 window.location.href = '/dashboard';
             }, 4000);
         } else {
             console.error('Error on submit deposit', responseData);
-            var errorMsg = document.getElementById('deposit-alert');
-            errorMsg.innerHTML = responseData.message
-            errorMsg.style.display = 'block';
-            setTimeout(function () {
-                errorMsg.style.display = 'none';
-            }, 4000);
+            showToast('error', `${responseData.message}`);
         }
         var input = document.getElementById('txnID');
         input.value = ''
@@ -71,11 +63,7 @@ function copyWalletAddress() {
 
         tempInput.remove();
 
-        var successMsg = document.getElementById('successmsg');
-        successMsg.style.display = 'block';
-        setTimeout(function () {
-            successMsg.style.display = 'none';
-        }, 3000);
+        showToast('success','Wallet Address copied')
     } catch (error) {
         console.error('Error copying wallet address:', error);
     }

@@ -3,7 +3,7 @@
   }
 
   function handleDepositClick() {
-    window.location.href = '/usdt_deposit_info?redirect=dash'
+    window.location.href = '/usdt_deposit?redirect=dash'
   }
 
   function handleExchangeClick() {

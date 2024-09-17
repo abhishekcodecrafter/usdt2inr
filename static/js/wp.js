@@ -29,25 +29,19 @@ function sendPassword() {
             // Handle the success response from the server
             console.log('Password changed successfully:', responseData);
 
-            verificationMessage.innerText = `Password Saved successfully a mile away from dashboard`;
-            verificationBox.removeAttribute('hidden');
-            verificationMessage.removeAttribute('hidden');
+            showToast('success',`Password Saved successfully`);
 
             
             setTimeout(function() {
                 window.location.href = "/dashboard";
             }, 3000);
         } else {
-            verificationMessage.setAttribute('hidden', 'true');
-            verificationBox.setAttribute('hidden', 'true');
-            verificationMessage.innerText = responseData.message;
+            showToast('error',`${responseData.message}`);
         }
     })
     .catch(error => {
         console.error('Error changing password:', error);
-        verificationMessage.setAttribute('hidden', 'true');
-        verificationBox.setAttribute('hidden', 'true');
-        verificationMessage.innerText = `Error changing password. Please try again.`;
+        showToast('error',`Error changing password. Please try again.`);
     });
 }
 

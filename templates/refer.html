@@ -6,6 +6,7 @@
     <title>Referral Program</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         :root {
             --primary-color: #4A4FE4;
@@ -210,7 +211,7 @@
             font-size: 0.7rem;
         }
 
-        .toast {
+        /* .toast {
             position: fixed;
             top: 20px;
             left: 50%;
@@ -227,7 +228,7 @@
 
         .toast.show {
             opacity: 1;
-        }
+        } */
 
         @media (max-width: 360px) {
             .container {
@@ -296,14 +297,13 @@
             <h2 class="referral-title">Refer & Earn</h2>
             <div class="referral-code-container">
                 <div class="referral-code" id="referralCode">RUPAL1234</div>
-                <button class="copy-button" onclick="copyReferralCode()">Copy</button>
             </div>
-            <button class="share-button" onclick="shareReferralCode()">Share Referral Code</button>
+            <button class="share-button" onclick="shareReferralCode()">Copy Link</button>
         </section>
 
         <div class="tabs">
-            <div class="tab active" onclick="showTab('referralEarnings')">Referral Earnings</div>
-            <div class="tab" onclick="showTab('depositEarnings')">Referred Deposit Earnings</div>
+            <div class="tab active" onclick="showTab('referralEarnings')">Referrals</div>
+            <div class="tab" onclick="showTab('depositEarnings')">Earning</div>
         </div>
 
         <div id="referralEarnings" class="tab-content">
@@ -374,7 +374,9 @@
         </div>
     </nav>
 
-    <div id="toast" class="toast">Copied to clipboard!</div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="static/js/toaster.js"></script>
 
     <script src="static/js/refer.js"></script>
 

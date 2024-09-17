@@ -6,6 +6,7 @@
     <title>Crypto Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -70,6 +71,7 @@
             padding: 1rem;
             margin-bottom: 1.5rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
         .balance-label {
@@ -350,7 +352,7 @@
         <section class="balance-section">
             <div class="balance-label">Total Balance</div>
             <div class="balance-amount">${{user_details['usdt_balance'] | round(2) }}</div>
-            <div class="balance-change">INR {{inrvalue | round(2) }}  </div>
+            <div class="balance-change">Exchange Rate {{inrvalue | round(2) }}  </div>
         </section>
 
         <div class="crypto-cards">
@@ -615,7 +617,9 @@ const ethereumMiniChart = createMiniChart(
 
 
 </script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="static/js/toaster.js"></script>
 <script src="static/js/dashboard.js"></script>
 </body>
 </html>

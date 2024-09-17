@@ -6,6 +6,7 @@
     <title>How it Works - USDT Deposit</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         :root {
             --primary-color: #4A4FE4;
@@ -173,13 +174,6 @@
     </style>
 </head>
 <body>
-    <div id="spinner" class="loading-state" style="display: none;">
-        <div class="loading"></div>
-        <div class="loading-text">
-          <span class="orange-text">Hmm,</span>
-          <span> Loading....</span>
-        </div>
-    </div>
 
     <div class="container">
         <header class="header">
@@ -204,21 +198,10 @@
         <button id="paybtn" class="action-button" onclick="redirectTo('/usdt_deposit')">Pay in USDT</button>
     </div>
 
-    <script>
-        function redirectTo(url) {
-            document.getElementById('spinner').style.display = 'flex';
-            setTimeout(() => {
-                window.location.href = url;
-            }, 1000);
-        }
 
-        // Simulating page load
-        window.addEventListener('load', () => {
-            document.getElementById('spinner').style.display = 'flex';
-            setTimeout(() => {
-                document.getElementById('spinner').style.display = 'none';
-            }, 1000);
-        });
-    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="static/js/toaster.js"></script>
+    <script src="static/js/usdtdepositinfo.js"></script>
 </body>
 </html>

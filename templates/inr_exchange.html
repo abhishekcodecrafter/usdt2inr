@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="static/css/spinner.css">
+
     <style>
         :root {
             --primary-color: #4A4FE4;
@@ -129,6 +132,14 @@
             border: 1px solid #ddd;
             border-radius: 0.5rem;
             font-size: 1rem;
+        }
+
+        #verificationBox {
+            color: black;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
         }
 
         .instructions {
@@ -266,7 +277,7 @@
     <div id="spinner" class="loading-state" style="display: none;">
         <div class="loading"></div>
         <div class="loading-text">
-            <span style="color: #FFA500;">Hmm,</span>
+            <span style="color: #FFA500;"></span>
             <span> Loading....</span>
         </div>
     </div>
@@ -290,10 +301,6 @@
             <div class="price-title">Price (INR)</div>
             <div class="price-amount">₹{{inrvalue | round(2) }}</div>
         </div>
-
-        {% if user_banks %}
-        <button id="selectBank" class="btn">Select Bank</button>
-        {% endif %}
 
         <form id="form" class="card">
             <div class="form-group">
@@ -355,7 +362,9 @@
     </div>
     {% endif %}
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="static/js/toaster.js"></script>
     <script src="static/js/inr_exchange.js"></script>
     <script src="static/js/spinner.js"></script>
     

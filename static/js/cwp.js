@@ -33,22 +33,22 @@ function sendOTP() {
             hideSpinner();
             if (responseData.success && responseData.secret) {
                 secret = responseData.secret;
-                console.log("Secret received:", secret); // Remove in production
-                showVerificationMessage(`OTP sent to ${phoneNumber}`, true);
+                // console.log("Secret received:", secret); 
+                showToast('success',`OTP sent to ${phoneNumber}`)
                 otpButton.textContent = 'Resend OTP';
             } else {
                 console.error("Failed to receive secret from server");
-                showVerificationMessage(`Failed to send OTP. ${responseData.message || 'Please try again.'}`, false);
+                showToast('error',`Failed to send OTP. ${responseData.message || 'Please try again.'}`)
             }
         })
         .catch(error => {
             console.error('Error in OTP sending process:', error);
             hideSpinner();
-            showVerificationMessage(`An error occurred: ${error.message}. Please try again.`, false);
+            showToast('error',`An error occurred: ${error.message}. Please try again.'}`)
         });
     } else {
         hideSpinner();
-        showVerificationMessage(`Invalid phone number: ${phoneNumber}. Please enter a valid 10-digit number.`, false);
+        showToast('error',`Invalid phone number: ${phoneNumber}. Please enter a valid 10-digit number.'}`)
     }
 }
 
@@ -75,27 +75,27 @@ function validateForm() {
     const formData = getFormData();
     
     if (!formData.newPassword || !formData.reenterPassword) {
-        showVerificationMessage('Please enter both passwords.', false);
+        showToast('warning',`Please enter both passwords.'}`)
         return false;
     }
 
     if (formData.newPassword !== formData.reenterPassword) {
-        showVerificationMessage('Passwords do not match. Please try again.', false);
+        showToast('warning',`Passwords do not match. Please try again.`)
         return false;
     }
 
     if (formData.newPassword.length < 6) {
-        showVerificationMessage('Password must be at least 6 characters long.', false);
+        showToast('warning',`Password must be at least 6 characters long.`)
         return false;
     }
 
     if (!formData.securityOTP || formData.securityOTP.length !== 6 || isNaN(formData.securityOTP)) {
-        showVerificationMessage('Please enter a valid 6-digit OTP.', false);
+        showToast('warning',`Please enter a valid 6-digit OTP.`)
         return false;
     }
 
     if (!secret) {
-        showVerificationMessage('Please request an OTP before submitting.', false);
+        showToast('warning',`Please request an OTP before submitting.`)
         return false;
     }
 
@@ -118,7 +118,7 @@ function authenticateUser() {
     if (!secret) {
         console.error("Secret is missing. Cannot authenticate.");
         hideSpinner();
-        showVerificationMessage('Error: OTP not requested. Please request a new OTP.', false);
+        showToast('error',`OTP not requested. Please request a new OTP.`)
         return;
     }
 
@@ -139,17 +139,17 @@ function authenticateUser() {
     .then(responseData => {
         console.log("Server response:", responseData); // Remove in production
         if (responseData.success) {
-            showVerificationMessage('OTP verified successfully. Changing your password...', true);
+            showToast('success',`OTP verified successfully. Changing your password...`)
             changeWithdrawalPassword(formData);
         } else {
             hideSpinner();
-            showVerificationMessage('Invalid OTP. Please enter the correct OTP.', false);
+            showToast('error',`Invalid OTP. Please enter the correct OTP.`)
         }
     })
     .catch(error => {
         console.error('Error verifying OTP:', error);
         hideSpinner();
-        showVerificationMessage('An error occurred while verifying OTP. Please try again.', false);
+        showToast('error',`An error occurred while verifying OTP. Please try again.`)
     });
 }
 
@@ -168,19 +168,19 @@ function changeWithdrawalPassword(formData) {
     .then(responseData => {
         hideSpinner();
         if (responseData.success) {
-            showVerificationMessage('Changed withdrawals password successfully.', true);
+            showToast('success',`Changed withdrawals password successfully.`)
             clearForm();
             setTimeout(function() {
                 window.location.href = "/profile";
             }, 2000);
         } else {
-            showVerificationMessage(responseData.message || 'Error changing withdrawals password. Please try again.', false);
+            showToast('error',`Error changing withdrawals password. Please try again.`)
         }
     })
     .catch(error => {
         console.error('Error changing withdrawals password:', error);
         hideSpinner();
-        showVerificationMessage('Error changing withdrawals password. Please try again.', false);
+        showToast('error',`Error changing withdrawals password. Please try again.`)
     });
 }
 

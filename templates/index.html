@@ -6,6 +6,7 @@
     <title>Login/Signup Page</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         :root {
             --primary-color: #4A4FE4;
@@ -144,8 +145,8 @@
         }
 
         #verificationBox {
-            background-color: var(--success-color);
-            color: white;
+            background-color: transparent;
+            color: black;
             padding: 0.75rem;
             border-radius: 0.5rem;
             margin-bottom: 1rem;
@@ -211,7 +212,7 @@
     <div id="spinner" class="loading-state" style="display: none;">
         <div class="loading"></div>
         <div class="loading-text">
-            <span style="color: #FFA500;">Hmm,</span>
+            <span style="color: #FFA500;"></span>
             <span> Loading....</span>
         </div>
     </div>
@@ -247,7 +248,9 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="static/js/toaster.js"></script>
     <script src="static/js/index.js"></script>
     <script src="static/js/spinner.js"></script>
 </body>

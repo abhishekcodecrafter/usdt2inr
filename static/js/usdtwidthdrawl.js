@@ -64,12 +64,10 @@ document.addEventListener("DOMContentLoaded", function() {
               document.getElementById("form").reset();
               
                 // Handle the success response from the server
-                console.log('USDT WDT Details submitted successfully:', responseData);
+                // console.log('USDT WDT Details submitted successfully:', responseData);
                 // Additional logic as needed
 
-                verificationMessage.removeAttribute('hidden');
-                verificationBox.removeAttribute('hidden');
-                verificationMessage.innerText = `USDT WDT Details submitted successfully.`;
+                showToast('success',`USDT WDT Details submitted successfully.`)
 
                 setTimeout(function() {
                   window.location.href = "/fullprofile";
@@ -80,13 +78,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     var RechargeNow = "/usdt_deposit_info?redirect=usdtwithdraw";
                     
                     if (responseData.message === "Authentication failed") {
-                        verificationMessage.innerHTML = `Wrong Transaction Password. Authentication failed. <br> <a href="${Forgotpassword}" style="color: bisque; text-decoration: underline;">Forgot Password?</a>`;
+                      showToast('warning',`${responseData.message}`);
+                        verificationMessage.innerHTML = `Wrong Transaction Password. Authentication failed. <br> <a href="${Forgotpassword}" style="color: gray; text-decoration: underline;">Forgot Password?</a>`;
                         verificationBox.removeAttribute('hidden');
                         verificationMessage.removeAttribute('hidden');
                     }
                     
                     if (responseData.message === "Insufficient balance To Trade!") {
-                        verificationMessage.innerHTML = `Insufficient balance To Trade! <br> <a href="${RechargeNow}" style="color: bisque; text-decoration: underline;">Deposit Now</a>`;
+                      showToast('warning',`${responseData.message}`);
+                        verificationMessage.innerHTML = `Insufficient balance To Trade! <br> <a href="${RechargeNow}" style="color: blue; text-decoration: underline;">Deposit Now</a>`;
                         verificationBox.removeAttribute('hidden');
                         verificationMessage.removeAttribute('hidden');
                     }
@@ -104,9 +104,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Handle the error response from the server
             console.error('Error submitting INR WDT Details:', error);
 
-            verificationMessage.removeAttribute('hidden');
-            verificationBox.removeAttribute('hidden');
-            verificationMessage.innerText = `Error submitting INR WDT Details.`;
+            showToast('error',`Error submitting INR WDT Details.`)
 
             // Prevent form submission on error
         });

@@ -26,32 +26,25 @@ function sendOTP() {
             // Check the response and handle accordingly
             if (responseData.success) {
                 secret = responseData['secret']
-                let wrongNumberLink = "javascript:history.back();";
+                let wrongNumberLink = "window.location.href = '/';";
                 verificationMessage.removeAttribute('hidden');
                 verificationBox.removeAttribute('hidden');
                 sendotp.setAttribute('hidden', 'true');
-                verificationMessage.innerHTML = `OTP sent to ${phoneNumber} <br> <a href="${wrongNumberLink}" style="color: bisque; text-decoration: underline;">Wrong number?</a>`;
-                console.log("Using Static Folder JS");
+                showToast('success', `OTP sent to ${phoneNumber}`);
+                verificationMessage.innerHTML = `OTP sent to ${phoneNumber} <br> <a href="${wrongNumberLink}" style="color: gray; text-decoration: underline;">Wrong number?</a>`;
                 verifyotpelements.setAttribute('hidden', 'true');
                 otpbox.removeAttribute('hidden');
                 loginsignupbtn.removeAttribute('hidden');
                 resendOtp.removeAttribute('hidden');
             } else {
-                verificationMessage.removeAttribute('hidden');
-                verificationBox.removeAttribute('hidden');
-                verificationMessage.innerText = `Failed to send OTP to ${phoneNumber} server IDLE`;
+                showToast('error', `Failed to send OTP to ${phoneNumber} server IDLE`);
             }
         })
         .catch(error => {
-            console.error('Error sending OTP:', error);
-            verificationMessage.removeAttribute('hidden');
-            verificationBox.removeAttribute('hidden');
-            verificationMessage.innerText = `An error occurred while sending OTP. Please try again.`;
+            showToast('error', `An error occurred while sending OTP. Please try again.`);
         });
     } else {
-        verificationMessage.removeAttribute('hidden');
-        verificationBox.removeAttribute('hidden');
-        verificationMessage.innerText = `Please enter a valid 10-digit phone number.`;
+        showToast('error', `Please enter a valid 10-digit phone number.`);
     }
 }
 
@@ -76,38 +69,27 @@ function authenticateUser() {
         .then(response => response.json())
         .then(responseData => {
             if (responseData.success) {
-                verificationMessage.removeAttribute('hidden');
-                verificationBox.removeAttribute('hidden');
-
                 const userData = {
                     phone_number: phoneNumber,
                 };
                 addUser(userData,
                     function (successResponse) {
-                        verificationMessage.innerText = 'Success';
-                        console.log('User created successfully');
+                        showToast('success', `Success`);
                     },
                     function (errorResponse) {
-                        verificationMessage.innerText = 'An error occurred while verifying OTP. Please try again.';
+                        showToast('error', `An error occurred while verifying OTP. Please try again.`);
                         console.error(`Error: ${errorResponse.message}`);
                     }
                 );
             } else {
-                verificationMessage.removeAttribute('hidden');
-                verificationBox.removeAttribute('hidden');
-                verificationMessage.innerText = 'Invalid OTP. Please enter the correct OTP.';
+                showToast('error', `Invalid OTP. Please enter the correct OTP.`);
             }
         })
         .catch(error => {
-            console.error('Error verifying OTP:', error);
-            verificationMessage.removeAttribute('hidden');
-            verificationBox.removeAttribute('hidden');
-            verificationMessage.innerText = 'An error occurred while verifying OTP. Please try again.';
+            showToast('error', `An error occurred while verifying OTP. Please try again.`);
         });
     } else {
-        verificationMessage.removeAttribute('hidden');
-        verificationBox.removeAttribute('hidden');
-        verificationMessage.innerText = 'Invalid OTP. Please enter the correct OTP.';
+        showToast('error', `Invalid OTP. Please enter the correct OTP.`);
     }
 }
 
