@@ -1,5 +1,5 @@
 :root {
-    --primary-color: #4A4FE4;
+    --primary-color: #4DAA8F;
     --secondary-color: #6C70E0;
     --background-color: #F4F6FA;
     --card-background: #FFFFFF;
@@ -8,7 +8,7 @@
     --success-color: #4CAF50;
     --danger-color: #F44336;
     --input-border: #E0E0E0;
-    --input-focus: #4A4FE4;
+    --input-focus: #4DAA8F;
 }
 
 * {
@@ -47,7 +47,6 @@ body {
 .logo-container img {
     max-width: 100%;
     height: auto;
-    border-radius: 25px;
 }
 
 h2 {

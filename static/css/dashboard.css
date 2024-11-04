@@ -1,5 +1,5 @@
 :root {
-  --primary-color: #4A4FE4;
+  --primary-color: #4DAA8F;
   --secondary-color: #6C70E0;
   --background-color: #F4F6FA;
   --card-background: #FFFFFF;
@@ -39,13 +39,11 @@ margin-bottom: 1.5rem;
 .logo-container {
 display: flex;
 align-items: center;
-border-radius: 5px;
 }
 
 .logo-container img {
   max-width: 100%;
   height: auto;
-  border-radius: 25px;
 }
 
 

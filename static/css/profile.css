@@ -1,5 +1,5 @@
 :root {
-  --primary-color: #4A4FE4;
+  --primary-color: #4DAA8F;
   --secondary-color: #6C70E0;
   --background-color: #F4F6FA;
   --card-background: #FFFFFF;
@@ -33,6 +33,11 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 1.5rem;
+}
+
+.header h1 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
 }
 
 .back-arrow {
