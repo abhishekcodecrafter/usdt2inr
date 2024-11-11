@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
     <link rel="stylesheet" href="static/css/usdtdeposit.css" />
+    <meta id="my-data" data-name="{{time}}" data-other="{{time_remaining}}">
 </head>
 <body>
     <div id="spinner" class="loading-state" style="display: none;">
@@ -31,19 +32,26 @@
         </div>
 
         <div class="qr-code-container">
-            <img id='qr-code-img' class="qr-code-img" src="{{ address_info['qr'] }}" alt="QR Code">
+            <div class="time-display" id="time-display"></div>
+            <img id='qr-code-img' class="qr-code-img" src="{{ address_info['wallet_qr'] }}" alt="QR Code">
             <div class="wallet-address">
-                <p id="wallet-address">{{ address_info["address"] }}</p>
+                <h3 id="wallet-address">{{ address_info["wallet_address"] }}</h3>
             </div>
             <div id="successmsg">Copied</div>
+            <div id="txnID" >{{ address_info["id"] }}</div>
             <div id="deposit-alert">Request Submitted!</div>
             <button class="btn copy-btn" onclick="copyWalletAddress()">Copy Address</button>
-            <form>
-                <div class="txnid">
-                  <input id="txnID" type="text" name="txnid" placeholder="Enter your transaction ID" required>
-                </div>
-            </form>
-            <button class="btn completed-btn" onclick="submitDeposit()">Submit</button>
+<!--            <form>-->
+<!--                <div class="txnid">-->
+<!--                  <input id="txnID" type="text" name="txnid" placeholder="Enter your transaction ID" required>-->
+<!--                </div>-->
+<!--            </form>-->
+            <button class="btn completed-btn" onclick="submitDeposit2()">Submit</button>
+        </div>
+
+        <div id="popup" style="display: none;">
+            <p>The time has expired!</p>
+            <button onclick="closePopup()">Close</button>
         </div>
 
         <div class="notice">

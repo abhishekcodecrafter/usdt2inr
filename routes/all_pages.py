@@ -131,6 +131,7 @@ user_banks = [
     for details in bank_details
 ]
 
+
 def inr_exchange():
     try:
         user_phone_number = get_user_phone_number()
@@ -143,11 +144,10 @@ def inr_exchange():
         user_details["wallet_address"] = address
         user_details["wallet_qr"] = qr
         return render_template('inr_exchange.html', user_details=user_details, inrvalue=exchange_rate,
-                               user_phonenumber=user_phone_number,user_banks=user_banks)
+                               user_phonenumber=user_phone_number, user_banks=user_banks)
     except Exception as e:
         send_message(f"Error on loading INR Exchange : {e}")
         raise e
-
 
 
 def cwp():
@@ -156,17 +156,20 @@ def cwp():
         return redirect('/')
     return render_template('cwp.html', user_phonenumber=user_phone_number)
 
+
 def refer():
     user_phone_number = get_user_phone_number()
     if not user_phone_number:
         return redirect('/')
     return render_template('refer.html', user_phonenumber=user_phone_number)
 
+
 def add_bank():
     user_phone_number = get_user_phone_number()
     if not user_phone_number:
         return redirect('/')
     return render_template('add_bank_details.html', user_phonenumber=user_phone_number)
+
 
 def wp():
     user_phone_number = get_user_phone_number()
@@ -231,7 +234,7 @@ def usdt_widthdrawl():
         return render_template('usdtwidthdrawl.html', user_details=user_details, inrvalue=inr_value,
                                user_phonenumber=user_phone_number)
     except Exception as e:
-        send_message(f"Error on loading usdt_widthdrawl : {e}")
+        send_message(f"Error on loading usdt_withdrawal : {e}")
         raise e
 
 
@@ -243,13 +246,12 @@ def rh():
     return render_template('rh.html', deposits=deposits, user_phonenumber=user_phone_number)
 
 
-
 def get_deposit_address(user_phone_number):
-    qr, address = get_qr_and_address()
-    return {
-        "qr": qr,
-        "address": address
-    }
+    try:
+        return assign_wallet(user_phone_number)
+    except Exception as e:
+        send_message(f"Not able to assign wallet to user  '{user_phone_number}'. Error is '{e}'")
+        raise TransactionAPIError("Not able to create wallet, Please contact admin")
 
 
 def usdt_deposit():
@@ -258,7 +260,7 @@ def usdt_deposit():
         return redirect('/')
 
     address_info = get_deposit_address(user_phone_number)
-    return render_template('usdt_deposit.html', address_info=address_info)
+    return render_template('usdt_deposit.html', address_info=address_info, time_remaining = address_info['time_remaining'])
 
 
 class TransactionNotFound(Exception):
@@ -339,6 +341,21 @@ def submitDeposit():
         send_message(f"Error while deposit request : Error: '{e}'")
         print("Error while submit deposit : ", e)
         return jsonify({'success': False, 'message': 'Deposit Request Failed'}), 500
+
+
+def check_transaction_wallet():
+    user_phone_number = get_user_phone_number()
+    if not user_phone_number:
+        return redirect('/')
+
+    data = request.json
+    address = data.get('address')
+
+    if address is None or address == '':
+        return jsonify({'success': False, 'message': 'Error! Transaction Id required'}), 500
+
+    res = check_transaction_for_wallet(address)
+    return jsonify(res), 200
 
 
 def usdt_deposit_info():

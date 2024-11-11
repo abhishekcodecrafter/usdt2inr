@@ -1,12 +1,14 @@
 import time
 from random import randint
-from datetime import datetime
+from datetime import datetime, timedelta
+
+import requests
 from passlib.hash import bcrypt
 import logging
 from db.db_connector import DBConnector
 import pytz
 
-from routes.send_message import random_string, HashAlreadyExist
+from routes.send_message import random_string, HashAlreadyExist, send_message
 
 
 def create_user(phone_number, usdt_balance, hold_balance, active):
@@ -23,6 +25,18 @@ def create_user(phone_number, usdt_balance, hold_balance, active):
     return success
 
 
+def get_current_exchange_rate2(amount):
+    query = "SELECT exchange_rate FROM settings LIMIT 1;"
+
+    connector = DBConnector()
+    result = connector.fetch_all(query)
+    connector.close_connection()
+    if result is None or len(result) < 1:
+        return None
+
+    return result[0][0]
+
+
 def get_current_exchange_rate():
     query = "SELECT exchange_rate FROM settings LIMIT 1;"
 
@@ -33,6 +47,286 @@ def get_current_exchange_rate():
         return None
 
     return result[0][0]
+
+
+def assign_wallet(phone_number):
+    connector = DBConnector()
+    cursor = connector.cursor
+
+    try:
+        connector.connection.start_transaction()
+
+        cursor.execute(
+            "SELECT id, wallet_address, assigned_at, wallet_qr FROM wallets WHERE assigned_to = %s FOR UPDATE",
+            (phone_number,))
+        existing_wallet = cursor.fetchone()
+
+        if existing_wallet:
+            assigned_at = existing_wallet[2]
+            time_remaining = assigned_at + timedelta(minutes=5) - datetime.now()
+
+            # Check if the time remaining is less than 3 minutes
+            if time_remaining > timedelta(minutes=3):
+                # Return the same wallet if time remaining is more than 3 minutes
+                return {
+                    "message": "Wallet already assigned",
+                    "wallet_address": existing_wallet[1],
+                    "wallet_qr": existing_wallet[3],
+                    "expires_at": assigned_at + timedelta(minutes=5),
+                    "time_remaining": time_remaining.total_seconds() / 60
+                }
+            else:
+                # Expire the wallet by resetting the assigned fields if less than 3 minutes remaining
+                cursor.execute("UPDATE wallets SET assigned_to = NULL, assigned_at = NULL WHERE id = %s",
+                               (existing_wallet[0],))
+                connector.connection.commit()  # Commit the expiration before assigning a new wallet
+
+        # Lock an unassigned wallet for this transaction
+        cursor.execute("SELECT id, wallet_address, wallet_qr FROM wallets WHERE assigned_to IS NULL LIMIT 1 FOR UPDATE")
+        wallet = cursor.fetchone()
+
+        print(wallet)
+        if wallet:
+            wallet_id = wallet[0]
+            wallet_address = wallet[1]
+            wallet_qr = wallet[2]
+            assigned_at = datetime.now()
+
+            print(assigned_at, phone_number, wallet_id)
+
+            # Assign wallet to user
+            cursor.execute("""
+                UPDATE wallets SET assigned_to = %s, assigned_at = %s WHERE id = %s
+            """, (phone_number, assigned_at, wallet_id))
+
+            # Save transaction log for reference
+            cursor.execute("""
+                INSERT INTO wallet_transactions (wallet_id, user_id, transaction_id, assigned_at) VALUES (%s, %s, NULL, %s)
+            """, (wallet_id, phone_number, assigned_at))
+
+            connector.connection.commit()
+
+            return {
+                "message": "Wallet assigned",
+                "wallet_address": wallet_address,
+                "wallet_qr": wallet_qr,
+                "expires_at": assigned_at + timedelta(minutes=5),
+                "time_remaining": timedelta(minutes=5).total_seconds() / 60
+            }
+        else:
+            connector.connection.rollback()
+            raise Exception("No wallet available")
+    except Exception as e:
+        connector.connection.rollback()
+        raise e
+    finally:
+        cursor.close()
+        connector.connection.close()
+
+
+# Periodic task to release expired wallets
+def release_expired_wallets():
+    print("Checking expired wallets")
+    while True:
+        connector = DBConnector()
+        cursor = connector.cursor
+
+        try:
+            # Start a transaction for batch processing of expired wallets
+            connector.connection.start_transaction()
+
+            # Define expiry time as 5 minutes ago
+            expiry_time = datetime.now() - timedelta(minutes=5)
+            cursor.execute("SELECT id, wallet_address FROM wallets WHERE assigned_at <= %s", (expiry_time,))
+            expired_wallets = cursor.fetchall()
+
+            for wallet in expired_wallets:
+                # Release wallet by resetting assigned fields
+                cursor.execute("UPDATE wallets SET assigned_to = NULL, assigned_at = NULL WHERE id = %s",
+                               (wallet[0],))
+                print(f"Released expired wallet: {wallet[1]}")
+
+            # Commit transaction
+            connector.connection.commit()
+
+        except Exception as e:
+            print("Error releasing expired wallets:", e)
+            send_message(f"Error releasing expired wallets. Error is '{e}'")
+            connector.connection.rollback()
+        finally:
+            cursor.close()
+            connector.connection.close()
+
+            # Run every minute
+        time.sleep(60)
+
+
+def check_wallet_transactions():
+    print("Checking wallet transactions")
+    while True:
+        conn = DBConnector()
+        cursor = conn.cursor
+
+        try:
+            # Start a transaction for consistency in balance updates
+            conn.connection.start_transaction()
+
+            # Fetch all assigned wallets
+            cursor.execute(
+                "SELECT id, wallet_address, assigned_to, assigned_at FROM wallets WHERE assigned_to IS NOT NULL")
+            assigned_wallets = cursor.fetchall()
+
+            for wallet in assigned_wallets:
+                wallet_id = wallet[0]
+                wallet_address = wallet[1]
+                user_id = wallet[2]
+                assigned_at = wallet[3]
+                lock_expiry_time = assigned_at + timedelta(minutes=5)
+
+                # Check for transactions within the assigned time
+                try:
+                    response = requests.get(
+                        f"https://api.tronscan.org/api/transaction?address={wallet_address}&token=USDT-TRC20")
+                    transactions = response.json()['data']
+
+                    for tx in transactions:
+                        tx_time = datetime.fromtimestamp(tx['timestamp'] / 1000)
+                        is_in_lock_period = assigned_at <= tx_time <= lock_expiry_time
+
+                        if tx['to'] == wallet_address and tx['confirmed'] and is_in_lock_period:
+                            amount = float(tx['value']) / 1e6
+
+                            # Update user's balance within the transaction
+                            #cursor.execute("UPDATE users SET balance = balance + %s WHERE id = %s", (amount, user_id))
+                            create_deposit_model(user_id, wallet_address, tx['hash'],
+                                                 get_current_exchange_rate2(amount),
+                                                 "PROCESSING", amount)
+                            # Log transaction and release wallet
+                            cursor.execute(
+                                "UPDATE wallet_transactions SET transaction_id = %s, transaction_amount = %s WHERE wallet_id = %s AND user_id = %s",
+                                (tx['hash'], amount, wallet_id, user_id))
+
+                            cursor.execute("UPDATE wallets SET assigned_to = NULL, assigned_at = NULL WHERE id = %s",
+                                           (wallet_id,))
+                            print(f"Transaction detected! Added {amount} USDT to user {user_id}")
+
+                except Exception as e:
+                    send_message(f"Error checking transactions for wallet {wallet_address}: {e}")
+                    print(f"Error checking transactions for wallet {wallet_address}: {e}")
+
+            # Commit transaction after processing all wallets
+            conn.connection.commit()
+
+        except Exception as e:
+            print("Error in transaction checking:", e)
+            send_message(f"Error in transaction checking: '{e}'")
+            conn.connection.rollback()
+        finally:
+            cursor.close()
+            conn.connection.close()
+
+            # Run every minute
+        time.sleep(60)
+
+
+def check_transaction_for_wallet(in_wallet_address):
+    print("Checking wallet transactions")
+    while True:
+        conn = DBConnector()
+        cursor = conn.cursor
+
+        try:
+            # Start a transaction for consistency in balance updates
+            conn.connection.start_transaction()
+
+            cursor.execute("""
+                SELECT wt.wallet_id, wt.user_id, w.wallet_address, w.assigned_at,
+                w.assigned_to, wt.transaction_id, wt.transaction_amount
+                FROM wallet_transactions wt
+                JOIN wallets w ON wt.wallet_id = w.id
+                WHERE w.wallet_address = %s
+            """, (in_wallet_address,))
+
+            wallet = cursor.fetchone()
+
+            transaction_id = wallet[5]
+            transaction_amount = wallet[6]
+
+            if transaction_id and len(transaction_id) > 10:
+                return {
+                    "success": True,
+                    "message": "Detected transaction of amount %s".format(transaction_amount)
+                }
+
+            wallet_id = wallet[0]
+            wallet_address = wallet[2]
+            user_id = wallet[1]
+            assigned_at = wallet[3]
+            w_user_id = wallet[4]
+
+            if w_user_id not in user_id:
+                pass
+
+            lock_expiry_time = assigned_at + timedelta(minutes=5)
+
+            # Check for transactions within the assigned time
+            try:
+                response = requests.get(
+                    f"https://api.tronscan.org/api/transaction?address={wallet_address}&token=USDT-TRC20")
+                transactions = response.json()['data']
+
+                for tx in transactions:
+                    tx_time = datetime.fromtimestamp(tx['timestamp'] / 1000)
+                    is_in_lock_period = assigned_at <= tx_time <= lock_expiry_time
+
+                    if tx['to'] == wallet_address and tx['confirmed'] and is_in_lock_period:
+                        amount = float(tx['value']) / 1e6
+
+                        # Update user's balance within the transaction
+                        #cursor.execute("UPDATE users SET balance = balance + %s WHERE id = %s", (amount, user_id))
+                        create_deposit_model(user_id, wallet_address, tx['hash'],
+                                             get_current_exchange_rate2(amount),
+                                             "PROCESSING", amount)
+                        # Log transaction and release wallet
+                        cursor.execute(
+                            "UPDATE wallet_transactions SET transaction_id = %s, transaction_amount = %s WHERE wallet_id = %s AND user_id = %s",
+                            (tx['hash'], amount, wallet_id, user_id))
+
+                        cursor.execute("UPDATE wallets SET assigned_to = NULL, assigned_at = NULL WHERE id = %s",
+                                       (wallet_id,))
+
+                        return {
+                            "success": True,
+                            "message": "Detected transaction of amount %s".format(amount)
+                        }
+
+                return {
+                    "success": False,
+                    "message": "Not detected any transaction on this address"
+                }
+
+            except Exception as e:
+                send_message(f"Error checking transactions for wallet {wallet_address}: {e}")
+                print(f"Error checking transactions for wallet {wallet_address}: {e}")
+                return {
+                    "success": False,
+                    "message": "Error occurred, Please contact to admin"
+                }
+
+            # Commit transaction after processing all wallets
+            conn.connection.commit()
+
+        except Exception as e:
+            print("Error in transaction checking:", e)
+            send_message(f"Error in transaction checking: '{e}'")
+            conn.connection.rollback()
+            return {
+                "success": False,
+                "message": "Error occurred, Please contact to admin"
+            }
+        finally:
+            cursor.close()
+            conn.connection.close()
 
 
 def get_qr_and_address():
@@ -349,8 +643,6 @@ def convert_timestamp(timestamp):
     return ist_time
 
 
-
-
 def get_user_banks(phone_number):
     query = f"SELECT DISTINCT account_no, account_name, ifsc FROM transactions WHERE phone_number = {phone_number} AND type = 'WITHDRAW';"
     connector = DBConnector()
@@ -367,8 +659,9 @@ def get_user_banks(phone_number):
             "account_name": transform_status(row[1]),
             "IFSC": row[2],
         })
-        
+
     return data
+
 
 def get_deposits(phone_number):
     query = f"SELECT * FROM transactions where phone_number = {phone_number} and type='DEPOSIT' ORDER BY created_at DESC"
@@ -462,7 +755,7 @@ def create_transaction(txn_id, status, amount, type, user_id):
 
 
 def edit_tg_username_model(username, phone):
-    print("From models : ",username)
+    print("From models : ", username)
     query = """
      UPDATE users SET t_me = %s WHERE phone_number = %s
     """
@@ -535,7 +828,7 @@ def create_INR_wdt_model(phone, amount, accountNo, accountName, ifsc, exchange_r
 
         query2 = f"UPDATE users SET usdt_balance = usdt_balance - {amount}, hold_balance = hold_balance + {amount} WHERE phone_number = '{phone}'"
 
-        tid =get_txn_id()
+        tid = get_txn_id()
         values = (
             tid, phone, amount, accountNo, accountName, ifsc, exchange_rate, int(time.time()),
             int(time.time()), tid)
@@ -558,7 +851,8 @@ def create_deposit_model(phone, address, txn_id, exchange_rate, status, amount):
             INSERT INTO transactions (txn_id, phone_number, deposit_address, deposit_txn_id, exchange_rate, created_at, updated_at, status, amount, type, sub_type)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 'DEPOSIT', 'USDT')
         """
-        values = (get_txn_id(), phone, address, txn_id, exchange_rate, int(time.time()), int(time.time()), status, amount)
+        values = (
+        get_txn_id(), phone, address, txn_id, exchange_rate, int(time.time()), int(time.time()), status, amount)
 
         connector = DBConnector()
         success = connector.execute_query_raise(query, values)
@@ -571,7 +865,7 @@ def create_deposit_model(phone, address, txn_id, exchange_rate, status, amount):
 
         print(str(e))
         logging.error(f"An error occurred while creating deposit txn: {str(e)}")
-        return False
+        raise e
 
 
 def create_USDT_wdt_model(phone, amount, withdraw_address, exchange_rate):

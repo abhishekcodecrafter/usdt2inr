@@ -7,6 +7,7 @@ from flask import send_file
 
 
 def send_message(message):
+    return
     url = f"https://api.telegram.org/bot6660557308:AAEwrg52_QSm0cBhFXWqLcOdHsGJPN6Fmv4/sendMessage?chat_id=-1002104620524&text={message}"
 
     try:

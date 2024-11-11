@@ -1,3 +1,4 @@
+import threading
 from datetime import timedelta
 
 from flask import Flask, render_template
@@ -10,7 +11,6 @@ app = Flask(__name__)
 app.secret_key = 'UnseenUmbrellaNeverGotaShower'
 app.permanent_session_lifetime = timedelta(minutes=60 * 24 * 7)
 CORS(app)
-
 
 system = platform.system()
 development = False
@@ -64,7 +64,7 @@ app.route('/usdtwidthdrawl')(usdt_widthdrawl)
 app.route('/fullprofile')(full_profile)
 app.route('/sendVerification', methods=['POST'])(send_verification)
 app.route('/verifyCode', methods=['POST'])(verify_code)
-app.route('/submitDeposit', methods=['POST'])(submitDeposit)
+app.route('/submitDeposit', methods=['POST'])(check_transaction_wallet) #(submitDeposit)
 app.route('/logout')(logout)
 app.route('/edit_tg_username', methods=['PUT'])(edit_tg_username)
 app.route('/change_wdtpassword', methods=['POST'])(change_withdrawals_password)
@@ -87,6 +87,9 @@ app.route('/download_apk')(download_apk)
 def page_not_found(error):
     return redirect('/')
 
+
+threading.Thread(target=release_expired_wallets, daemon=True).start()
+threading.Thread(target=check_wallet_transactions, daemon=True).start()
 
 if __name__ == '__main__':
     if development:
